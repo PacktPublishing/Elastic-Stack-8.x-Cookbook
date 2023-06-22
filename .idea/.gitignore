@@ -6,3 +6,7 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+.idea/Elastic-Stack-8.x-Cookbook.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
