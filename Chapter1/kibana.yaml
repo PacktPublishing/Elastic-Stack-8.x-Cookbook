@@ -1,0 +1,26 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: kibana-sample
+spec:
+  version: 8.8.0
+  count: 1
+  elasticsearchRef:
+    name: "elasticsearch-sample"
+  #http:
+  #  service:
+  #    spec:
+  #      type: LoadBalancer
+  # this shows how to customize the Kibana pod
+  # with labels and resource limits
+  podTemplate:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kibana
+    spec:
+      containers:
+        - name: kibana
+          resources:
+            limits:
+              memory: 1Gi
+              cpu: 1
