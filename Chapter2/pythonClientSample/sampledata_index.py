@@ -31,4 +31,9 @@ response=es.index(
 
  print(response)
 
+ response = es.search(index='movies', query={"match_all": {}})
+ print("Sample movie data in Elasticsearch:")
+ for hit in response['hits']['hits']:
+  print(hit['_source'])
+
 
