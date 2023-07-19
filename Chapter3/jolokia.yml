@@ -1,0 +1,62 @@
+- module: jolokia
+  metricsets: ["jmx"]
+  period: 10s
+  hosts: ["localhost"]
+  namespace: "metrics"
+  path: "/jolokia/?ignoreErrors=true&canonicalNaming=false"
+  #username: "user"
+  #password: "secret"
+  jmx.mappings:
+    - mbean: 'java.lang:type=Runtime'
+      attributes:
+        - attr: Uptime
+          field: uptime
+    - mbean: 'java.lang:type=Memory'
+      attributes:
+        - attr: HeapMemoryUsage
+          field: memory.heap_usage
+        - attr: NonHeapMemoryUsage
+          field: memory.non_heap_usage
+    # GC Metrics - this depends on what is available on your JVM
+    - mbean: 'java.lang:type=GarbageCollector,name=ConcurrentMarkSweep'
+      attributes:
+        - attr: CollectionTime
+          field: gc.cms_collection_time
+        - attr: CollectionCount
+          field: gc.cms_collection_count
+    - mbean: 'java.lang:type=Threading'
+      attributes:
+        - attr: ThreadCount
+          field: threading.thread_count
+    - mbean: 'Catalina:name=*,type=ThreadPool'
+      attributes:
+        - attr: port
+          field: catalina.port
+        - attr: maxConnections
+          field: catalina.maxConnections
+    - mbean: 'Catalina:name=*,type=GlobalRequestProcessor'
+      attributes:
+        - attr: bytesSent
+          field: tomcat.requests.bytes.sent
+        - attr: bytesReceived
+          field: tomcat.requests.bytes.received
+        - attr: errorCount
+          field: tomcat.requests.errors.total
+        - attr: processingTime
+          field: tomcat.requests.processing.ms
+        - attr: requestCount
+          field: tomcat.requests.total
+    - mbean: 'Catalina:context=*,host=*,name=Cache,type=WebResourceRoot'
+      attributes:
+        - attr: hitCount
+          field: tomcat.cache.hit.total
+        - attr: size
+          field: tomcat.cache.size.total.kb
+        - attr: maxSize
+          field: tomcat.cache.size.max.kb
+        - attr: lookupCount
+          field: tomcat.cache.lookup.total
+        - attr: ttl
+          field: tomcat.cache.ttl.ms
+  jmx.application:
+  jmx.instance:
