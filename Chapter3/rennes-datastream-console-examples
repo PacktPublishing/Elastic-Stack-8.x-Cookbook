@@ -1,0 +1,109 @@
+
+PUT _ilm/policy/rennestraffic-lifecycle-policy
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover": {
+            "max_primary_shard_size": "50gb"
+          }
+        }
+      },
+      "delete": {
+        "min_age": "30d",
+        "actions": {
+          "delete": {}
+        }
+      }
+    }
+  }
+}
+
+# Creates a component template for mappings
+PUT _component_template/rennestraffic-mappings
+{
+  "template": {
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date",
+          "format": "date_optional_time||epoch_millis"
+        },
+        "trafficstatus": {"type": "keyword"},
+        "locationreference": {"type": "keyword"},
+        "denomination": {"type": "text"},
+        "hierarchie": {"type": "keyword"},
+        "hierarchie_dv": {"type": "keyword"},
+        "insee": {"type": "keyword"},
+        "vehicles": {"type":"short"},
+        "traveltime" : {
+          "subobjects" : false,
+          "properties" : {
+            "reliability" : {
+              "type" : "short"
+            },
+            "duration" : {
+              "type" : "short"
+            }
+          }
+        }
+        ,
+        "maxspeed":{"type":"short"},
+        "averagevehiclespeed":{"type":"short"},
+        "location": {"type": "geo_point"}
+      }
+    }
+  },
+  "_meta": {
+    "description": "Mappings for rennes traffic data fields"
+  }
+}
+
+# Creates a component template for index settings
+PUT _component_template/rennestraffic-settings
+{
+  "template": {
+    "settings": {
+      "index.lifecycle.name": "rennestraffic-lifecycle-policy"
+    }
+  },
+  "_meta": {
+    "description": "Settings for ILM",
+    "my-custom-meta-field": "More arbitrary metadata"
+  }
+}
+
+PUT _index_template/rennestraffic-index-template
+{
+  "index_patterns": ["rennestraffic-data-stream*"],
+  "data_stream": { },
+  "composed_of": [ "rennestraffic-mappings", "rennestraffic-settings" ],
+  "priority": 500,
+  "_meta": {
+    "description": "Template for rennes traffice data",
+    "my-custom-meta-field": "More arbitrary metadata"
+  }
+}
+
+POST rennestraffic-data-stream/_doc
+{
+  "@timestamp": "2023-07-19T23:07:00+02:00",
+    "trafficstatus": "heavy",
+    "locationreference": "10273_D",
+    "denomination": "Route départementale 34",
+    "hierarchie": "Réseau d'armature",
+    "hierarchie_dv": "Réseau de transit",
+    "insee": "35206",
+    "vehicles": "1",
+    "traveltime.reliability": "60",
+    "traveltime.duration": "16",
+    "maxspeed": "70",
+    "averagevehiclespeed": "46",
+    "location": {
+      "lat": 48.04479275590756,
+      "lon": -1.6502152435538264
+    }
+}
+
+
