@@ -74,6 +74,9 @@ def generate_actions():
                 "traveltime.duration": row["traveltime"],
                 "maxspeed": row["vitesse_maxi"],
                 "averagevehiclespeed": row["averagevehiclespeed"],
+                "data_stream.type":"generic",
+                "data_stream.dataset":"rennes_traffic",
+                "data_stream.namespace":"default",
             }
 
 
@@ -95,8 +98,8 @@ def main():
         cloud_id=ES_CID,
         basic_auth=(ES_USER, ES_PWD)
     )
-    print(client.info)
-    print("Creating an index...")
+    #print(client.info)
+    #print("Creating an index...")
     # create_index(client)
 
     print("Indexing documents...")
@@ -105,7 +108,7 @@ def main():
 
 
     for ok, action in streaming_bulk(
-        client=client, index="rennestraffic-data-stream", actions=generate_actions(),
+            client=client, index="generic-rennes_traffic-default", actions=generate_actions(),
     ):
         progress.update(1)
         successes += ok

@@ -1,0 +1,167 @@
+
+# Creates a component template for mappings
+PUT _component_template/metrics-rennes_traffic-mappings
+{
+  "template": {
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date",
+          "format": "date_optional_time||epoch_millis"
+        },
+        "trafficstatus": {
+          "type": "keyword"
+        },
+        "locationreference": {
+          "type": "keyword",
+          "time_series_dimension": true
+        },
+        "denomination": {
+          "type": "keyword",
+          "time_series_dimension": true
+        },
+        "hierarchie": {
+          "type": "keyword",
+          "time_series_dimension": true
+        },
+        "hierarchie_dv": {
+          "type": "keyword",
+          "time_series_dimension": true
+        },
+        "insee": {
+          "type": "keyword",
+          "time_series_dimension": true
+        },
+        "vehicles": {
+          "type":"long",
+          "time_series_metric": "gauge"
+        },
+        "traveltime" : {
+          "subobjects" : false,
+          "properties" : {
+            "reliability" : {
+              "type" : "long",
+              "time_series_metric": "gauge"
+            },
+            "duration" : {
+              "type" : "long",
+              "time_series_metric": "gauge"
+            }
+          }
+        }
+        ,
+        "maxspeed":{
+          "type":"long",
+          "time_series_metric": "counter"
+        },
+        "averagevehiclespeed":{
+          "type":"float",
+          "time_series_metric": "gauge"
+        },
+        "location": {"type": "geo_point"},
+        "data_stream": {
+          "properties": {
+            "namespace": {
+              "type": "constant_keyword"
+            },
+            "type": {
+              "type": "constant_keyword"
+            },
+            "dataset": {
+              "type": "constant_keyword"
+            }
+          }
+        }
+      }
+    }
+  },
+  "_meta": {
+    "description": "Mappings for rennes traffic metrics fields",
+    "data_stream": {
+      "dataset": "rennes_traffic",
+      "namespace": "default",
+      "type": "metrics"
+    }
+  }
+}
+
+
+PUT _index_template/metrics-rennes_traffic-index-template
+{
+  "index_patterns": ["metrics-rennes_traffic-*"],
+  "data_stream": {
+  },
+  "template": {
+    "settings": {
+      "index.mode": "time_series"
+    }
+  },
+  "composed_of": [ "metrics-rennes_traffic-mappings", "rennes_traffic-settings" ],
+  "priority": 500,
+  "_meta": {
+    "description": "Template for rennes traffice metrics data"
+  }
+}
+
+
+
+POST metrics-rennes_traffic-default/_doc
+{
+  "@timestamp": "2023-07-21T23:07:00+02:00",
+    "trafficstatus": "heavy",
+    "locationreference": "10273_D",
+    "denomination": "Route départementale 34",
+    "hierarchie": "Réseau d'armature",
+    "hierarchie_dv": "Réseau de transit",
+    "insee": "35206",
+    "vehicles": "1",
+    "traveltime.reliability": "60",
+    "traveltime.duration": "16",
+    "maxspeed": "70",
+    "averagevehiclespeed": "46",
+    "location": {
+      "lat": 48.04479275590756,
+      "lon": -1.6502152435538264
+    },
+    "data_stream.type": "metrics",
+    "data_stream.dataset": "rennes_traffic",
+    "data_stream.namespace": "default"
+}
+
+
+GET metrics-rennes_traffic-default/_search
+{
+  "size": 0,
+  "aggs": {
+    "tsid": {
+      "terms": {
+        "field": "_tsid"
+      },
+     "aggs": {
+              "over_time": {
+                  "date_histogram": {
+                      "field": "@timestamp",
+                      "fixed_interval": "1d"
+                  },
+                  "aggs": {
+                      "min": {
+                          "min": {
+                              "field": "averagevehiclespeed"
+                          }
+                      },
+                      "max": {
+                          "max": {
+                              "field": "averagevehiclespeed"
+                          }
+                      },
+                      "avg": {
+                          "avg": {
+                              "field": "averagevehiclespeed"
+                          }
+                      }
+                  }
+              }
+          }
+    }
+  }
+}

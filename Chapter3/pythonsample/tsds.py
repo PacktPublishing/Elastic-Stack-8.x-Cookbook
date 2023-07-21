@@ -58,7 +58,9 @@ def generate_actions():
     """
     with open(DATASET_PATH, mode="r") as f:
         reader = csv.DictReader(f,delimiter=";")
+
         for row in reader:
+            time = row["datetime"].split("+")
             doc = {
                 "_op_type": "create",
                 "@timestamp": row["datetime"],
@@ -84,7 +86,6 @@ def generate_actions():
                 doc["location"] = {"lat": float(lat), "lon": float(lon)}
             yield doc
 
-
 def main():
     print("Loading dataset...")
     number_of_docs = download_dataset()
@@ -102,9 +103,8 @@ def main():
     progress = tqdm.tqdm(unit="docs", total=number_of_docs)
     successes = 0
 
-
     for ok, action in streaming_bulk(
-        client=client, index="rennestrafficmetric-data-stream", actions=generate_actions(),
+            client=client, index="metrics-rennes_traffic-default", actions=generate_actions(),
     ):
         progress.update(1)
         successes += ok
