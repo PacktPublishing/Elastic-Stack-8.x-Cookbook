@@ -51,8 +51,7 @@ PUT _component_template/metrics-rennes_traffic-mappings
         }
         ,
         "maxspeed":{
-          "type":"long",
-          "time_series_metric": "counter"
+          "type":"long"
         },
         "averagevehiclespeed":{
           "type":"float",
