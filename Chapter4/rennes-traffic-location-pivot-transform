@@ -1,0 +1,77 @@
+PUT _transform/rennes-traffic-location-pivot-transform
+{
+  "source": {
+    "index": [
+      "metrics-rennes_traffic-*"
+    ]
+  },
+  "pivot": {
+    "group_by": {
+      "denomination": {
+        "terms": {
+          "field": "denomination"
+        }
+      },
+      "hierarchie": {
+        "terms": {
+          "field": "hierarchie"
+        }
+      },
+      "hierarchie_dv": {
+        "terms": {
+          "field": "hierarchie_dv"
+        }
+      },
+      "locationreference": {
+        "terms": {
+          "field": "locationreference"
+        }
+      }
+    },
+    "aggregations": {
+      "averagevehiclespeed.avg": {
+        "avg": {
+          "field": "averagevehiclespeed"
+        }
+      },
+      "maxspeed.max": {
+        "max": {
+          "field": "maxspeed"
+        }
+      },
+      "autorized_speed_percentage": {
+        "bucket_script": {
+          "buckets_path": {
+            "avg_speed": "averagevehiclespeed.avg.value",
+            "max_speed": "maxspeed.max.value"
+          },
+          "script": "(params.avg_speed / params.max_speed) * 100"
+        }
+      },
+      "traveltime.duration.avg": {
+        "avg": {
+          "field": "traveltime.duration"
+        }
+      },
+      "vehicleprobemeasurement.avg": {
+        "avg": {
+          "field": "vehicleprobemeasurement"
+        }
+      },
+      "traveltime.reliability.avg": {
+        "avg": {
+          "field": "traveltime.reliability"
+        }
+      }
+    }
+  },
+  "description": "rennes-traffic-location-pivot-transform",
+  "dest": {
+    "index": "rennes-traffic-location"
+  },
+  "sync": {
+    "time": {
+      "field": "@timestamp"
+    }
+  }
+}
