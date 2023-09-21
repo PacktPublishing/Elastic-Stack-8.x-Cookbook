@@ -16,8 +16,7 @@
       "type": "text"
     },
     "Release Year": {
-      "type": "date",
-      "format": "yyyy"
+      "type": "long"
     },
     "Title": {
       "type": "text"
