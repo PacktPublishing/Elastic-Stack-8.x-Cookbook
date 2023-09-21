@@ -1,0 +1,61 @@
+"script": {
+    "lang": "mustache",
+    "source": {
+      "aggs": {
+        "0": {
+          "terms": {
+            "field": "Director",
+            "order": {
+              "_count": "desc"
+            },
+            "size": 5
+          },
+          "aggs": {
+            "1": {
+              "terms": {
+                "field": "Genre",
+                "order": {
+                  "_count": "desc"
+                },
+                "size": 3
+              }
+            }
+          }
+        }
+      },
+      "size": 10,
+      "query": {
+        "bool": {
+          "must": [],
+          "filter": [
+            {
+              "range": {
+                "Release Year": {
+                  "gte": "{{start_date}}",
+                  "lt": "{{end_date}}"
+                }
+              }
+            },
+            {
+              "match_phrase": {
+              "Origin/Ethnicity": "{{origin}}"
+          }
+        }
+          ],
+          "should": [],
+          "must_not": [
+            {
+              "match_phrase": {
+                "Director": "Unknown"
+              }
+            },
+            {
+              "match_phrase": {
+                "Genre": "unknown"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
