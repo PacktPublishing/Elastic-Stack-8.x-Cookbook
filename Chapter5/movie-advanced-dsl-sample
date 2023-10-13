@@ -1,0 +1,141 @@
+GET movies-dataset-chap5/_search
+{
+  "query": {
+    "range": {
+      "Release Year": {
+        "gte": "1925",
+        "lte": "1927"
+      }
+    }
+  }
+}
+
+GET movies-dataset-chap5/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "come home",
+      "fields": [
+        "Title",
+        "Plot"
+      ]
+    }
+  }
+}
+
+GET movies-dataset-chap5/_search
+{
+  "query": {
+    "multi_match": {
+      "type": "most_fields",
+      "query": "come home",
+      "fields": [
+        "Title",
+        "Plot"
+      ]
+    }
+  }
+}
+
+GET movies-dataset-chap5/_search
+{
+  "query": {
+    "multi_match": {
+      "type": "phrase",
+      "query": "come home",
+      "fields": [
+        "Title",
+        "Plot"
+      ]
+    }
+  }
+}
+
+GET movies-dataset-chap5/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "Title": "home"
+          }
+        },
+        {
+          "match": {
+            "Genre": "comedy"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+GET movies-dataset-chap5/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "Title": "home"
+          }
+        }
+      ],
+      "filter": [
+        {
+          "match": {
+            "Genre": "comedy"
+          }
+        }
+      ]
+    }
+  }
+}
+
+GET movies-dataset-chap5/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "Title": "home"
+          }
+        }
+      ],
+      "should": [
+        {
+          "match": {
+            "Genre": "comedy"
+          }
+        }
+      ]
+    }
+  }
+}
+
+GET movies-dataset-chap5/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "Title": "home"
+          }
+        }
+      ],
+      "filter": [
+        {
+          "range": {
+            "Release Year": {
+              "gte": "1985"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

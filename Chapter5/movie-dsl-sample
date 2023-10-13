@@ -18,3 +18,16 @@ GET movies-dataset-chap5/_search
     }
   }
 }
+
+GET movies-dataset-chap5/_search
+{
+  "query": {
+    "match": {
+      "Title": {
+        "query": "Come sweet home",
+        "minimum_should_match": 2
+      }
+    }
+  }
+}
+
