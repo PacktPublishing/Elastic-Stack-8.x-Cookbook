@@ -1,0 +1,20 @@
+GET movies-dataset-chap5/_search
+{
+  "query": {
+    "match": {
+      "Title": "Come home"
+    }
+  }
+}
+
+GET movies-dataset-chap5/_search
+{
+  "query": {
+    "match": {
+      "Title": {
+        "query": "Come home",
+        "operator": "and"
+      }
+    }
+  }
+}
