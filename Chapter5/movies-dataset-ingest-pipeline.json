@@ -1,0 +1,33 @@
+{
+  "description": "Ingest pipeline for movie csv",
+  "processors": [
+    {
+      "csv": {
+        "field": "message",
+        "target_fields": [
+          "releaseyear",
+          "title",
+          "origin",
+          "director",
+          "cast",
+          "genre",
+          "wikipage",
+          "plot"
+        ],
+        "ignore_missing": false
+      }
+    },
+    {
+      "convert": {
+        "field": "releaseyear",
+        "type": "long",
+        "ignore_missing": true
+      }
+    },
+    {
+      "remove": {
+        "field": "message"
+      }
+    }
+  ]
+}
