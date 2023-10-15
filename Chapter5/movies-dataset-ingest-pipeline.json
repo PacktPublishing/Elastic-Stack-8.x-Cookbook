@@ -26,7 +26,7 @@
     },
     {
       "remove": {
-        "field": "message"
+        "field": ["message","Cast","Director","Genre","Origin/Ethnicity","Plot","Release Year","Title","Wiki Page"]
       }
     }
   ]

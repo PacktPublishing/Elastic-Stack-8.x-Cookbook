@@ -2,7 +2,7 @@ GET movies-dataset-chap5/_search
 {
   "query": {
     "match": {
-      "Title": "Come home"
+      "title": "Come home"
     }
   }
 }
@@ -11,7 +11,7 @@ GET movies-dataset-chap5/_search
 {
   "query": {
     "match": {
-      "Title": {
+      "title": {
         "query": "Come home",
         "operator": "and"
       }
@@ -23,7 +23,7 @@ GET movies-dataset-chap5/_search
 {
   "query": {
     "match": {
-      "Title": {
+      "title": {
         "query": "Come sweet home",
         "minimum_should_match": 2
       }

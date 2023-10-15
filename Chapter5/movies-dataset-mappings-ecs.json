@@ -1,0 +1,47 @@
+{
+  "properties": {
+    "cast": {
+      "type": "text"
+    },
+    "director": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
+
+    },
+    "genre": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
+    },
+    "origin": {
+      "type": "keyword"
+    },
+    "plot": {
+      "type": "text"
+    },
+    "releaseyear": {
+      "type": "long"
+    },
+    "title": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
+    },
+    "wikipage": {
+      "type": "keyword"
+    }
+  }
+}

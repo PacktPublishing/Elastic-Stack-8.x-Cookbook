@@ -2,7 +2,7 @@ GET movies-dataset-chap5/_search
 {
   "query": {
     "range": {
-      "Release Year": {
+      "releaseyear": {
         "gte": "1925",
         "lte": "1927"
       }
@@ -16,8 +16,8 @@ GET movies-dataset-chap5/_search
     "multi_match": {
       "query": "come home",
       "fields": [
-        "Title",
-        "Plot"
+        "title",
+        "plot"
       ]
     }
   }
@@ -30,8 +30,8 @@ GET movies-dataset-chap5/_search
       "type": "most_fields",
       "query": "come home",
       "fields": [
-        "Title",
-        "Plot"
+        "title",
+        "plot"
       ]
     }
   }
@@ -44,8 +44,8 @@ GET movies-dataset-chap5/_search
       "type": "phrase",
       "query": "come home",
       "fields": [
-        "Title",
-        "Plot"
+        "title",
+        "plot"
       ]
     }
   }
@@ -58,12 +58,12 @@ GET movies-dataset-chap5/_search
       "must": [
         {
           "match": {
-            "Title": "home"
+            "title": "home"
           }
         },
         {
           "match": {
-            "Genre": "comedy"
+            "genre": "comedy"
           }
         }
       ]
@@ -79,14 +79,14 @@ GET movies-dataset-chap5/_search
       "must": [
         {
           "match": {
-            "Title": "home"
+            "title": "home"
           }
         }
       ],
       "filter": [
         {
           "match": {
-            "Genre": "comedy"
+            "genre": "comedy"
           }
         }
       ]
@@ -101,14 +101,14 @@ GET movies-dataset-chap5/_search
       "must": [
         {
           "match": {
-            "Title": "home"
+            "title": "home"
           }
         }
       ],
       "should": [
         {
           "match": {
-            "Genre": "comedy"
+            "genre": "comedy"
           }
         }
       ]
@@ -123,14 +123,14 @@ GET movies-dataset-chap5/_search
       "must": [
         {
           "match": {
-            "Title": "home"
+            "title": "home"
           }
         }
       ],
       "filter": [
         {
           "range": {
-            "Release Year": {
+            "releaseyear": {
               "gte": "1985"
             }
           }

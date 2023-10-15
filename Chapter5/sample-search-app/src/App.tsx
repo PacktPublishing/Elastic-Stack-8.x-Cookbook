@@ -11,7 +11,7 @@ import './App.css'
 
 const request = SearchApplicationClient(
   'myapp',
-  'https://xxx.europe-west1.gcp.cloud.es.io:443',
+  'https://xxx.cloud.es.io:443',
   'xxx',
   {
     facets: {
@@ -29,12 +29,13 @@ const request = SearchApplicationClient(
     },
   }
 )
-
+/* Behaviour analytics */
+/*
 createTracker({
-  endpoint: "https://3d9225f8678742b498ff349826e8410d.europe-west1.gcp.cloud.es.io:443",
-  collectionName: "movie-new",
-  apiKey: "NXl5UUxZc0I0OThrc3EzQk5iUmQ6MjRibll0bUpUTEcxRDNxS09nWHpuUQ==",
-});
+  endpoint: "https://xxx.cloud.es.io:443",
+  collectionName: "movie-stats",
+  apiKey: "xxx",
+});*/
 
 function Facets({ facets, addFilter, removeFilter, filters }: any) {
   if (!facets) {
@@ -113,11 +114,13 @@ function App() {
 
     setResults(results)
 
+    /* Behaviour analytics */
+    /*
     trackSearch({
       search: {
         query: query,
       },
-    });
+    });*/
   }
 
   const handleSearch = async (e: any) => {
@@ -128,7 +131,8 @@ function App() {
 
   useEffect(() => {
     doSearch()
-    trackPageView();
+    /* Behaviour analytics */
+   /* trackPageView();*/
     window.scroll({ top: 0, behavior: 'smooth' })
   }, [filters, page])
 
