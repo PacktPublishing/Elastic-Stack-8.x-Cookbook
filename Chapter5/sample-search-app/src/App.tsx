@@ -45,18 +45,6 @@ function Facets({ facets, addFilter, removeFilter, filters }: any) {
     <div className="md:w-1/4 bg-gray-100 p-4">
       {facets &&
         facets.map((facet: any) => {
-          if (facet.name === 'imdbrating') {
-            return (
-              <div key={facet.name} className="pb-4">
-                <h3 className="text-base font-semibold mb-2 uppercase">
-                  {facet.name}
-                </h3>
-                <p>
-                  Min: {facet.stats.min} Max: {facet.stats.max}
-                </p>
-              </div>
-            )
-          }
           return (
             <div key={facet.name} className="pb-4">
               <h3 className="text-base font-semibold mb-2 uppercase">
