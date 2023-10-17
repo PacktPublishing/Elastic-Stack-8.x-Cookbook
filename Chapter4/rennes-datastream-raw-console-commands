@@ -1,0 +1,105 @@
+# Creates a component template for rennes traffic mappings
+PUT _component_template/metrics-rennes_traffic-mappings@raw
+{
+  "template": {
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date",
+          "format": "date_optional_time||epoch_millis"
+        },
+        "traffic_status": {"type": "keyword"},
+        "location_reference": {"type": "keyword"},
+        "denomination": {"type": "text"},
+        "hierarchie": {"type": "keyword"},
+        "hierarchie_dv": {"type": "keyword"},
+        "insee": {"type": "keyword"},
+        "vehicle_probe_measurement": {"type":"short"},
+        "traveltime" : {
+          "subobjects" : false,
+          "properties" : {
+            "reliability" : {
+              "type" : "short"
+            },
+            "duration" : {
+              "type" : "short"
+            }
+          }
+        }
+        ,
+        "max_speed":{"type":"short"},
+        "average_vehicle_speed":{"type":"short"},
+        "location": {"type": "geo_point"},
+        "data_stream": {
+          "properties": {
+            "namespace": {
+              "type": "constant_keyword"
+            },
+            "type": {
+              "type": "constant_keyword"
+            },
+            "dataset": {
+              "type": "constant_keyword"
+            }
+          }
+        }
+      }
+    }
+  },
+  "_meta": {
+    "description": "Standard mappings for rennes traffic raw data fields",
+    "data_stream": {
+          "dataset": "rennes_traffic",
+          "namespace": "default",
+          "type": "metrics"
+    }
+  }
+}
+
+# Creates a component template for rennes traffic Index Lifecyle Policy
+PUT _ilm/policy/metrics-rennes_traffic-raw-lifecycle-policy
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover": {
+            "max_primary_shard_size": "50gb"
+          }
+        }
+      },
+      "delete": {
+        "min_age": "30d",
+        "actions": {
+          "delete": {}
+        }
+      }
+    }
+  }
+}
+
+# Creates a component template for index settings
+PUT _component_template/metrics-rennes_traffic-raw-settings
+{
+  "template": {
+    "settings": {
+      "index.lifecycle.name": "metrics-rennes_traffic-raw-lifecycle-policy"
+    }
+  },
+  "_meta": {
+    "description": "Settings for ILM for rennes_traffic-raw"
+  }
+}
+
+PUT _index_template/metrics-rennes_traffic-raw-index-template
+{
+  "index_patterns": ["metrics-rennes_traffic-raw"],
+  "data_stream": { },
+  "composed_of": [ "metrics-rennes_traffic-mappings@raw", "metrics-rennes_traffic-raw-settings" ],
+  "priority": 600,
+  "_meta": {
+    "description": "Template for rennes traffice raw data"
+  }
+}
+
+

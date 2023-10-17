@@ -1,6 +1,6 @@
 
 # Creates a component template for mappings
-PUT _component_template/metrics-rennes_traffic-mappings
+PUT _component_template/metrics-rennes_traffic-mappings@default
 {
   "template": {
     "mappings": {
@@ -9,10 +9,10 @@ PUT _component_template/metrics-rennes_traffic-mappings
           "type": "date",
           "format": "date_optional_time||epoch_millis"
         },
-        "trafficstatus": {
+        "traffic_status": {
           "type": "keyword"
         },
-        "locationreference": {
+        "location_reference": {
           "type": "keyword",
           "time_series_dimension": true
         },
@@ -32,7 +32,7 @@ PUT _component_template/metrics-rennes_traffic-mappings
           "type": "keyword",
           "time_series_dimension": true
         },
-        "vehicles": {
+        "vehicle_probe_measurement": {
           "type":"long",
           "time_series_metric": "gauge"
         },
@@ -50,10 +50,10 @@ PUT _component_template/metrics-rennes_traffic-mappings
           }
         }
         ,
-        "maxspeed":{
+        "max_speed":{
           "type":"long"
         },
-        "averagevehiclespeed":{
+        "average_vehicle_speed":{
           "type":"float",
           "time_series_metric": "gauge"
         },
@@ -85,9 +85,9 @@ PUT _component_template/metrics-rennes_traffic-mappings
 }
 
 
-PUT _index_template/metrics-rennes_traffic-index-template
+PUT _index_template/metrics-rennes_traffic-default-index-template
 {
-  "index_patterns": ["metrics-rennes_traffic-*"],
+  "index_patterns": ["metrics-rennes_traffic-default"],
   "data_stream": {
   },
   "template": {
@@ -95,7 +95,7 @@ PUT _index_template/metrics-rennes_traffic-index-template
       "index.mode": "time_series"
     }
   },
-  "composed_of": [ "metrics-rennes_traffic-mappings", "rennes_traffic-settings" ],
+  "composed_of": [ "metrics-rennes_traffic-mappings@default", "rennes_traffic-settings" ],
   "priority": 500,
   "_meta": {
     "description": "Template for rennes traffice metrics data"
