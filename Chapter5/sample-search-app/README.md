@@ -1,5 +1,5 @@
-# Sandbox
-This project serves as a sandbox environment for testing and experimenting with the ```search-application-client``` library.
+# Sample search application
+This project serves as a demo application for the recipes ```Building search experience with Search Application Client ``` and ```Measuring the performance of your search applications with Behaviour analytics```
 
 
 ### Getting Started
