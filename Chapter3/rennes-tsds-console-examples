@@ -12,6 +12,7 @@ PUT _component_template/metrics-rennes_traffic-mappings@default
         "traffic_status": {
           "type": "keyword"
         },
+        "oneway": {"type": "boolean"},
         "location_reference": {
           "type": "keyword",
           "time_series_dimension": true

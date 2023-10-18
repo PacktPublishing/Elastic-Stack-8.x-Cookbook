@@ -9,6 +9,7 @@ PUT _component_template/metrics-rennes_traffic-mappings@raw
           "format": "date_optional_time||epoch_millis"
         },
         "traffic_status": {"type": "keyword"},
+        "oneway": {"type": "boolean"},
         "location_reference": {"type": "keyword"},
         "denomination": {"type": "text"},
         "hierarchie": {"type": "keyword"},
