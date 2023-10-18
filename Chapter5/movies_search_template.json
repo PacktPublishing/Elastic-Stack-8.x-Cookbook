@@ -4,7 +4,7 @@
       "aggs": {
         "0": {
           "terms": {
-            "field": "Director",
+            "field": "director.keyword",
             "order": {
               "_count": "desc"
             },
@@ -13,7 +13,7 @@
           "aggs": {
             "1": {
               "terms": {
-                "field": "Genre",
+                "field": "genre.keyword",
                 "order": {
                   "_count": "desc"
                 },
@@ -30,7 +30,7 @@
           "filter": [
             {
               "range": {
-                "Release Year": {
+                "releaseyear": {
                   "gte": "{{start_date}}",
                   "lt": "{{end_date}}"
                 }
@@ -38,7 +38,7 @@
             },
             {
               "match_phrase": {
-              "Origin/Ethnicity": "{{origin}}"
+              "origin": "{{origin}}"
           }
         }
           ],
@@ -46,12 +46,12 @@
           "must_not": [
             {
               "match_phrase": {
-                "Director": "Unknown"
+                "director": "Unknown"
               }
             },
             {
               "match_phrase": {
-                "Genre": "unknown"
+                "genre": "unknown"
               }
             }
           ]
