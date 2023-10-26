@@ -108,8 +108,8 @@ PUT _index_template/metrics-rennes_traffic-default-index-template
 POST metrics-rennes_traffic-default/_doc
 {
   "@timestamp": "2023-07-21T23:07:00+02:00",
-    "trafficstatus": "heavy",
-    "locationreference": "10273_D",
+    "traffic_status": "heavy",
+    "location_reference": "10273_D",
     "denomination": "Route départementale 34",
     "hierarchie": "Réseau d'armature",
     "hierarchie_dv": "Réseau de transit",
@@ -117,8 +117,8 @@ POST metrics-rennes_traffic-default/_doc
     "vehicles": "1",
     "traveltime.reliability": "60",
     "traveltime.duration": "16",
-    "maxspeed": "70",
-    "averagevehiclespeed": "46",
+    "max_speed": "70",
+    "average_vehicle_speed": "46",
     "location": {
       "lat": 48.04479275590756,
       "lon": -1.6502152435538264
@@ -146,17 +146,17 @@ GET metrics-rennes_traffic-default/_search
                   "aggs": {
                       "min": {
                           "min": {
-                              "field": "averagevehiclespeed"
+                              "field": "average_vehicle_speed"
                           }
                       },
                       "max": {
                           "max": {
-                              "field": "averagevehiclespeed"
+                              "field": "average_vehicle_speed"
                           }
                       },
                       "avg": {
                           "avg": {
-                              "field": "averagevehiclespeed"
+                              "field": "average_vehicle_speed"
                           }
                       }
                   }

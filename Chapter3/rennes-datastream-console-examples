@@ -30,8 +30,8 @@ PUT _component_template/rennes_traffic-mappings
           "type": "date",
           "format": "date_optional_time||epoch_millis"
         },
-        "trafficstatus": {"type": "keyword"},
-        "locationreference": {"type": "keyword"},
+        "traffic_status": {"type": "keyword"},
+        "location_reference": {"type": "keyword"},
         "denomination": {"type": "text"},
         "hierarchie": {"type": "keyword"},
         "hierarchie_dv": {"type": "keyword"},
@@ -49,8 +49,8 @@ PUT _component_template/rennes_traffic-mappings
           }
         }
         ,
-        "maxspeed":{"type":"short"},
-        "averagevehiclespeed":{"type":"short"},
+        "max_speed":{"type":"short"},
+        "average_vehicle_speed":{"type":"short"},
         "location": {"type": "geo_point"},
         "data_stream": {
           "properties": {
@@ -94,15 +94,15 @@ PUT _index_template/rennes_traffic-index-template
   "composed_of": [ "rennes_traffic-mappings", "rennes_traffic-settings" ],
   "priority": 500,
   "_meta": {
-    "description": "Template for rennes traffice data"
+    "description": "Template for rennes traffic data"
   }
 }
 
 POST generic-rennes_traffic-default/_doc
 {
   "@timestamp": "2023-07-19T23:07:00+02:00",
-    "trafficstatus": "heavy",
-    "locationreference": "10273_D",
+    "traffic_status": "heavy",
+    "location_reference": "10273_D",
     "denomination": "Route départementale 34",
     "hierarchie": "Réseau d'armature",
     "hierarchie_dv": "Réseau de transit",
@@ -111,7 +111,7 @@ POST generic-rennes_traffic-default/_doc
     "traveltime.reliability": "60",
     "traveltime.duration": "16",
     "maxspeed": "70",
-    "averagevehiclespeed": "46",
+    "average_vehicle_speed": "46",
     "location": {
       "lat": 48.04479275590756,
       "lon": -1.6502152435538264

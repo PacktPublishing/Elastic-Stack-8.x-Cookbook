@@ -2,7 +2,7 @@ PUT _transform/rennes-traffic-location-pivot-transform
 {
   "source": {
     "index": [
-      "metrics-rennes_traffic-*"
+      "metrics-rennes_traffic-default"
     ]
   },
   "pivot": {
@@ -22,30 +22,16 @@ PUT _transform/rennes-traffic-location-pivot-transform
           "field": "hierarchie_dv"
         }
       },
-      "locationreference": {
+      "location_reference": {
         "terms": {
-          "field": "locationreference"
+          "field": "location_reference"
         }
       }
     },
     "aggregations": {
-      "averagevehiclespeed.avg": {
+      "average_vehicle_speed.avg": {
         "avg": {
-          "field": "averagevehiclespeed"
-        }
-      },
-      "maxspeed.max": {
-        "max": {
-          "field": "maxspeed"
-        }
-      },
-      "autorized_speed_percentage": {
-        "bucket_script": {
-          "buckets_path": {
-            "avg_speed": "averagevehiclespeed.avg.value",
-            "max_speed": "maxspeed.max.value"
-          },
-          "script": "(params.avg_speed / params.max_speed) * 100"
+          "field": "average_vehicle_speed"
         }
       },
       "traveltime.duration.avg": {
@@ -53,14 +39,28 @@ PUT _transform/rennes-traffic-location-pivot-transform
           "field": "traveltime.duration"
         }
       },
-      "vehicleprobemeasurement.avg": {
-        "avg": {
-          "field": "vehicleprobemeasurement"
-        }
-      },
       "traveltime.reliability.avg": {
         "avg": {
           "field": "traveltime.reliability"
+        }
+      },
+      "vehicle_probe_measurement.avg": {
+        "avg": {
+          "field": "vehicle_probe_measurement"
+        }
+      },
+      "max_speed.max": {
+        "max": {
+          "field": "max_speed"
+        }
+      },
+      "autorized_speed_percentage": {
+        "bucket_script": {
+          "buckets_path": {
+            "avg_speed": "average_vehicle_speed.avg.value",
+            "maximun_speed": "max_speed.max.value"
+          },
+          "script": "(params.avg_speed / params.maximun_speed) * 100"
         }
       }
     }

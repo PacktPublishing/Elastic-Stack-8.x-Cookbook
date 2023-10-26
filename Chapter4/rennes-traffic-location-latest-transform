@@ -2,60 +2,12 @@ PUT _transform/rennes-traffic-location-latest-trafficjam-transform
 {
   "source": {
     "index": [
-      "metrics-rennes_traffic-*"
-    ],
-    "query": {
-      "bool": {
-        "filter": [
-          {
-            "bool": {
-              "filter": [
-                {
-                  "bool": {
-                    "must_not": {
-                      "bool": {
-                        "should": [
-                          {
-                            "term": {
-                              "trafficstatus": {
-                                "value": "freeFlow"
-                              }
-                            }
-                          }
-                        ],
-                        "minimum_should_match": 1
-                      }
-                    }
-                  }
-                },
-                {
-                  "bool": {
-                    "must_not": {
-                      "bool": {
-                        "should": [
-                          {
-                            "term": {
-                              "trafficstatus": {
-                                "value": "unknown"
-                              }
-                            }
-                          }
-                        ],
-                        "minimum_should_match": 1
-                      }
-                    }
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      }
-    }
+      "metrics-rennes_traffic-default"
+    ]
   },
   "latest": {
     "unique_key": [
-      "locationreference"
+      "location_reference"
     ],
     "sort": "@timestamp"
   },
