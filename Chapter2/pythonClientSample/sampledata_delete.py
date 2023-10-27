@@ -26,4 +26,4 @@ print(f"delete status: {response['result']}")
 # Verify the update in Elasticsearch
 deleted_document = es.get(index=index_name, id=document_id)
 print("deleted document:")
-print(updated_document['_source'])
+print(deleted_document['_source'])
