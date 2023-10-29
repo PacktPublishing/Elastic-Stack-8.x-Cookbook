@@ -99,7 +99,7 @@ PUT _index_template/metrics-rennes_traffic-raw-index-template
   "composed_of": [ "metrics-rennes_traffic-mappings@raw", "metrics-rennes_traffic-raw-settings" ],
   "priority": 600,
   "_meta": {
-    "description": "Template for rennes traffice raw data"
+    "description": "Template for rennes traffic raw data"
   }
 }
 
