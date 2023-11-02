@@ -14,7 +14,7 @@ es = Elasticsearch(
     basic_auth=(ES_USER, ES_PWD)
 )
 
-es.info()
+print(es.info())
 
 response=es.index(
  index='movies',
