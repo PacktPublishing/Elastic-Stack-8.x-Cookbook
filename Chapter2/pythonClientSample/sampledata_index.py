@@ -2,6 +2,7 @@ import requests
 import os
 from elasticsearch import Elasticsearch
 from dotenv import load_dotenv
+import time
 
 load_dotenv()
 
@@ -30,6 +31,8 @@ response=es.index(
  })
 
  print(response)
+
+time.sleep(2)
 
  response = es.search(index='movies', query={"match_all": {}})
  print("Sample movie data in Elasticsearch:")
