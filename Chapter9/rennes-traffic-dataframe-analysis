@@ -1,0 +1,127 @@
+PUT _transform/rennes-traffic-dataframe-analysis
+{
+  "source": {
+    "index": [
+      "metrics-rennes_traffic-raw"
+    ],
+    "query": {
+      "bool": {
+        "filter": [
+          {
+            "bool": {
+              "filter": [
+                {
+                  "bool": {
+                    "must_not": {
+                      "bool": {
+                        "should": [
+                          {
+                            "term": {
+                              "traffic_status": {
+                                "value": "unknown"
+                              }
+                            }
+                          }
+                        ],
+                        "minimum_should_match": 1
+                      }
+                    }
+                  }
+                },
+                {
+                  "bool": {
+                    "should": [
+                      {
+                        "range": {
+                          "traveltime.duration": {
+                            "gte": "50"
+                          }
+                        }
+                      }
+                    ],
+                    "minimum_should_match": 1
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "runtime_mappings": {
+      "day_of_week": {
+        "type": "keyword",
+        "script": {
+          "source": "emit(doc['@timestamp'].value.dayOfWeekEnum.getDisplayName(TextStyle.FULL, Locale.ROOT))"
+        }
+      },
+      "hour_of_day": {
+        "type": "keyword",
+        "script": {
+          "source": "ZonedDateTime date =  doc['@timestamp'].value;\nZonedDateTime cet = date.withZoneSameInstant(ZoneId.of('Europe/Paris'));\nint hour = cet.getHour();\nif (hour < 10) {\n    emit ('0' + String.valueOf(hour));\n} else {\n    emit (String.valueOf(hour));\n}"
+        }
+      }
+    }
+  },
+  "pivot": {
+    "group_by": {
+      "location_reference": {
+        "terms": {
+          "field": "location_reference"
+        }
+      },
+      "hour_of_day": {
+        "terms": {
+          "field": "hour_of_day"
+        }
+      },
+      "day_of_week": {
+        "terms": {
+          "field": "day_of_week"
+        }
+      }
+    },
+    "aggregations": {
+      "average_vehicle_speed.avg": {
+        "avg": {
+          "field": "average_vehicle_speed"
+        }
+      },
+      "max_speed.max": {
+        "max": {
+          "field": "max_speed"
+        }
+      },
+      "traveltime.duration.percentiles": {
+        "percentiles": {
+          "field": "traveltime.duration",
+          "percents": [
+            75,
+            95,
+            99
+          ]
+        }
+      },
+      "top_metrics": {
+        "top_metrics": {
+          "metrics": [
+            {
+              "field": "traffic_status"
+            }
+          ],
+          "sort": {
+            "traveltime.duration": "desc"
+          }
+        }
+      }
+    }
+  },
+  "dest": {
+    "index": "rennes-traffic-dataframe-analysis"
+  },
+  "sync": {
+    "time": {
+      "field": "@timestamp"
+    }
+  }
+}
