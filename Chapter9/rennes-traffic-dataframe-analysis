@@ -1,3 +1,4 @@
+# Create the Transform
 PUT _transform/rennes-traffic-dataframe-analysis
 {
   "source": {
@@ -125,3 +126,7 @@ PUT _transform/rennes-traffic-dataframe-analysis
     }
   }
 }
+
+
+# Start the Transform
+POST _transform/rennes-traffic-dataframe-analysis/_start
