@@ -5,50 +5,6 @@ PUT _transform/rennes-traffic-dataframe-analysis
     "index": [
       "metrics-rennes_traffic-raw"
     ],
-    "query": {
-      "bool": {
-        "filter": [
-          {
-            "bool": {
-              "filter": [
-                {
-                  "bool": {
-                    "must_not": {
-                      "bool": {
-                        "should": [
-                          {
-                            "term": {
-                              "traffic_status": {
-                                "value": "unknown"
-                              }
-                            }
-                          }
-                        ],
-                        "minimum_should_match": 1
-                      }
-                    }
-                  }
-                },
-                {
-                  "bool": {
-                    "should": [
-                      {
-                        "range": {
-                          "traveltime.duration": {
-                            "gte": "50"
-                          }
-                        }
-                      }
-                    ],
-                    "minimum_should_match": 1
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
     "runtime_mappings": {
       "day_of_week": {
         "type": "keyword",
@@ -93,14 +49,9 @@ PUT _transform/rennes-traffic-dataframe-analysis
           "field": "max_speed"
         }
       },
-      "traveltime.duration.percentiles": {
-        "percentiles": {
-          "field": "traveltime.duration",
-          "percents": [
-            75,
-            95,
-            99
-          ]
+      "traveltime.duration.avg": {
+        "avg": {
+          "field": "traveltime.duration"
         }
       },
       "top_metrics": {
@@ -111,7 +62,7 @@ PUT _transform/rennes-traffic-dataframe-analysis
             }
           ],
           "sort": {
-            "traveltime.duration": "desc"
+            "@timestamp": "asc"
           }
         }
       }
