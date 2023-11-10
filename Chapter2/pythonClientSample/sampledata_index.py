@@ -1,8 +1,7 @@
-import requests
 import os
+import time
 from elasticsearch import Elasticsearch
 from dotenv import load_dotenv
-import time
 
 load_dotenv()
 

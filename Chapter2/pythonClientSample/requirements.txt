@@ -1,4 +1,3 @@
-requests
 elasticsearch
 elasticsearch-async
 load_dotenv

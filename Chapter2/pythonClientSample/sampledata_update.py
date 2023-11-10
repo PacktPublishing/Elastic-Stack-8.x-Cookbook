@@ -1,4 +1,3 @@
-import requests
 import os
 from elasticsearch import Elasticsearch
 from dotenv import load_dotenv
