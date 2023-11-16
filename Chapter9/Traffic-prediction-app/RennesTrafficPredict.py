@@ -20,11 +20,11 @@ es.info()
 # Streamlit UI
 st.set_page_config(page_title="Rennes Traffic Prediction", page_icon=":car:", layout="centered")
 
-st.header("Predict Traffic status in Rennes using Location, time and speed data")
+st.header("Predict Traffic status in Rennes")
 
-st.subheader("Enter the location, time and speed data to predict the traffic status")
+st.subheader("Enter location, time and speed data to predict the traffic status")
 
-location = st.selectbox("Enter the location", ["16762", "1632", "1631", "16647_D", "15120", "13514"])
+location = st.selectbox("Choose a location", ["16762", "1632", "1631", "16647_D", "15120", "13514"])
 hour_of_day = st.selectbox("choose the hour of the day", ["06", "7", "08", "09", "10", "12", "16", "17", "18", "19", "20", "22"],)
 day_of_week = st.selectbox("choose the day of the week", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
 # speed = st.text_input("Enter the maximum authorized speed", help="Enter the maximum authorized speed in km/h")
@@ -46,12 +46,12 @@ if st.button("Predict"):
     ]
 
     # index document
-    # pipeline = es.ingest.get_pipeline(id=INFERENCE_PIPELINE_ID)
     response = es.ingest.simulate(docs=docs, id=INFERENCE_PIPELINE_ID)
 
     # get prediction
     prediction = response['docs'][0]['doc']['_source']['ml']['inference']['top_metrics']['traffic_status_prediction']['top_metrics.traffic_status_prediction']
-    # prediction probability
+    
+    # get prediction probability
     prediction_probability = response['docs'][0]['doc']['_source']['ml']['inference']['top_metrics']['traffic_status_prediction']['prediction_probability']
 
     # display prediction
