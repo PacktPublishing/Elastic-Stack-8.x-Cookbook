@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import SearchApplicationClient from '@elastic/search-application-client'
+import {SearchTotalHits} from "@elastic/elasticsearch/lib/api/types";
 import {
   createTracker,
   trackPageView,
@@ -92,7 +93,7 @@ function App() {
       .query(query)
       .setPageSize(8)
       .setFrom(12 * (page - 1))
-
+      .addParameter('_es_sort_fields', ['releaseyear'])
 
     for (const [key, value] of Object.entries(filters)) {
       r.addFacetFilter(key, value as string)
