@@ -5,7 +5,7 @@
       "csv": {
         "field": "message",
         "target_fields": [
-          "releaseyear",
+          "release_year",
           "title",
           "origin",
           "director",
@@ -19,13 +19,13 @@
     },
     {
         "set": {
-          "field": "redacted",
+          "field": "anonymized_plot",
           "value": "{{{plot}}}"
         }
     },
     {
       "convert": {
-        "field": "releaseyear",
+        "field": "release_year",
         "type": "long",
         "ignore_missing": true
       }
@@ -46,7 +46,7 @@
     },
     {
       "redact": {
-        "field": "redacted",
+        "field": "anonymized_plot",
         "patterns": [
           "%{YEAR:YEAR}"
         ]

@@ -12,7 +12,7 @@
     "origin": {
       "type": "keyword"
     },
-    "releaseyear": {
+    "release_year": {
       "type": "long"
     },
     "title": {
@@ -21,7 +21,7 @@
     "wiki": {
       "type": "keyword"
     },
-    "redacted": {
+    "anonymized_plot": {
       "type": "text"
     }
   }
