@@ -1,0 +1,43 @@
+{
+  "id": "rennes-traffic-dataframe-outlier",
+  "create_time": 1699630045127,
+  "version": "10.0.0",
+  "authorization": {
+    "roles": [
+      "viewer",
+      "editor",
+      "superuser"
+    ]
+  },
+  "description": "Outlier detection for rennes traffic",
+  "source": {
+    "index": [
+      "rennes-traffic-dataframe-analysis"
+    ],
+    "query": {
+      "match_all": {}
+    }
+  },
+  "dest": {
+    "index": "rennes-traffic-dataframe-outlier",
+    "results_field": "ml"
+  },
+  "analysis": {
+    "outlier_detection": {
+      "compute_feature_influence": true,
+      "outlier_fraction": 0.05,
+      "standardization_enabled": true
+    }
+  },
+  "analyzed_fields": {
+    "includes": [
+      "max_speed.max",
+      "traveltime.duration.avg",
+      "average_vehicle_speed.avg"
+    ],
+    "excludes": []
+  },
+  "model_memory_limit": "500mb",
+  "allow_lazy_start": false,
+  "max_num_threads": 1
+}
