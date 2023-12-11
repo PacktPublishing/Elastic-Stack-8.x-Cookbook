@@ -1,5 +1,5 @@
 {
-  "description": "Ingest pipeline created by text structure finder",
+  "description": "Ingest pipeline for movie anonymization",
   "processors": [
     {
       "csv": {
@@ -41,7 +41,7 @@
     {
           "script": {
             "lang": "painless",
-            "source": "String msg = ctx['plot'];\r\n for (item in ctx['ml']['inference']['entities']) {\r\n if (item['class_name']!='MISC') {\r\n msg = msg.replace(item['entity'], '<' + item['class_name'] + '>')\r\n}\r\n}\r\n ctx['redacted']=msg"
+            "source": "String msg = ctx['plot'];\r\n for (item in ctx['ml']['inference']['entities']) {\r\n if (item['class_name']!='MISC') {\r\n msg = msg.replace(item['entity'], '<' + item['class_name'] + '>')\r\n}\r\n}\r\n ctx['anonymized_plot']=msg"
           }
     },
     {
