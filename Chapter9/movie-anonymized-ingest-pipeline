@@ -1,0 +1,63 @@
+{
+  "description": "Ingest pipeline created by text structure finder",
+  "processors": [
+    {
+      "csv": {
+        "field": "message",
+        "target_fields": [
+          "releaseyear",
+          "title",
+          "origin",
+          "director",
+          "cast",
+          "genre",
+          "wiki",
+          "plot"
+        ],
+        "ignore_missing": false
+      }
+    },
+    {
+        "set": {
+          "field": "redacted",
+          "value": "{{{plot}}}"
+        }
+    },
+    {
+      "convert": {
+        "field": "releaseyear",
+        "type": "long",
+        "ignore_missing": true
+      }
+    },
+    {
+          "inference": {
+            "model_id": "dslim__bert-base-ner",
+            "field_map": {
+              "plot": "text_field"
+            }
+          }
+    },
+    {
+          "script": {
+            "lang": "painless",
+            "source": "String msg = ctx['plot'];\r\n for (item in ctx['ml']['inference']['entities']) {\r\n if (item['class_name']!='MISC') {\r\n msg = msg.replace(item['entity'], '<' + item['class_name'] + '>')\r\n}\r\n}\r\n ctx['redacted']=msg"
+          }
+    },
+    {
+      "redact": {
+        "field": "redacted",
+        "patterns": [
+          "%{YEAR:YEAR}"
+        ]
+      }
+    },
+    {
+      "remove": {
+        "field": ["message","ml","plot"],
+        "ignore_missing": true,
+        "ignore_failure": true
+      }
+    }
+  ]
+}
