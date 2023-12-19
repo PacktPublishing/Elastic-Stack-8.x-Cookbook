@@ -33,13 +33,13 @@ es.indices.create(index='movies-python', body=index_settings)
 response = es.index(
     index='movies-python',
     document={
-        'releaseyear': '1908',
+        'release_year': '1908',
         'title': 'It is not this day.',
         'origin': 'American',
         'director': 'D.W. Griffith',
         'cast': 'Harry Solter, Linda Arvidson',
         'genre': 'comedy',
-        'wikipage': 'https://en.wikipedia.org/wiki/A_Calamitous_Elopement',
+        'wiki_page': 'https://en.wikipedia.org/wiki/A_Calamitous_Elopement',
         'plot': 'A young couple decides to elope after being caught in the midst of a romantic moment by the woman .'
     })
 

@@ -25,7 +25,7 @@ response=es.index(
     'director': 'D.W. Griffith',
     'cast': 'Harry Solter, Linda Arvidson',
     'genre': 'comedy',
-    'wikipage':'https://en.wikipedia.org/wiki/A_Calamitous_Elopement',
+    'wiki_page':'https://en.wikipedia.org/wiki/A_Calamitous_Elopement',
     'plot': 'A young couple decides to elope after being caught in the midst of a romantic moment by the woman .'
  })
 
