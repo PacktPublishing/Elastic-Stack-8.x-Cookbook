@@ -19,7 +19,7 @@ print(es.info())
 response=es.index(
  index='movies',
  document={
-    'releaseyear': '1908',
+    'release_year': '1908',
     'title': 'It is not this day.',
     'origin': 'American',
     'director': 'D.W. Griffith',
