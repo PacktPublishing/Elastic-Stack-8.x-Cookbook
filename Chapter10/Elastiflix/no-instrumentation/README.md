@@ -17,10 +17,7 @@ ELASTICSEARCH_URL="https://foobar.es.us-central1.gcp.cloud.es.io"
 ```
 
 ## start the app:
-
-
 ```
-cd Elastiflix
-docker-compose -f docker-compose.yml up -d 
+docker-compose -f docker-compose.yml up --build -d 
 ```
 then visit the app at `localhost:9000` 
