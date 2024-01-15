@@ -1,6 +1,6 @@
 PUT _application/search_application/MyCoolMovieApp
 {
-  "indices": ["movies-dataset-chap5"],
+  "indices": ["movies"],
   "template": {
     "script": {
       "lang": "mustache",
