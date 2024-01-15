@@ -1,0 +1,122 @@
+opentelemetry-collector:
+  extraEnvs:
+    - name: ELASTIC_APM_ENDPOINT
+      valueFrom:
+        secretKeyRef:
+          name: elastic-secret
+          key: elastic_apm_endpoint
+    - name: ELASTIC_APM_SECRET_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: elastic-secret
+          key: elastic_apm_secret_token
+  config:
+    exporters:
+      otlp/elastic:
+        endpoint: ${ELASTIC_APM_ENDPOINT}
+        compression: none
+        headers:
+          Authorization: Bearer ${ELASTIC_APM_SECRET_TOKEN}
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: ${MY_POD_IP}:4317
+          http:
+            cors:
+              allowed_origins:
+              - http://*
+              - https://*
+            endpoint: ${MY_POD_IP}:4318
+    processors:
+      resource:
+        attributes:
+          - key: deployment.environment
+            action: insert
+            value: gke
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch, resource]
+          exporters: [otlp/elastic]
+        metrics:
+          receivers: [otlp]
+          processors: [batch, resource]
+          exporters: [otlp/elastic]
+        logs:
+          receivers: [otlp]
+          processors: [batch, resource]
+          exporters: [otlp/elastic]
+grafana:
+  enabled: false
+
+jaeger:
+  enabled: false
+
+prometheus:
+  enabled: false
+
+components:
+  frontendProxy:
+    service:
+      type: LoadBalancer
+    resources:
+      limits:
+        memory: 300Mi
+  loadgenerator:
+    resources:
+      limits:
+        memory: 200Mi
+  featureflagService:
+    resources:
+      limits:
+        memory: 250Mi
+  checkoutService:
+    resources:
+      limits:
+        memory: 250Mi
+  frontend:
+    replicas: 2
+    resources:
+      limits:
+        memory: 300Mi
+  kafka:
+    envOverrides:
+      - name: KAFKA_HEAP_OPTS
+        value: "-Xmx400M -Xms400M"
+    resources:
+      limits:
+        memory: 800Mi
+  quoteService:
+    resources:
+      limits:
+        memory: 100Mi
+  productCatalogService:
+    resources:
+      limits:
+        memory: 200Mi
+  accountingService:
+    resources:
+      limits:
+        memory: 50Mi
+  emailService:
+    resources:
+      limits:
+        memory: 300Mi
+  ffsPostgres:
+    resources:
+      limits:
+        memory: 250Mi
+  frauddetectionService:
+    resources:
+      limits:
+        memory: 300Mi
+  currencyService:
+    resources:
+      limits:
+        memory: 50Mi
+  adService:
+    resources:
+      limits:
+        memory: 450Mi
