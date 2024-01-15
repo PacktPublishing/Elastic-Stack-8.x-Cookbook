@@ -1,4 +1,4 @@
-GET movies-dataset-chap5/_search
+GET movies/_search
 {
   "query": {
     "match": {
@@ -7,7 +7,7 @@ GET movies-dataset-chap5/_search
   }
 }
 
-GET movies-dataset-chap5/_search
+GET movies/_search
 {
   "query": {
     "match": {
@@ -19,7 +19,7 @@ GET movies-dataset-chap5/_search
   }
 }
 
-GET movies-dataset-chap5/_search
+GET movies/_search
 {
   "query": {
     "match": {

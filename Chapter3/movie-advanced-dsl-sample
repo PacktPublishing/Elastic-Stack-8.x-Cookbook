@@ -1,8 +1,8 @@
-GET movies-dataset-chap5/_search
+GET movies/_search
 {
   "query": {
     "range": {
-      "releaseyear": {
+      "release_year": {
         "gte": "1925",
         "lte": "1927"
       }
@@ -10,7 +10,7 @@ GET movies-dataset-chap5/_search
   }
 }
 
-GET movies-dataset-chap5/_search
+GET movies/_search
 {
   "query": {
     "multi_match": {
@@ -23,7 +23,7 @@ GET movies-dataset-chap5/_search
   }
 }
 
-GET movies-dataset-chap5/_search
+GET movies/_search
 {
   "query": {
     "multi_match": {
@@ -37,7 +37,7 @@ GET movies-dataset-chap5/_search
   }
 }
 
-GET movies-dataset-chap5/_search
+GET movies/_search
 {
   "query": {
     "multi_match": {
@@ -51,7 +51,7 @@ GET movies-dataset-chap5/_search
   }
 }
 
-GET movies-dataset-chap5/_search
+GET movies/_search
 {
   "query": {
     "bool": {
@@ -72,7 +72,7 @@ GET movies-dataset-chap5/_search
 }
 
 
-GET movies-dataset-chap5/_search
+GET movies/_search
 {
   "query": {
     "bool": {
@@ -94,7 +94,7 @@ GET movies-dataset-chap5/_search
   }
 }
 
-GET movies-dataset-chap5/_search
+GET movies/_search
 {
   "query": {
     "bool": {
@@ -116,7 +116,7 @@ GET movies-dataset-chap5/_search
   }
 }
 
-GET movies-dataset-chap5/_search
+GET movies/_search
 {
   "query": {
     "bool": {
@@ -130,7 +130,7 @@ GET movies-dataset-chap5/_search
       "filter": [
         {
           "range": {
-            "releaseyear": {
+            "release_year": {
               "gte": "1985"
             }
           }
