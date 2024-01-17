@@ -100,7 +100,7 @@ PUT _index_template/rennes_traffic-index-template
 
 POST generic-rennes_traffic-default/_doc
 {
-  "@timestamp": "2023-07-19T23:07:00+02:00",
+  "@timestamp": "2024-01-17T23:07:00+02:00",
     "traffic_status": "heavy",
     "location_reference": "10273_D",
     "denomination": "Route départementale 34",
