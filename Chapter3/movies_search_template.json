@@ -30,7 +30,7 @@
           "filter": [
             {
               "range": {
-                "releaseyear": {
+                "release_year": {
                   "gte": "{{start_date}}",
                   "lt": "{{end_date}}"
                 }
