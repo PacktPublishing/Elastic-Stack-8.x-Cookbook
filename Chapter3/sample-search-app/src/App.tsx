@@ -93,7 +93,7 @@ function App() {
       .query(query)
       .setPageSize(8)
       .setFrom(12 * (page - 1))
-      .addParameter('_es_sort_fields', ['releaseyear'])
+      .addParameter('_es_sort_fields', ['release_year'])
 
     for (const [key, value] of Object.entries(filters)) {
       r.addFacetFilter(key, value as string)
