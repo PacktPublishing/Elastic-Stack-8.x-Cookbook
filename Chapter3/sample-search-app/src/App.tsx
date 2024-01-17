@@ -109,7 +109,7 @@ function App() {
       search: {
         query: query,
         results: {
-          items: results?.hits?.hits?.map(hit => ({document: {id: hit._id, index: hit._index}, page: {url: (hit._source as {wikipage: string}).wikipage}})) || [],
+          items: results?.hits?.hits?.map(hit => ({document: {id: hit._id, index: hit._index}, page: {url: (hit._source as {wiki_page: string}).wiki_page}})) || [],
           total_results: (results.hits.total as SearchTotalHits)?.value
         }
       },
@@ -125,7 +125,7 @@ function App() {
   const handleClickTracking = (hit: any) => (e: any) => {
     e.preventDefault()
 
-    const url = (hit._source as {wikipage: string}).wikipage
+    const url = (hit._source as {wiki_page: string}).wiki_page
     //bellow you can set any fields
     /* Behaviour analytics */
     /*
@@ -211,7 +211,7 @@ function App() {
                   key={hit._id}
                   className="bg-white rounded-lg shadow-md p-4"
                 >
-                  <h3 className="text-lg font-semibold"><a href={hit._source.wikipage} onClick={handleClickTracking(hit)}>{hit._source.title}</a>
+                  <h3 className="text-lg font-semibold"><a href={hit._source.wiki_page} onClick={handleClickTracking(hit)}>{hit._source.title}</a>
                   </h3>
                   <p>{hit._source.director}</p>
                   <p>{hit._source.cast}</p>
