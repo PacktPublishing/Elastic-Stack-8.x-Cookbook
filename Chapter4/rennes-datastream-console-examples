@@ -110,7 +110,7 @@ POST generic-rennes_traffic-default/_doc
     "vehicles": "1",
     "traveltime.reliability": "60",
     "traveltime.duration": "16",
-    "maxspeed": "70",
+    "max_speed": "70",
     "average_vehicle_speed": "46",
     "location": {
       "lat": 48.04479275590756,
