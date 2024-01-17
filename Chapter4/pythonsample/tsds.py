@@ -64,8 +64,8 @@ def generate_actions():
             doc = {
                 "_op_type": "create",
                 "@timestamp": row["datetime"],
-                "trafficstatus": row["trafficstatus"],
-                "locationreference": row["predefinedlocationreference"],
+                "traffic_status": row["trafficstatus"],
+                "location_reference": row["predefinedlocationreference"],
                 "denomination": row["denomination"],
                 "hierarchie": row["hierarchie"],
                 "hierarchie_dv": row["hierarchie_dv"],
@@ -73,8 +73,8 @@ def generate_actions():
                 "vehicles": row["vehicleprobemeasurement"],
                 "traveltime.reliability": row["traveltimereliability"],
                 "traveltime.duration": row["traveltime"],
-                "maxspeed": row["vitesse_maxi"],
-                "averagevehiclespeed": row["averagevehiclespeed"],
+                "max_speed": row["vitesse_maxi"],
+                "average_vehicle_speed": row["averagevehiclespeed"],
             }
 
 
