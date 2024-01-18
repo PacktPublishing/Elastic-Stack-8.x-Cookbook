@@ -16,7 +16,7 @@ MOVIE_DATASET = os.getenv('MOVIE_DATASET')
 def download_dataset():
     with open(MOVIE_DATASET) as f:
         reader = csv.DictReader(f)
-        return sum([1 for row in reader]) - 1
+        return sum([1 for row in reader])
 
 
 def create_index(client):
