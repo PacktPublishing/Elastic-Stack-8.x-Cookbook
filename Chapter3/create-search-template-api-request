@@ -1,3 +1,4 @@
+# Recipe: Using Search template to pre-render requests
 PUT _scripts/top_genre_by_directors_filtered_on_origin
 {
   "script": {
