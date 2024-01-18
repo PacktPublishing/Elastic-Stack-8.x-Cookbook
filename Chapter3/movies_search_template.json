@@ -1,61 +1,69 @@
-"script": {
-    "lang": "mustache",
-    "source": {
-      "aggs": {
-        "0": {
-          "terms": {
-            "field": "director.keyword",
-            "order": {
-              "_count": "desc"
+PUT _application/search_application/MyCoolMovieApp
+{
+  "indices": [
+    "movies"
+  ],
+  "template": {
+    "script": {
+      "lang": "mustache",
+      "source": {
+        "aggs": {
+          "0": {
+            "terms": {
+              "field": "director.keyword",
+              "order": {
+                "_count": "desc"
+              },
+              "size": 5
             },
-            "size": 5
-          },
-          "aggs": {
-            "1": {
-              "terms": {
-                "field": "genre.keyword",
-                "order": {
-                  "_count": "desc"
-                },
-                "size": 3
-              }
-            }
-          }
-        }
-      },
-      "size": 10,
-      "query": {
-        "bool": {
-          "must": [],
-          "filter": [
-            {
-              "range": {
-                "release_year": {
-                  "gte": "{{start_date}}",
-                  "lt": "{{end_date}}"
+            "aggs": {
+              "1": {
+                "terms": {
+                  "field": "genre.keyword",
+                  "order": {
+                    "_count": "desc"
+                  },
+                  "size": 3
                 }
               }
-            },
-            {
-              "match_phrase": {
-              "origin": "{{origin}}"
-          }
-        }
-          ],
-          "should": [],
-          "must_not": [
-            {
-              "match_phrase": {
-                "director": "Unknown"
-              }
-            },
-            {
-              "match_phrase": {
-                "genre": "unknown"
-              }
             }
-          ]
+          }
+        },
+        "size": 10,
+        "query": {
+          "bool": {
+            "must": [],
+            "filter": [
+              {
+                "range": {
+                  "release_year": {
+                    "gte": "{{start_date}}",
+                    "lt": "{{end_date}}"
+                  }
+                }
+              },
+              {
+                "match_phrase": {
+                  "origin": "{{origin}}"
+                }
+              }
+            ],
+            "should": [],
+            "must_not": [
+              {
+                "match_phrase": {
+                  "director": "Unknown"
+                }
+              },
+              {
+                "match_phrase": {
+                  "genre": "unknown"
+                }
+              }
+            ]
+          }
         }
       }
     }
   }
+}
