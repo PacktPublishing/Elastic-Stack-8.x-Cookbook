@@ -1,3 +1,5 @@
+# Recipe: Getting started with Search Applications for your Elasticsearch Index
+# Request to create a search template for the Search Application
 PUT _application/search_application/MyCoolMovieApp
 {
   "indices": ["movies"],
