@@ -98,9 +98,7 @@ def main():
         cloud_id=ES_CID,
         basic_auth=(ES_USER, ES_PWD)
     )
-    #print(client.info)
-    #print("Creating an index...")
-    # create_index(client)
+    print(client.info)
 
     print("Indexing documents...")
     progress = tqdm.tqdm(unit="docs", total=number_of_docs)
