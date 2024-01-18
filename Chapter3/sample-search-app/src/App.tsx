@@ -35,7 +35,7 @@ const request = SearchApplicationClient(
 createTracker({
   endpoint: "https://xxx.cloud.es.io:443",
   collectionName: "movie-stats",
-  apiKey: "xxx",
+  apiKey: "your_api_key",
 });*/
 
 function Facets({ facets, addFilter, removeFilter, filters }: any) {
