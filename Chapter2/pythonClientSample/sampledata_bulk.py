@@ -21,57 +21,51 @@ def download_dataset():
 
 def create_index(client):
     """Creates an index in Elasticsearch if one isn't already there."""
-    client.options(ignore_status=400).indices.create(
-        index="movies",
-        body={
-            "settings": {"number_of_shards": 1},
-            "mappings": {
-                "properties": {
-                    "cast": {
-                        "type": "text"
-                    },
-                    "director": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "genre": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "origin": {
-                        "type": "keyword"
-                    },
-                    "plot": {
-                        "type": "text"
-                    },
-                    "release_year": {
-                        "type": "long",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "title": {
-                        "type": "text",
-                    },
-                    "wiki_page": {
-                        "type": "keyword"
+    mappings = {
+        "properties": {
+            "cast": {
+                "type": "text"
+            },
+            "director": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
                     }
                 }
             },
+            "genre": {
+                "type": "keyword"
+            },
+            "origin": {
+                "type": "keyword"
+            },
+            "plot": {
+                "type": "text"
+            },
+            "release_year": {
+                "type": "long",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "title": {
+                "type": "text",
+            },
+            "wiki_page": {
+                "type": "keyword"
+            }
         }
+    }
+    settings = {"number_of_shards": 1}
+    client.options(ignore_status=[400]).indices.create(
+        index="movies",
+        settings=settings,
+        mappings=mappings
     )
 
 
