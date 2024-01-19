@@ -33,7 +33,7 @@ PUT _application/search_application/MyCoolMovieApp
           "aggs": {
             "genre_facet": {
               "terms": {
-                "field": "genre.keyword",
+                "field": "genre",
                 "size": "{{agg_size}}"
               }
             },
