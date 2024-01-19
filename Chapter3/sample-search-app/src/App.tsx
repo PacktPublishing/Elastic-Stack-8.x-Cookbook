@@ -25,7 +25,7 @@ const request = SearchApplicationClient(
       genre: {
         type: 'terms',
         size: 10,
-        field: 'genre.keyword',
+        field: 'genre',
       },
     },
   }
