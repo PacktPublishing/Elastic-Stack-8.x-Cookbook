@@ -43,3 +43,77 @@ POST /_reindex
     "index": "movies-with-explicit-mapping"
   }
 }
+
+
+PUT movies/_mapping
+{
+    "dynamic_templates": [{
+        "years_as_short": {
+            "match_mapping_type": "long",
+            "match": "*year",
+            "mapping": {
+                "type": "short"
+            }
+        }
+    }]
+}
+
+
+PUT _component_template/component_template1
+{
+  "template": {
+    "mappings": {
+      "properties": {
+        "genre": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}
+
+PUT _component_template/dynamic_component_template
+{
+  "template": {
+    "mappings": {
+      "dynamic_templates": [{
+        "years_as_short": {
+          "match_mapping_type": "long",
+          "match": "*year",
+          "mapping": {
+            "type": "short"
+          }
+        }
+      }]
+    }
+  }
+}
+
+PUT _index_template/template_1
+{
+  "index_patterns": ["movie*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 1
+    },
+    "mappings": {
+      "_source": {
+        "enabled": true
+      },
+      "properties": {
+        "director": {
+        "type": "keyword"
+        }
+      }
+    },
+    "aliases": {
+      "mydata": { }
+    }
+  },
+  "priority": 500,
+  "composed_of": ["component_template1", "dynamic_component_template"],
+  "version": 1,
+  "_meta": {
+    "description": "my custom template"
+  }
+}
