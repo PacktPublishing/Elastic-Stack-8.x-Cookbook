@@ -19,6 +19,7 @@ if es.indices.exists(index="movies"):
     print("Deleting existing movies index...")
     es.options(ignore_status=[404, 400]).indices.delete(index="movies")
 
+# adding analyzer
 index_settings = {
         "analysis": {
             "analyzer": {
