@@ -1,0 +1,45 @@
+GET movies/_search
+
+
+POST movies/_analyze
+{
+  "text": "A young couple decides to elope.",
+  "analyzer": "standard_with_stopwords"
+}
+
+
+GET movies/_mapping
+
+PUT movies-with-explicit-mapping
+{
+  "mappings": {
+    "properties": {
+      "release_year": {
+        "type": "short",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "cast": {
+        "type": "text"
+      },
+      "plot": {
+        "type": "text"
+      }
+    }
+  }
+}
+
+
+POST /_reindex
+{
+  "source": {
+    "index": "movies"
+  },
+  "dest": {
+    "index": "movies-with-explicit-mapping"
+  }
+}
