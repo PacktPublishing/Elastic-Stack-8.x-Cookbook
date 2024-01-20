@@ -45,7 +45,7 @@ def create_index(client):
                 "type": "text"
             },
             "release_year": {
-                "type": "long",
+                "type": "short",
                 "fields": {
                     "keyword": {
                         "type": "keyword",
