@@ -11,7 +11,7 @@ import {
 import './App.css'
 
 const request = SearchApplicationClient(
-  'myapp',
+  'movies-search-application',
   'https://xxx.cloud.es.io:443',
   'xxx',
   {
@@ -25,7 +25,7 @@ const request = SearchApplicationClient(
       genre: {
         type: 'terms',
         size: 10,
-        field: 'genre.keyword',
+        field: 'genre',
       },
     },
   }
