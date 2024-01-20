@@ -1,4 +1,3 @@
-import requests
 import os
 from elasticsearch import Elasticsearch
 from dotenv import load_dotenv
@@ -15,8 +14,12 @@ es = Elasticsearch(
 )
 
 es.info()
+
+if es.indices.exists(index="movies"):
+    print("Deleting existing movies index...")
+    es.options(ignore_status=[404, 400]).indices.delete(index="movies")
+
 index_settings = {
-    "settings": {
         "analysis": {
             "analyzer": {
                 "standard_with_stopwords": {
@@ -25,13 +28,12 @@ index_settings = {
                 }
             }
         }
-    }
 }
-es.indices.create(index='movies-python', body=index_settings)
-#es.indices.put_settings(index='movies-python', settings=index_settings)
+
+es.indices.create(index='movies', settings=index_settings)
 
 response = es.index(
-    index='movies-python',
+    index='movies',
     document={
         'release_year': '1908',
         'title': 'It is not this day.',
@@ -45,11 +47,7 @@ response = es.index(
 
 print(response)
 
-settings = es.indices.get_settings(index='movies-python')
-analyzer_settings = settings['movies-python']['settings']['index']['analysis']
+settings = es.indices.get_settings(index='movies')
+analyzer_settings = settings['movies']['settings']['index']['analysis']
 print(f"Analyzer used for the index: {analyzer_settings}")
 
-# response = es.search(index='movies', query={"match_all": {}})
-# print("Sample movie data in Elasticsearch:")
-# for hit in response['hits']['hits']:
-#     print(hit['_source'])
