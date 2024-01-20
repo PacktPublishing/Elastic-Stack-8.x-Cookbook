@@ -16,9 +16,11 @@ es = Elasticsearch(
 es.info()
 
 index_name = 'movies'
-document_id = 'vlM9C4kBU-BJO8sdwiK7'
+# replace the document_id by the id of the ingested document of the previous recipe
+
+document_id = '<ID_OF_THE_INGESTED_DOCUMENT>'
 document = {
-    'director': 'Clint Eastwood2'
+    'director': 'Clint Eastwood'
 }
 
 # Update the document in Elasticsearch
