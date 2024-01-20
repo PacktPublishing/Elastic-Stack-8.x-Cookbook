@@ -96,23 +96,23 @@ def main():
     number_of_docs = download_dataset()
     print("number of docs: ", number_of_docs)
 
-    client = Elasticsearch(
+    es = Elasticsearch(
         cloud_id=ES_CID,
         basic_auth=(ES_USER, ES_PWD)
     )
 
-    if client.indices.exists(index="movies"):
+    if es.indices.exists(index="movies"):
         print("Deleting existing movies index...")
-        client.options(ignore_status=[404, 400]).indices.delete(index="movies")
+        es.options(ignore_status=[404, 400]).indices.delete(index="movies")
 
     print("Creating index...")
-    create_index(client)
+    create_index(es)
 
     print("Indexing documents...")
     progress = tqdm.tqdm(unit="docs", total=number_of_docs)
     successes = 0
     for ok, action in streaming_bulk(
-            client=client, index="movies", actions=generate_actions(),
+            client=es, index="movies", actions=generate_actions(),
     ):
         progress.update(1)
         successes += ok
