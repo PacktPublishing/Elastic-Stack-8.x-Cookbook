@@ -1,65 +1,57 @@
 # Recipe: Using Search template to pre-render requests
-PUT _scripts/top_genre_by_directors_filtered_on_origin
+PUT _scripts/movies-search-template
 {
   "script": {
-    "lang": "mustache",
-    "source": {
-      "aggs": {
-        "0": {
-          "terms": {
-            "field": "director.keyword",
-            "order": {
-              "_count": "desc"
-            },
-            "size": 5
-          },
-          "aggs": {
-            "1": {
-              "terms": {
-                "field": "genre.keyword",
-                "order": {
-                  "_count": "desc"
-                },
-                "size": 3
-              }
-            }
-          }
-        }
-      },
-      "size": 10,
-      "query": {
-        "bool": {
-          "must": [],
-          "filter": [
-            {
-              "range": {
-                "release_year": {
-                  "gte": "{{start_date}}",
-                  "lt": "{{end_date}}"
+      "lang": "mustache",
+      "source":
+        {
+          "query": {
+            "bool": {
+              "must": [
+             
+              {
+                "multi_match" : {
+                  "query":    "{{query}}",
+                  "fields": [ "title^4", "plot", "cast", "director" ]
+                }
+              },
+              {
+                "multi_match" : {
+                  "query":    "{{query}}",
+                  "type": "phrase_prefix",
+                  "fields": [ "title^4", "plot", "director"]
                 }
               }
-            },
-            {
-              "match_phrase": {
-              "origin": "{{origin}}"
-          }
-        }
-          ],
-          "should": [],
-          "must_not": [
-            {
-              "match_phrase": {
-                "director": "Unknown"
+            
+            ]
+            }
+          },
+          "aggs": {
+            "genre_facet": {
+              "terms": {
+                "field": "genre",
+                "size": "{{agg_size}}"
               }
             },
-            {
-              "match_phrase": {
-                "genre": "unknown"
+            "director_facet": {
+              "terms": {
+                "field": "director.keyword",
+                "size": "{{agg_size}}"
               }
             }
-          ]
+          },
+          "sort": [
+            {
+              "release_year": "desc"
+            }
+          ],
+          "fields": [
+            "title",
+            "release_year",
+            "director",
+            "origin"
+            ],
+          "_source": "false"
         }
-      }
     }
-  }
 }
