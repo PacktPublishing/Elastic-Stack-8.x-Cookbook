@@ -45,7 +45,7 @@ if st.button("Predict"):
         }
     ]
 
-    # index document
+    # Call simulate inference pipeline API with document
     response = es.ingest.simulate(docs=docs, id=INFERENCE_PIPELINE_ID)
 
     # get prediction
