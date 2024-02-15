@@ -1,0 +1,58 @@
+# Semantic search by using the text_expansion query
+POST movies-sparse-vector/_search
+{
+   "query":{
+      "text_expansion":{
+         "plot_sparse_vector":{
+            "model_id":".elser_model_2",
+            "model_text":" romantic moment"
+         }
+      }
+   }
+}
+
+# Using Elser in search application template
+PUT _application/search_application/movie_vector_search_application
+{
+  "indices": [
+    "movies-sparse-vector"
+  ],
+  "template": {
+    "script": {
+      "lang": "mustache",
+      "source": """
+      {
+          "query":{
+                "text_expansion":{
+                   "plot_sparse_vector":{
+                      "model_id":"{{ELSER_MODEL_ID}}",
+                      "model_text": "{{query}}"
+                   }
+                }
+             },
+          "fields": {{#toJson}}fields{{/toJson}},
+          "aggs": {
+            "genre_facet": {
+              "terms": {
+                "field": "genre",
+                "size": "{{agg_size}}"
+              }
+            },
+            "director_facet": {
+              "terms": {
+                "field": "director",
+                "size": "{{agg_size}}"
+              }
+            }
+          },
+      }
+      """,
+      "params": {
+        "query": ""
+        "_es_filters": [],
+        "fields": ["title", "plot"],
+        "agg_size": 5
+      }
+    }
+  }
+}
