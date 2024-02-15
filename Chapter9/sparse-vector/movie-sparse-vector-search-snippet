@@ -25,7 +25,7 @@ PUT _application/search_application/movie_vector_search_application
           "query":{
                 "text_expansion":{
                    "plot_sparse_vector":{
-                      "model_id":"{{ELSER_MODEL_ID}}",
+                      "model_id":"{{elser_model_id}}",
                       "model_text": "{{query}}"
                    }
                 }
@@ -40,7 +40,7 @@ PUT _application/search_application/movie_vector_search_application
             },
             "director_facet": {
               "terms": {
-                "field": "director",
+                "field": "director.keyword",
                 "size": "{{agg_size}}"
               }
             }
@@ -48,7 +48,8 @@ PUT _application/search_application/movie_vector_search_application
       }
       """,
       "params": {
-        "query": ""
+        "elser_model_id": ".elser_model_2_linux-x86_64",
+        "query": "",
         "_es_filters": [],
         "fields": ["title", "plot"],
         "agg_size": 5
