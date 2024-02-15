@@ -57,5 +57,3 @@ PUT _application/search_application/movie_vector_search_application
     }
   }
 }
-
-# hybrid search with text_expansion query
