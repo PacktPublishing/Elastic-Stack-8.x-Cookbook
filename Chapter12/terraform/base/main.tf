@@ -32,12 +32,12 @@ data "ec_stack" "latest" {
 
 
  // Resources require a type (ec_deployment) and an arbitrary name (workshop).
-resource "ec_deployment" "terraform" {
+resource "ec_deployment" "main-deployment" {
 
-  name                   = "terraform-deployment"
+  name                   = "main-deployment"
   version                = data.ec_stack.latest.version
   region                 = "gcp-europe-west1"
-  deployment_template_id = "gcp-io-optimized"
+  deployment_template_id = "gcp-storage-optimized"
 
   elasticsearch = {
 
@@ -63,18 +63,18 @@ resource "ec_deployment" "terraform" {
 }
 
 output "deployment_id" {
-  value = ec_deployment.terraform.id
+  value = ec_deployment.main-deployment.id
 }
 
 output "deployment_version" {
-  value = ec_deployment.terraform.version
+  value = ec_deployment.main-deployment.version
 }
 
 
 // Outputs marked sensitive do not display the value in console output, and must be explicitly requested with
 // terraform output <output_name>
 output "elastic_password" {
-  value = ec_deployment.terraform.elasticsearch_password
+  value = ec_deployment.main-deployment.elasticsearch_password
   sensitive = true
 }
 
