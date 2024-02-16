@@ -84,8 +84,3 @@ variable api_key {
   type = string
   sensitive = true
 }
-
-/* variable my_name {
-  description = "Your name (without spaces)"
-  type = string
-} */
