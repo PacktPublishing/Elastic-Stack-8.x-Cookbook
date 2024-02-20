@@ -31,7 +31,8 @@ ingest_pipeline_processors = {
                             "field": "_source._ingest.inference_errors",
                             "value": [
                                 {
-                                    "message": "Processor 'inference' in pipeline 'ml-inference-plot-vector' failed with message '{{ _ingest.on_failure_message }}'",
+                                    "message": "Processor 'inference' in pipeline 'ml-inference-plot-vector' failed "
+                                               "with message '{{ _ingest.on_failure_message }}'",
                                     "pipeline": INGEST_PIPELINE_ID,
                                     "timestamp": "{{{ _ingest.timestamp }}}"
                                 }
@@ -126,7 +127,7 @@ def create_index(client, index_name):
 
 def create_ingest_pipeline(client, pipeline_id):
     # Check if the pipeline exists
-    if client.ingest.get_pipeline(id=pipeline_id):
+    if client.options(ignore_status=[404, 400]).ingest.get_pipeline(id=pipeline_id):
         client.options(ignore_status=[404, 400]).ingest.delete_pipeline(id=pipeline_id)
     # Create the pipeline
     print("Creating ingest pipeline...")
