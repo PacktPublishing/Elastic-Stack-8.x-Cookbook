@@ -1,5 +1,0 @@
-elasticsearch
-elasticsearch-async
-load_dotenv
-tqdm
-urllib3
