@@ -1,7 +1,7 @@
 PUT _application/search_application/movie_vector_search_application
 {
   "indices": [
-    "movie-vector"
+    "movies-dense-vector"
   ],
   "template": {
     "script": {
@@ -23,11 +23,17 @@ PUT _application/search_application/movie_vector_search_application
             "filter": {{#toJson}}_es_filters{{/toJson}},
             "query_vector_builder": {
               "text_embedding": {
-                "model_id": "sentence-transformers__all-distilroberta-v1",
+                "model_id": ".multilingual-e5-small_linux-x86_64",
                 "model_text": "{{query}}"
               }
             },
             "boost": "{{boost_knn}}"
+          },
+          "rank": {
+            "rrf": {
+              "window_size": {{rrf.window_size}},
+              "rank_constant": {{rrf.rank_constant}}
+            }
           },
           "fields": {{#toJson}}fields{{/toJson}},
           "aggs": {
@@ -55,7 +61,11 @@ PUT _application/search_application/movie_vector_search_application
         "_es_filters": [],
         "num_candidates": 50,
         "fields": ["title", "plot"],
-        "agg_size": 10
+        "agg_size": 10,
+        "rrf": {
+          "window_size": 100,
+          "rank_constant": 60
+        }
       }
     }
   }
