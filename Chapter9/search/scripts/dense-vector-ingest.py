@@ -13,7 +13,7 @@ ES_PWD = os.getenv('ES_PWD')
 MOVIE_DATASET = os.getenv('MOVIE_DATASET')
 INDEX_NAME = "movies-dense-vector"
 INGEST_PIPELINE_ID = "ml-inference-plot-vector"
-SENTENCE_TRANSFORMERS_MODEL_ID = "sentence-transformers__all-distilroberta-v1"
+SENTENCE_TRANSFORMERS_MODEL_ID = ".multilingual-e5-small_linux-x86_64"
 
 # Define ingest pipeline
 ingest_pipeline_processors = {
@@ -111,7 +111,7 @@ def create_index(client, index_name):
             },
             "plot_vector": {
                 "type": "dense_vector",
-                "dims": 768,
+                "dims": 384,
                 "index": "true",
                 "similarity": "dot_product"
             }
