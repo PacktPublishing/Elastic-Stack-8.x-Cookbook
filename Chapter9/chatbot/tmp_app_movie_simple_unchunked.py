@@ -20,7 +20,7 @@ embedding = HuggingFaceEmbeddings(model_name='elastic/multilingual-e5-small-opti
 
 db = ElasticsearchStore(
     es_cloud_id=ES_CID,
-    index_name="movies-langchain-generated",
+    index_name="movies-dense-vector",
     embedding=embedding,
     es_user=ES_USER,
     es_password=ES_PWD,
