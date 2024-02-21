@@ -27,8 +27,8 @@ db = ElasticsearchStore(
     embedding=embedding,
     es_user=ES_USER,
     es_password=ES_PWD,
-    query_field="plot",
-    vector_query_field="plot_vector",
+    query_field="text",
+    vector_query_field="vector",
     strategy=ElasticsearchStore.ApproxRetrievalStrategy(
         query_model_id=".multilingual-e5-small_linux-x86_64",
         hybrid=True,
@@ -94,6 +94,7 @@ def ask(query: str):
         "response": output,
 }
 
+st.title("Moviebot chunked")
 
 #Main chat form
 with st.form("chat_form"):

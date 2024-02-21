@@ -24,8 +24,8 @@ db = ElasticsearchStore(
     embedding=embedding,
     es_user=ES_USER,
     es_password=ES_PWD,
-    query_field="text",
-    vector_query_field="vector",
+    query_field="plot",
+    vector_query_field="plot_vector",
     strategy=ElasticsearchStore.ApproxRetrievalStrategy(
         query_model_id=".multilingual-e5-small_linux-x86_64",
         hybrid=True,
@@ -61,7 +61,7 @@ retriever = db.as_retriever(
     search_kwargs={
         "k": 5,
         "doc_builder":custom_document_builder,
-        "fields":["title","director","plot","releaseyear"]
+        "fields":["title","director","plot","release_year"]
     }
 )
 
