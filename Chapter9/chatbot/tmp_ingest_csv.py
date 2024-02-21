@@ -154,7 +154,7 @@ def create_vector_db():
     )
     documents = loader.load()
 
-    text_splitter = NLTKTextSplitter(chunk_size=500, chunk_overlap=100)
+    text_splitter = NLTKTextSplitter(chunk_size=1000, chunk_overlap=200)
 
 
 
