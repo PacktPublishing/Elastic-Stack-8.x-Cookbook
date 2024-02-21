@@ -170,7 +170,7 @@ def main():
     es = Elasticsearch(
         cloud_id=ES_CID,
         basic_auth=(ES_USER, ES_PWD),
-        request_timeout=30
+        request_timeout=300
     )
 
     print("Creating ingest pipeline...")
