@@ -47,7 +47,7 @@ PUT _application/search_application/movie_vector_search_application
             },
             "director_facet": {
               "terms": {
-                "field": "director",
+                "field": "director.keyword",
                 "size": "{{agg_size}}"
               }
             }

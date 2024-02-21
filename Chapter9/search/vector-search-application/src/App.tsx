@@ -13,7 +13,7 @@ const request = SearchApplicationClient(
     facets: {
       director: {
         type: 'terms',
-        field: 'director',
+        field: 'director.keyword',
         size: 10,
         disjunctive: true,
       },

@@ -108,7 +108,7 @@ if submit_button:
         n = n + 1
         page_content = document.page_content  # Access the page_content attribute
         title = document.metadata['title']  # Access the title from metadata dictionary
-        director = document.metadata['title']  # Access the director from metadata dictionary
+        director = document.metadata['director']  # Access the director from metadata dictionary
         year = document.metadata['year']  # Access the year from metadata dictionary
 
         st.write(f"Document {n}")
