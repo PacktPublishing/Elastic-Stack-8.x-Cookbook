@@ -5,6 +5,7 @@ import tqdm
 from elasticsearch.helpers import streaming_bulk
 import csv
 
+# LOAD ENVIRONMENT VARIABLES
 load_dotenv()
 
 ES_CID = os.getenv('ES_CID')
