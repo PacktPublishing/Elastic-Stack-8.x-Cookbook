@@ -70,3 +70,84 @@ PUT _application/search_application/movie_vector_search_application
     }
   }
 }
+
+# hybrid search using elser and text search
+# Using Elser in search application template
+PUT _application/search_application/movie_vector_search_application
+{
+  "indices": [
+    "movies-sparse-vector"
+    ],
+    "template": {
+      "script": {
+        "lang": "mustache",
+        "source": """
+        {
+          "sub_searches": [
+            {{#text_fields}}
+            {
+              "query": {
+                "match": {
+                  "{{.}}": {
+                    "query": "{{query}}",
+                    "boost": "{{boost_bm25}}"
+                  }
+                }
+              }
+            },
+            {{/text_fields}}
+            {{#elser_fields}}
+            {
+              "query": {
+                "text_expansion": {
+                  "{{.}}": {
+                    "model_text": "{{query}}",
+                    "model_id":"{{elser_model_id}}",
+                    "boost": "{{elser_boost}}"
+                  }
+                }
+              }
+            },
+            {{/elser_fields}}
+            ],
+            "rank": {
+              "rrf": {
+                "window_size": {{rrf.window_size}},
+                "rank_constant": {{rrf.rank_constant}}
+              }
+            },
+            "fields": {{#toJson}}fields{{/toJson}},
+            "aggs": {
+              "genre_facet": {
+                "terms": {
+                  "field": "genre",
+                  "size": "{{agg_size}}"
+                }
+              },
+              "director_facet": {
+                "terms": {
+                  "field": "director",
+                  "size": "{{agg_size}}"
+                }
+              }
+            },
+        }
+        """,
+        "params": {
+          "elser_fields": ["title_sparse_vector", "plot_sparse_vector"],
+          "text_fields": ["title"],
+          "elser_model_id": ".elser_model_2_linux-x86_64",
+          "query": "",
+          "_es_filters": [],
+          "fields": ["title", "plot"],
+          "agg_size": 5,
+          "boost_bm25": 0.1,
+          "elser_boost": 0.9,
+          "rrf": {
+            "window_size": 100,
+            "rank_constant": 60
+          }
+        }
+      }
+    }
+}
