@@ -2,8 +2,8 @@ POST movies-dense-vector/_search
 {
   "knn": {
     "field": "plot_vector",
-    "k": 2,
-    "num_candidates": 10,
+    "k": 5,
+    "num_candidates": 50,
     "query_vector_builder": {
       "text_embedding": {
         "model_id": ".multilingual-e5-small_linux-x86_64",

@@ -1,5 +1,4 @@
-# Request for recipe Getting started with Search Applications for your Elasticsearch Index
-PUT _application/search_application/movie_vector_search_es_full_application
+PUT _application/search_application/movie_vector_search_application
 {
   "indices": ["movies-dense-vector"],
   "template": {
@@ -49,11 +48,7 @@ PUT _application/search_application/movie_vector_search_es_full_application
         "_es_aggs": {},
         "size": 10,
         "agg_size": 5,
-        "from": 0,
-        "rrf": {
-          "window_size": 100,
-          "rank_constant": 60
-        }
+        "from": 0
       }
     }
   }
