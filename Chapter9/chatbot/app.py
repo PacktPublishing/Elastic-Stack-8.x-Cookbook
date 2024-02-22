@@ -197,7 +197,7 @@ class SimpleMovieBot:
 
         # Generate and display response on form submission
         if submit_button:
-            with st.chat_message("MovieBot"):
+            with st.chat_message("Assistant"):
                 message_placeholder = st.empty()
                 full_response = ""
 
