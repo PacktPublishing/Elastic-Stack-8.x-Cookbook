@@ -170,9 +170,8 @@ function App() {
                 >
                   <h3 className="text-lg font-semibold"><a href={hit._source.wiki_page} onClick={handleClickTracking(hit)}>{hit._source.title}</a>
                   </h3>
-                  <p>{hit._source.director}</p>
-                  <p><i>{hit._source.cast}</i></p>
-                  <p>{hit._source.plot}</p>
+                  <p>{hit._source.release_year}</p>
+                  <p className="fixed-height">{hit._source.plot}</p>
                 </div>
               )
             })}

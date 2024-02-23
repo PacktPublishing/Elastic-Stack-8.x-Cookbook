@@ -13,8 +13,7 @@ PUT _application/search_application/movie_vector_search_application
               {
                 "multi_match" : {
                   "query":    "{{query}}",
-                  "type": "phrase_prefix",
-                  "fields": [ "title^4", "plot"]
+                  "fields": [ "title^4", "plot", "cast", "director"]
                 }
               }
               {{/query}}
