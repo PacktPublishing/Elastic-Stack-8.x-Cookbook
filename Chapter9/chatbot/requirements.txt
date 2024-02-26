@@ -1,0 +1,8 @@
+elasticsearch
+load_dotenv
+streamlit
+python-dotenv
+sentence-transformers
+langchain_community
+NLTK
+lark
