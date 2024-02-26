@@ -1,12 +1,13 @@
 from langchain_community.vectorstores import ElasticsearchStore
-from langchain.prompts import ChatPromptTemplate
 
-from App_helper import setup_chat_model, init_retriever, qa_format_docs, ask, setup_rag_chain
-import time
+from App_helper import convert_message, get_rag_chain, init_retriever, setup_chat_model
+from langchain.globals import set_debug
 
 import os
 import streamlit as st
 from dotenv import load_dotenv
+
+set_debug(False)
 
 load_dotenv()
 
@@ -21,13 +22,13 @@ OLLAMA_ENDPOINT = os.getenv('OLLAMA_ENDPOINT')
 load_dotenv()
 
 # streamlit UI Config
-st.set_page_config(page_title="Question answering on 90's movies", page_icon=":cinema:")
+st.set_page_config(page_title="Chatbot 90's movies", page_icon=":cinema:")
 st.image(
     'https://images.contentstack.io/v3/assets/bltefdd0b53724fa2ce/blt601c406b0b5af740/620577381692951393fdf8d6'
     '/elastic-logo-cluster.svg',
     width=50)
 
-st.header("Vintage movie Chatbot")
+st.header("Advanced Vintage movie Chatbot")
 st.write('Ask me anything about 90s movies')
 
 # test with streamlit context variables:
@@ -40,28 +41,16 @@ if 'rrf_rank_constant' not in st.session_state:
 rrf_window_size = st.session_state['rrf_window_size']
 rrf_rank_constant = st.session_state['rrf_rank_constant']
 
-# prompt template
-LLM_CONTEXT_PROMPT = ChatPromptTemplate.from_template(
-    """Strictly Use ONLY the following pieces of retrieved context to answer the question. 
-    If the answer is not in the provided context, just say that you don't know.. 
 
-    {context}
-    Question: "{question}"
-    Answer:
-    """
-)
-
-
-class QAMovieBot:
+class MovieChatbot:
     def __init__(self):
-
         self.db = ElasticsearchStore(
             es_cloud_id=ES_CID,
             index_name=ES_VECTOR_INDEX,
             es_user=ES_USER,
             es_password=ES_PWD,
-            query_field="plot",
-            vector_query_field="plot_vector",
+            query_field="text_field",
+            vector_query_field="vector_query_field.predicted_value",
             distance_strategy="DOT_PRODUCT",
             strategy=ElasticsearchStore.ApproxRetrievalStrategy(
                 hybrid=True,
@@ -70,9 +59,7 @@ class QAMovieBot:
         )
 
     def main(self):
-
         with st.sidebar:
-
             st.subheader('Choose LLM and parameters')
             st.write("Chatbot configuration")
             st.session_state.llm_model = st.sidebar.selectbox('Choose your LLM',
@@ -100,54 +87,83 @@ class QAMovieBot:
                                                                    value=20,
                                                                    step=10,
                                                                    help='RRF rank constant')
-        #
 
         # default query
-        default_query = ('What movies feature a love story and a precious jewel on board a large ocean liner while '
-                         'traveling across the Atlantic?')
-        # Main chat form
-        with st.form("chat_form"):
+        default_query = (
+            'Which movie mentions "The ship breaks in half, lifting the stern into the air" and how the '
+            'movies ends?')
+        # create the message history state or clear it
+        if "messages" not in st.session_state or st.sidebar.button("Clear chat history"):
+            st.session_state.messages = []
 
-            user_query = st.text_input("Movie DB chatbot: ", value=default_query)
-            submit_button = st.form_submit_button("Send")
+        # render older messages
+        for message in st.session_state.messages:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
 
-        # Generate and display response on form submission
-        if submit_button:
-            with st.chat_message("Assistant"):
+        prompt = st.chat_input("Ask me anything about favorite 90s movies...")
+        if prompt:
+            st.session_state.messages.append({"role": "user", "content": prompt})
 
+            # Render the user question
+            with st.chat_message("user"):
+                st.markdown(prompt)
+
+            # render the assistant's response
+            with st.chat_message("assistant"):
+                retrival_container = st.container()
                 message_placeholder = st.empty()
+
+                retrieval_status = retrival_container.status("**Context Retrieval**")
+                queried_questions = []
+                rendered_questions = set()
+
+                def update_retrieval_status():
+                    for q in queried_questions:
+                        if q in rendered_questions:
+                            continue
+                        rendered_questions.add(q)
+                        retrieval_status.markdown(f"\n\n`- {q}`")
+
+                def retrieval_cb(qs):
+                    for q in qs:
+                        if q not in queried_questions:
+                            queried_questions.append(q)
+                    return qs
+
+                # get the chain with the retrieval callback
+                custom_chain = get_rag_chain(init_retriever(st.session_state.k, self.db,
+                                                            st.session_state.num_candidates),
+                                             retrieval_cb,
+                                             setup_chat_model(st.session_state.llm_base_url,
+                                                              st.session_state.llm_model,
+                                                              st.session_state.llm_temperature)
+                                             )
+
+                if "messages" in st.session_state:
+                    chat_history = [convert_message(m) for m in st.session_state.messages[:-1]]
+                else:
+                    chat_history = []
+
                 full_response = ""
+                for response in custom_chain.stream(
+                        {"input": prompt, "chat_history": chat_history}
+                ):
+                    if "output" in response:
+                        full_response += response["output"]
+                    else:
+                        full_response += response.content
 
-                # Pass the user query to the chatbot
-                resp = ask(user_query,
-                           setup_rag_chain(LLM_CONTEXT_PROMPT,
-                                           setup_chat_model(st.session_state.llm_base_url,
-                                                            st.session_state.llm_model,
-                                                            st.session_state.llm_temperature),
-                                           init_retriever(st.session_state.k, self.db,
-                                                          st.session_state.num_candidates)))
+                    message_placeholder.markdown(full_response + "▌")
+                    update_retrieval_status()
 
-                # Display the response from the chatbot
-                for chunk in resp['response']['answer'].split():
-                    full_response += chunk + " "
-                    time.sleep(0.05)
-                    message_placeholder.text(full_response)
-                    # Add a blinking cursor to simulate typing
-                    message_placeholder.markdown(full_response + ". ")
+                retrieval_status.update(state="complete")
+                message_placeholder.markdown(full_response)
 
-                # Printing sources used for the answer
-                st.markdown(""" ##### Movies from the context used for the answer: """)
-                with st.container():
-                    for docs_source in resp['response']['context']:
-                        link = f'<a href="{docs_source.metadata["wiki_page"]}" target="_blank">{docs_source.metadata["title"]}</a>'
-                        st.markdown(link + " by Director: %s " % (docs_source.metadata["director"]),
-                                    unsafe_allow_html=True)
-
-            with st.expander("RRF Parameters", expanded=False):
-                st.write("RRF window size: ", rrf_window_size)
-                st.write("RRF rank constant: ", rrf_rank_constant)
+                # add the full response to the message history
+            st.session_state.messages.append({"role": "assistant", "content": full_response})
 
 
 if __name__ == "__main__":
-    chatbot = QAMovieBot()
-    chatbot.main()
+    app = MovieChatbot()
+    app.main()
