@@ -1,3 +1,36 @@
+# bm25 search relevance score test
+POST movies-dense-vector/_search
+{
+  "query": {
+    "multi_match" : {
+    "fields": [ "title^4", "plot", "cast", "director"],
+    "query":    "love story and a jewel onboard a ship while travelling across Atlantic"
+    }
+  },
+  "fields": [ "title" ],
+  "_source": false
+}
+
+# Vector search relevance score test
+POST movies-dense-vector/_search
+{
+  "knn": {
+    "field": "plot_vector",
+    "k": 12,
+    "num_candidates": 200,
+    "query_vector_builder": {
+      "text_embedding": {
+        "model_id": ".multilingual-e5-small_linux-x86_64",
+        "model_text": "love story and a jewel onboard a ship while travelling across Atlantic"
+      }
+    }
+  },
+  "fields": [ "title", "plot" ],
+  "_source": false
+}
+
+
+# Hybrid search using dense vector and bm25 search with boost
 PUT _application/search_application/movie_vector_search_application
 {
   "indices": [
@@ -9,11 +42,10 @@ PUT _application/search_application/movie_vector_search_application
       "source": """
       {
           "query": {
-            "match" : {
-              "title": {
-                "query": "{{query}}",
-                "boost": "{{boost_bm25}}"
-              }
+            "multi_match" : {
+              "query":    "{{query}}",
+              "boost": "{{boost_bm25}}",
+              "fields": [ "title^4", "plot", "cast", "director" ]
             }
           },
           "knn": {
@@ -28,12 +60,6 @@ PUT _application/search_application/movie_vector_search_application
               }
             },
             "boost": "{{boost_knn}}"
-          },
-          "rank": {
-            "rrf": {
-              "window_size": {{rrf.window_size}},
-              "rank_constant": {{rrf.rank_constant}}
-            }
           },
           "fields": {{#toJson}}fields{{/toJson}},
           "aggs": {
@@ -55,23 +81,90 @@ PUT _application/search_application/movie_vector_search_application
       "params": {
         "knn_field": "plot_vector",
         "query": "",
-        "k": 12,
-        "boost_bm25":0.1,
-        "boost_knn": 0.9,
+        "k": 50,
+        "boost_bm25":1,
+        "boost_knn": 40,
         "_es_filters": [],
-        "num_candidates": 50,
+        "num_candidates": 200,
         "fields": ["title", "plot"],
+        "agg_size": 10
+      }
+    }
+  }
+}
+
+# Hybrid search using dense vector and bm25 search with boost using rrf
+PUT _application/search_application/movie_vector_search_application
+{
+  "indices": [
+    "movies-dense-vector"
+  ],
+  "template": {
+    "script": {
+      "lang": "mustache",
+      "source": """
+      {
+          "query": {
+            "multi_match" : {
+              "query":    "{{query}}",
+              "fields": [ "title^4", "plot", "cast", "director" ]
+            }
+          },
+          "knn": {
+            "field": "{{knn_field}}",
+            "k": "{{k}}",
+            "num_candidates": {{num_candidates}},
+            "filter": {{#toJson}}_es_filters{{/toJson}},
+            "query_vector_builder": {
+              "text_embedding": {
+                "model_id": ".multilingual-e5-small_linux-x86_64",
+                "model_text": "{{query}}"
+              }
+            }
+          },
+          "rank": {
+            "rrf": {
+              "window_size": {{rrf.window_size}},
+              "rank_constant": {{rrf.rank_constant}}
+            }
+          },
+          "fields": {{#toJson}}fields{{/toJson}},
+          "aggs": {
+            "genre_facet": {
+              "terms": {
+                "field": "genre",
+                "size": "{{agg_size}}"
+              }
+            },
+            "director_facet": {
+              "terms": {
+                "field": "director.keyword",
+                "size": "{{agg_size}}"
+              }
+            }
+          },
+          "size": {{size}}
+      }
+      """,
+      "params": {
+        "knn_field": "plot_vector",
+        "query": "",
+        "k": 12,
+        "_es_filters": [],
+        "num_candidates": 200,
+        "fields": ["title", "plot"],
+        "size": 24,
         "agg_size": 10,
         "rrf": {
-          "window_size": 100,
-          "rank_constant": 60
+          "window_size": 12,
+          "rank_constant": 20
         }
       }
     }
   }
 }
 
-# hybrid search using elser and text search
+# hybrid search using elser and bm25 search
 # Using Elser in search application template
 PUT _application/search_application/movie_vector_search_application
 {

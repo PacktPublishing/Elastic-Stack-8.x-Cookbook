@@ -128,10 +128,11 @@ def create_index(client, index_name):
 
 def create_ingest_pipeline(client, pipeline_id):
     # Check if the pipeline exists
+    print("Deleting existing pipeline")
+
     if client.options(ignore_status=[404, 400]).ingest.get_pipeline(id=pipeline_id):
         client.options(ignore_status=[404, 400]).ingest.delete_pipeline(id=pipeline_id)
     # Create the pipeline
-    print("Creating ingest pipeline...")
     client.options(ignore_status=[400]).ingest.put_pipeline(
         id=pipeline_id,
         description="Ingest pipeline to generate plot_vector",
