@@ -52,7 +52,9 @@ Follow Up Input: {input}
 Standalone question:"""
 CONDENSE_QUESTION_PROMPT = PromptTemplate.from_template(_condense_template)
 
-_rag_template = """Answer the question based only on the following context, If the answer is not in the provided context, just say that you don't know..:
+_rag_template = """Answer the question based only on the following context, 
+                    If the answer is not in the provided context, just say that you don't know..
+                    Ignore irrelevant information in the context:
 {context}
 
 Question: {question}
@@ -117,7 +119,7 @@ def get_standalone_question_from_chat_history_chain(llm):
     return _inputs
 
 
-def get_rag_chain(retriever, retrieval_cb=None, llm=None):
+def get_conversational_rag_chain(retriever, retrieval_cb=None, llm=None):
     if retrieval_cb is None:
         retrieval_cb = lambda x: x
 

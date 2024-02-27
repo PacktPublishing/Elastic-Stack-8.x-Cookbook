@@ -1,7 +1,8 @@
 from langchain_community.vectorstores import ElasticsearchStore
 
-from helper import convert_message, get_rag_chain, init_retriever, setup_chat_model
+from helper import convert_message, get_conversational_rag_chain, setup_chat_model
 from langchain.globals import set_debug
+from typing import Dict
 
 import os
 import streamlit as st
@@ -14,7 +15,7 @@ load_dotenv()
 ES_CID = os.getenv('ES_CID')
 ES_USER = os.getenv('ES_USER')
 ES_PWD = os.getenv('ES_PWD')
-ES_VECTOR_INDEX = os.getenv('VECTOR_INDEX')
+ES_VECTOR_INDEX = os.getenv('LANGCHAIN_INDEX')
 query_model_id = ".multilingual-e5-small_linux-x86_64"
 OLLAMA_ENDPOINT = os.getenv('OLLAMA_ENDPOINT')
 
@@ -40,6 +41,48 @@ if 'rrf_rank_constant' not in st.session_state:
 # global
 rrf_window_size = st.session_state['rrf_window_size']
 rrf_rank_constant = st.session_state['rrf_rank_constant']
+
+
+def custom_query_builder(query_body: dict, query: str):
+    new_query_body: Dict = {
+        "query": {
+            "match": {
+                "text_field": {
+                    "query": query
+                }
+            }
+        },
+        "knn": {
+            "field": "vector_query_field.predicted_value",
+            "k": 5,
+            "num_candidates": 50,
+            "query_vector_builder": {
+                "text_embedding": {
+                    "model_id": ".multilingual-e5-small_linux-x86_64",
+                    "model_text": query
+                }
+            }
+        },
+        "rank": {
+            "rrf": {
+                "window_size": rrf_window_size,
+                "rank_constant": rrf_rank_constant
+            }
+        }
+    }
+    return new_query_body
+
+
+def init_retriever_chatbot(k, db, fetch_k):
+    retriever = db.as_retriever(
+        search_type="similarity",
+        search_kwargs={
+            "k": k,
+            "fetch_k": fetch_k,
+            "custom_query": custom_query_builder,
+        }
+    )
+    return retriever
 
 
 class MovieChatbot:
@@ -71,7 +114,7 @@ class MovieChatbot:
                                                                  step=0.1, key='llm_temp',
                                                                  help='Control the creativity of the model')
             st.subheader('Configure Retrieval parameters')
-            st.session_state.k = st.sidebar.slider('Number of documents to retrieve', min_value=5, max_value=10,
+            st.session_state.k = st.sidebar.slider('Number of documents to retrieve', min_value=1, max_value=10,
                                                    value=5,
                                                    step=1, key='k_results',
                                                    help='Number of documents to retrieve')
@@ -132,13 +175,13 @@ class MovieChatbot:
                     return qs
 
                 # get the chain with the retrieval callback
-                custom_chain = get_rag_chain(init_retriever(st.session_state.k, self.db,
-                                                            st.session_state.num_candidates),
-                                             retrieval_cb,
-                                             setup_chat_model(st.session_state.llm_base_url,
+                custom_chain = get_conversational_rag_chain(init_retriever_chatbot(st.session_state.k, self.db,
+                                                                                   st.session_state.num_candidates),
+                                                            retrieval_cb,
+                                                            setup_chat_model(st.session_state.llm_base_url,
                                                               st.session_state.llm_model,
                                                               st.session_state.llm_temperature)
-                                             )
+                                                            )
 
                 if "messages" in st.session_state:
                     chat_history = [convert_message(m) for m in st.session_state.messages[:-1]]
