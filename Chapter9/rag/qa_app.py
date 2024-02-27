@@ -1,7 +1,7 @@
 from langchain_community.vectorstores import ElasticsearchStore
 from langchain.prompts import ChatPromptTemplate
 
-from App_helper import setup_chat_model, init_retriever, qa_format_docs, ask, setup_rag_chain
+from helper import setup_chat_model, init_retriever, qa_format_docs, ask, setup_rag_chain
 import time
 
 import os
