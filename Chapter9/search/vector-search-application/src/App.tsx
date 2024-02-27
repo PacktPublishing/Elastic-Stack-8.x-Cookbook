@@ -6,7 +6,7 @@ import {SearchTotalHits} from "@elastic/elasticsearch/lib/api/types";
 import './App.css'
 
 const request = SearchApplicationClient(
-    'movies-search-application',
+    'movie_vector_search_application',
     'https://xxx.cloud.es.io:443',
     'xxx',
   {
