@@ -1,6 +1,6 @@
 from langchain_community.vectorstores import ElasticsearchStore
 
-from App_helper import convert_message, get_rag_chain, init_retriever, setup_chat_model
+from helper import convert_message, get_rag_chain, init_retriever, setup_chat_model
 from langchain.globals import set_debug
 
 import os
