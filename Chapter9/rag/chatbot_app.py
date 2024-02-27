@@ -1,6 +1,6 @@
 from langchain_community.vectorstores import ElasticsearchStore
 
-from helper import convert_message, get_rag_chain, init_retriever, setup_chat_model
+from helper import convert_message, get_conversational_rag_chain, setup_chat_model
 from langchain.globals import set_debug
 from typing import Dict
 
@@ -175,13 +175,13 @@ class MovieChatbot:
                     return qs
 
                 # get the chain with the retrieval callback
-                custom_chain = get_rag_chain(init_retriever_chatbot(st.session_state.k, self.db,
-                                                                    st.session_state.num_candidates),
-                                             retrieval_cb,
-                                             setup_chat_model(st.session_state.llm_base_url,
+                custom_chain = get_conversational_rag_chain(init_retriever_chatbot(st.session_state.k, self.db,
+                                                                                   st.session_state.num_candidates),
+                                                            retrieval_cb,
+                                                            setup_chat_model(st.session_state.llm_base_url,
                                                               st.session_state.llm_model,
                                                               st.session_state.llm_temperature)
-                                             )
+                                                            )
 
                 if "messages" in st.session_state:
                     chat_history = [convert_message(m) for m in st.session_state.messages[:-1]]
