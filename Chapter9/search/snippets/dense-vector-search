@@ -1,3 +1,4 @@
+# dense vector query
 POST movies-dense-vector/_search
 {
   "knn": {
@@ -14,7 +15,7 @@ POST movies-dense-vector/_search
   "fields": [ "title", "plot" ]
 }
 
-
+# search template with dense vector search
 PUT _application/search_application/movie_vector_search_application
 {
   "indices": [
@@ -52,16 +53,20 @@ PUT _application/search_application/movie_vector_search_application
               }
             }
           },
+          "from": {{from}},
+          "size": {{size}}
       }
       """,
       "params": {
         "knn_field": "plot_vector",
         "query": "",
-        "k": 10,
+        "k": 20,
         "num_candidates": 100,
         "_es_filters": [],
         "fields": ["title", "plot"],
-        "agg_size": 5
+        "agg_size": 5,
+        "from": 0,
+        "size":9
       }
     }
   }
