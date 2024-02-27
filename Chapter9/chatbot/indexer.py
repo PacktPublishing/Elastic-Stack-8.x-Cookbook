@@ -213,19 +213,7 @@ def create_vector_db(dataset, index_name):
     text_splitter = NLTKTextSplitter(chunk_size=1000, chunk_overlap=200)
 
     docs = text_splitter.split_documents(documents)
-    # print(docs)
 
-    # client = Elasticsearch(
-    #     cloud_id=ES_CID,
-    #     basic_auth=(ES_USER, ES_PWD)
-    # )
-    #
-    # if client.indices.exists(index="movies-langchain-generated"):
-    #     print("Deleting existing movies index...")
-    #     client.options(ignore_status=[404, 400]).indices.delete(index=INDEX_NAME)
-    # print("Creating index...")
-
-    #create_index(client)
     print("Creating documents...")
     docs = ElasticsearchStore.from_documents(
         docs,
