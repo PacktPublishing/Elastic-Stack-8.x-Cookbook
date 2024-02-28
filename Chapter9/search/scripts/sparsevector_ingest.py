@@ -28,10 +28,6 @@ elser_ingest_pipeline_processors = {
                     {
                         "input_field": "plot",
                         "output_field": "plot_sparse_vector"
-                    },
-                    {
-                        "input_field": "title",
-                        "output_field": "title_sparse_vector"
                     }
                 ],
                 "on_failure": [
@@ -106,10 +102,6 @@ def create_index(client, index_name):
             },
             # Add the plot_sparse_vector field
             "plot_sparse_vector": {
-                "type": "sparse_vector"
-            },
-            # Add the title_sparse_vector field
-            "title_sparse_vector": {
                 "type": "sparse_vector"
             }
         }
