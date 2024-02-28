@@ -1,4 +1,4 @@
-# bm25 search relevance score test
+# BM25 search relevance score test
 POST movies-dense-vector/_search
 {
   "query": {
@@ -75,7 +75,9 @@ PUT _application/search_application/movie_vector_search_application
                 "size": "{{agg_size}}"
               }
             }
-          }
+          },
+          "from": {{from}},
+          "size": {{size}}
       }
       """,
       "params": {
@@ -83,17 +85,19 @@ PUT _application/search_application/movie_vector_search_application
         "query": "",
         "k": 50,
         "boost_bm25":1,
-        "boost_knn": 40,
+        "boost_knn": 50,
         "_es_filters": [],
         "num_candidates": 200,
         "fields": ["title", "plot"],
-        "agg_size": 10
+        "agg_size": 10,
+        "from": 0,
+        "size":20
       }
     }
   }
 }
 
-# Hybrid search using dense vector and bm25 search with boost using rrf
+# Hybrid search using dense vector and bm25 search with rrf
 PUT _application/search_application/movie_vector_search_application
 {
   "indices": [
@@ -143,6 +147,7 @@ PUT _application/search_application/movie_vector_search_application
               }
             }
           },
+          "from": {{from}},
           "size": {{size}}
       }
       """,
@@ -153,8 +158,9 @@ PUT _application/search_application/movie_vector_search_application
         "_es_filters": [],
         "num_candidates": 200,
         "fields": ["title", "plot"],
-        "size": 24,
         "agg_size": 10,
+        "size": 24,
+        "from": 0,
         "rrf": {
           "window_size": 12,
           "rank_constant": 20
@@ -164,8 +170,7 @@ PUT _application/search_application/movie_vector_search_application
   }
 }
 
-# hybrid search using elser and bm25 search
-# Using Elser in search application template
+# Hybrid search using elser and bm25 search with rrf
 PUT _application/search_application/movie_vector_search_application
 {
   "indices": [
@@ -182,8 +187,7 @@ PUT _application/search_application/movie_vector_search_application
               "query": {
                 "match": {
                   "{{.}}": {
-                    "query": "{{query}}",
-                    "boost": "{{boost_bm25}}"
+                    "query": "{{query}}"
                   }
                 }
               }
@@ -195,8 +199,7 @@ PUT _application/search_application/movie_vector_search_application
                 "text_expansion": {
                   "{{.}}": {
                     "model_text": "{{query}}",
-                    "model_id":"{{elser_model_id}}",
-                    "boost": "{{elser_boost}}"
+                    "model_id":"{{elser_model_id}}"
                   }
                 }
               }
@@ -224,6 +227,8 @@ PUT _application/search_application/movie_vector_search_application
                 }
               }
             },
+            "from": {{from}},
+            "size": {{size}}
         }
         """,
         "params": {
@@ -233,9 +238,9 @@ PUT _application/search_application/movie_vector_search_application
           "query": "",
           "_es_filters": [],
           "fields": ["title", "plot"],
-          "agg_size": 5,
-          "boost_bm25": 0.1,
-          "elser_boost": 0.9,
+          "agg_size": 10,
+          "size": 24,
+          "from": 0,
           "rrf": {
             "window_size": 100,
             "rank_constant": 60
