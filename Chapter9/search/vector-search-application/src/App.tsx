@@ -78,9 +78,8 @@ function App() {
 
   const doSearch = async () => {
     const r = request()
-      .setSort(['_score'])
       .query(query)
-      .setPageSize(8)
+      .setPageSize(12)
       .setFrom(12 * (page - 1))
       /*.addParameter('_es_sort_fields', ['release_year'])*/
 
@@ -164,15 +163,17 @@ function App() {
           {results &&
             results.hits.hits.map((hit: any) => {
               return (
-                <div
-                  key={hit._id}
-                  className="bg-white rounded-lg shadow-md p-4"
-                >
-                  <h3 className="text-lg font-semibold"><a href={hit._source.wiki_page} onClick={handleClickTracking(hit)}>{hit._source.title}</a>
-                  </h3>
-                  <p>{hit._source.release_year}</p>
-                  <p className="fixed-height">{hit._source.plot}</p>
-                </div>
+                  <div
+                      key={hit._id}
+                      className="bg-white rounded-lg shadow-md p-4"
+                  >
+                    <h3 className="text-lg font-semibold"><a href={hit._source.wiki_page}
+                                                             onClick={handleClickTracking(hit)}>{hit._source.title}</a>
+                    </h3>
+                    <p>{hit._source.release_year}</p>
+                    <p>{hit._source.director}</p>
+                    <p className="fixed-height">{hit._source.plot}</p>
+                  </div>
               )
             })}
         </div>
