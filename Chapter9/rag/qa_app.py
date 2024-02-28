@@ -103,7 +103,7 @@ class QAMovieBot:
         #
 
         # default query
-        default_query = ('What movies feature a love story and a precious jewel on board a large ocean liner while '
+        default_query = ('What movie feature a love story and a precious jewel on board a large ocean liner while '
                          'traveling across the Atlantic?')
         # Main chat form
         with st.form("chat_form"):
