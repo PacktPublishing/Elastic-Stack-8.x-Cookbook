@@ -27,7 +27,7 @@ st.image(
     '/elastic-logo-cluster.svg',
     width=50)
 
-st.header("Vintage movie Chatbot")
+st.header("Movie QA Bot")
 st.write('Ask me anything about 90s movies')
 
 # test with streamlit context variables:
