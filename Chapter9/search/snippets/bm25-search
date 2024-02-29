@@ -1,3 +1,4 @@
+# search template with lexical search
 PUT _application/search_application/movie_vector_search_application
 {
   "indices": ["movies-dense-vector"],
@@ -45,7 +46,6 @@ PUT _application/search_application/movie_vector_search_application
         "_es_sort_fields": {},
         "_es_filters": {},
         "_es_aggs": {},
-        "size": 10,
         "agg_size": 5,
         "from": 0,
         "size": 12
