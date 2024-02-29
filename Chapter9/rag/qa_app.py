@@ -21,7 +21,7 @@ OLLAMA_ENDPOINT = os.getenv('OLLAMA_ENDPOINT')
 load_dotenv()
 
 # streamlit UI Config
-st.set_page_config(page_title="Question answering on 90's movies", page_icon=":cinema:")
+st.set_page_config(page_title="Question answering on 90's movies", page_icon=":cinema:", initial_sidebar_state="collapsed")
 st.image(
     'https://images.contentstack.io/v3/assets/bltefdd0b53724fa2ce/blt601c406b0b5af740/620577381692951393fdf8d6'
     '/elastic-logo-cluster.svg',
