@@ -83,7 +83,7 @@ PUT _application/search_application/movie_vector_search_application
       "params": {
         "knn_field": "plot_vector",
         "query": "",
-        "k": 50,
+        "k": 20,
         "boost_bm25":1,
         "boost_knn": 50,
         "_es_filters": [],
