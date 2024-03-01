@@ -236,8 +236,6 @@ if __name__ == "__main__":
     es.info()
     print("Creating index...")
     create_index(es, INDEX_NAME)
-    print("Creating ingest pipeline...")
     create_ingest_pipeline(es, INGEST_PIPELINE_ID)
-    print("Creating documents...")
     create_vector_db(MOVIE_DATASET, INDEX_NAME)
     print("Done.")
