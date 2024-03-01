@@ -23,14 +23,14 @@ OLLAMA_ENDPOINT = os.getenv('OLLAMA_ENDPOINT')
 load_dotenv()
 
 # streamlit UI Config
-st.set_page_config(page_title="Chatbot 90's movies", page_icon=":cinema:")
+st.set_page_config(page_title="Chatbot 90's movies", page_icon=":cinema:", initial_sidebar_state="collapsed")
 st.image(
     'https://images.contentstack.io/v3/assets/bltefdd0b53724fa2ce/blt601c406b0b5af740/620577381692951393fdf8d6'
     '/elastic-logo-cluster.svg',
     width=50)
 
 st.header("Advanced Vintage movie Chatbot")
-st.write('Ask me anything about 90s movies')
+st.write('Ask me anything about your favorite movies')
 
 # test with streamlit context variables:
 if 'rrf_window_size' not in st.session_state:
@@ -115,7 +115,7 @@ class MovieChatbot:
                                                                  help='Control the creativity of the model')
             st.subheader('Configure Retrieval parameters')
             st.session_state.k = st.sidebar.slider('Number of documents to retrieve', min_value=1, max_value=10,
-                                                   value=5,
+                                                   value=10,
                                                    step=1, key='k_results',
                                                    help='Number of documents to retrieve')
             st.session_state.num_candidates = st.sidebar.slider('Number of candidates', min_value=20, max_value=200,
@@ -123,11 +123,11 @@ class MovieChatbot:
                                                                 step=1, key='num_of_candidates',
                                                                 help='Number of candidates to use for vector search')
             st.session_state.rrf_window_size = st.sidebar.slider('RRF window size', min_value=50, max_value=200,
-                                                                 value=100,
+                                                                 value=60,
                                                                  step=10,
                                                                  help='RRF window size')
             st.session_state.rrf_rank_constant = st.sidebar.slider('RRF rank constant', min_value=10, max_value=70,
-                                                                   value=20,
+                                                                   value=10,
                                                                    step=10,
                                                                    help='RRF rank constant')
 
