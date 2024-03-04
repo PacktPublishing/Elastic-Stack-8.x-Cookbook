@@ -21,14 +21,14 @@ OLLAMA_ENDPOINT = os.getenv('OLLAMA_ENDPOINT')
 load_dotenv()
 
 # streamlit UI Config
-st.set_page_config(page_title="Question answering on 90's movies", page_icon=":cinema:", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Question answering on movies", page_icon=":cinema:", initial_sidebar_state="collapsed")
 st.image(
     'https://images.contentstack.io/v3/assets/bltefdd0b53724fa2ce/blt601c406b0b5af740/620577381692951393fdf8d6'
     '/elastic-logo-cluster.svg',
     width=50)
 
 st.header("Movie QA Bot")
-st.write('Ask me anything about 90s movies')
+st.write('Ask me anything about your favorite movies')
 
 # test with streamlit context variables:
 if 'rrf_window_size' not in st.session_state:
@@ -42,8 +42,7 @@ rrf_rank_constant = st.session_state['rrf_rank_constant']
 
 # prompt template
 LLM_CONTEXT_PROMPT = ChatPromptTemplate.from_template(
-    """Strictly Use ONLY the following pieces of retrieved context to answer the question. 
-    If the answer is not in the provided context, just say that you don't know.. 
+    """Use the following pieces of retrieved context to answer the question. If the answer is not in the provided context, just say that you don't know. Be as verbose and educational in your response as possible.. 
 
     {context}
     Question: "{question}"
