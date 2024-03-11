@@ -1,3 +1,18 @@
+# Creates a component template for index settings
+PUT _component_template/rennes_traffic-settings
+{
+  "template": {
+    "settings": {
+      "index.lifecycle.name": "rennes_traffic-lifecycle-policy"
+    }
+  },
+  "_meta": {
+    "description": "Settings for ILM"
+  }
+}
+
+
+
 # Creates a component template for rennes traffic mappings
 PUT _component_template/metrics-rennes_traffic-mappings@raw
 {
@@ -102,5 +117,4 @@ PUT _index_template/metrics-rennes_traffic-raw-index-template
     "description": "Template for rennes traffic raw data"
   }
 }
-
 
