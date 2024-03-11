@@ -32,21 +32,25 @@ def download_dataset():
     """Downloads the public dataset if not locally downlaoded
     and returns the number of rows are in the .csv file.
     """
-    if not exists(DATASET_PATH):
-        http = urllib3.PoolManager()
-        resp = http.request("GET", RENNES_TRAFFIC, preload_content=False)
+    if os.path.exists(DATASET_PATH):
+        # Delete the file if exists locally
+        os.remove(DATASET_PATH)
 
-        if resp.status != 200:
-            raise RuntimeError("Could not download dataset")
+    http = urllib3.PoolManager()
+    resp = http.request("GET", RENNES_TRAFFIC, preload_content=False)
 
-        with open(DATASET_PATH, mode="wb") as f:
+    if resp.status != 200:
+        raise RuntimeError("Could not download dataset")
+
+    with open(DATASET_PATH, mode="wb") as f:
+        chunk = resp.read(CHUNK_SIZE)
+        while chunk:
+            f.write(chunk)
             chunk = resp.read(CHUNK_SIZE)
-            while chunk:
-                f.write(chunk)
-                chunk = resp.read(CHUNK_SIZE)
 
     with open(DATASET_PATH) as f:
         return sum([1 for _ in f]) - 1
+
 
 
 
