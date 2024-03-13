@@ -1,4 +1,4 @@
-Dev tools snippet for Chapter 3
+# Dev tools snippet for Chapter 3
 
 ## Movie Query DSL simple queries
 ### Sample query with OR operator

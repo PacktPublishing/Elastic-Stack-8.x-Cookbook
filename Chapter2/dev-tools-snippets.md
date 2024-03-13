@@ -1,4 +1,4 @@
-Dev tools snippet for Chapter 2
+# Dev tools snippet for Chapter 2
 
 ### Movie search query
 ```
