@@ -58,7 +58,7 @@ PUT _transform/rennes-traffic-location-pivot-transform
         "bucket_script": {
           "buckets_path": {
             "avg_speed": "average_vehicle_speed.avg.value",
-            "maximun_speed": "max_speed.max.value"
+            "maximum_speed": "max_speed.max.value"
           },
           "script": "(params.avg_speed / params.maximun_speed) * 100"
         }
