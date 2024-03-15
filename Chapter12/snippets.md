@@ -8,7 +8,7 @@
 
 ## Managing snapshot lifecycle
 ### Dev tools command to create a data view for SLM history indices
-```console
+```http
 POST kbn:/api/data_views/data_view 
 { 
   "data_view": { 
