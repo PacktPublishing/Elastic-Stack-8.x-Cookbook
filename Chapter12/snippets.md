@@ -50,6 +50,9 @@ terraform apply --destroy
 terraform init
 ```
 ```console
+terraform plan 
+```
+```console
 terraform apply
 ```
 
