@@ -12,15 +12,45 @@
 
 ## Creating an ingest pipeline
 ### Sample snippet
-```
-Code here
+```json
+PUT _ingest/pipeline/apache-logs-custom 
+{ 
+  "processors": [ 
+    { 
+      "set": { 
+        "field": "description", 
+        "value": "Apache access documents with computed hash on the host field" 
+      } 
+    }, 
+    { 
+      "fingerprint": { 
+        "fields": [ 
+          "host" 
+        ], 
+        "method": "SHA-512" 
+      } 
+    } 
+  ] 
+} 
 ```
 
 ## Enriching data with custom ingest pipeline for an existing Elastic Agent integration
 
-## Using processor to enrich your data before ingesting with Elastic Agent
 
+## Using processor to enrich your data before ingesting with Elastic Agent
+```yaml
+- add_host_metadata: 
+  geo:
+  name: iowa-dc
+  location: 41.8780, 93.0977
+  continent_name: North America
+  country_iso_code: US
+  region_name: Iowa
+  region_iso_code: IA
+  city_name: Council Bluffs 
+```
 ## Installing self-managed Logstash
+
 
 ## Creating a Logstash pipeline
 ### Input plugin (rennes_traffic-default.conf)
