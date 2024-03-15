@@ -2,7 +2,6 @@
 
 ## <em>Quick links to the recipes</em>
 * [Creating an ingest pipeline](#creating-an-ingest-pipeline)
-* [Enriching data with custom ingest pipeline for an existing Elastic Agent integration](#enriching-data-with-custom-ingest-pipeline-for-an-existing-elastic-agent-integration)
 * [Using processor to enrich your data before ingesting with Elastic Agent](#using-processor-to-enrich-your-data-before-ingesting-with-elastic-agent)
 * [Installing self-managed Logstash](#installing-self-managed-logstash)
 * [Creating a Logstash pipeline](#creating-a-logstash-pipeline)
@@ -11,7 +10,7 @@
 
 
 ## Creating an ingest pipeline
-### Sample snippet
+### Dev tools snippet to create a custom apache log ingest pipeline
 ```json
 PUT _ingest/pipeline/apache-logs-custom
 { 
@@ -34,10 +33,8 @@ PUT _ingest/pipeline/apache-logs-custom
 } 
 ```
 
-## Enriching data with custom ingest pipeline for an existing Elastic Agent integration
-
-
 ## Using processor to enrich your data before ingesting with Elastic Agent
+### Custom processor for Apache access logs
 ```yaml
 - add_host_metadata: 
   geo:
