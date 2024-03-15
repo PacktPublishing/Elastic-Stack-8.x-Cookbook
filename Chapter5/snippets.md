@@ -23,7 +23,7 @@ Code here
 
 ## Setting up Pivot data transform
 ### Bucket script aggregation
-```
+```json
 "autorized_speed_percentage": {
     "bucket_script": { 
         "buckets_path": { 
@@ -35,7 +35,7 @@ Code here
 } 
 ```
 ### Dev tools snippet to create pivot data transform
-```
+```json
 PUT _transform/rennes-traffic-location-pivot-transform
 {
   "source": {
@@ -117,7 +117,7 @@ PUT _transform/rennes-traffic-location-pivot-transform
 
 ## Setting up Latest data transform
 ### Dev tools snippet to create latest data transform
-```
+```json
 PUT _transform/rennes-traffic-location-latest-trafficjam-transform
 {
   "source": {
