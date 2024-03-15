@@ -1,6 +1,6 @@
 # Snippets for Chapter 5
 
-## Quick links to the snippet of the recipes in this chapter
+## <em>Quick links to the snippet of the recipes in this chapter</em>
 * [Creating an ingest pipeline](#creating-an-ingest-pipeline)
 * [Enriching data with custom ingest pipeline for an existing Elastic Agent integration](#enriching-data-with-custom-ingest-pipeline-for-an-existing-elastic-agent-integration)
 * [Using processor to enrich your data before ingesting with Elastic Agent](#using-processor-to-enrich-your-data-before-ingesting-with-elastic-agent)
