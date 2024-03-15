@@ -22,6 +22,18 @@ Code here
 ## Installing self-managed Logstash
 
 ## Setting up Pivot data transform
+### Bucket script aggregation
+```
+"autorized_speed_percentage": {
+    "bucket_script": { 
+        "buckets_path": { 
+            "avg_speed": "average_vehicle_speed.avg.value", 
+            "maximum_speed": "max_speed.max.value" 
+        }, 
+        "script": "(params.avg_speed / params.maximun _speed) * 100" 
+    } 
+} 
+```
 ### Dev tools snippet to create pivot data transform
 ```
 PUT _transform/rennes-traffic-location-pivot-transform
