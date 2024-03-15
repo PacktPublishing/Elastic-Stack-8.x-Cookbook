@@ -1,12 +1,12 @@
 # Snippets for Chapter 5
 
-## Table of Contents
-1. [Creating an ingest pipeline](#creating-an-ingest-pipeline)
-2. [Enriching data with custom ingest pipeline for an existing Elastic Agent integration](#enriching-data-with-custom-ingest-pipeline-for-an-existing-elastic-agent-integration)
-3. [Using processor to enrich your data before ingesting with Elastic Agent](#using-processor-to-enrich-your-data-before-ingesting-with-elastic-agent)
-4. [Installing self-managed Logstash](#installing-self-managed-logstash)
-5. [Setting up pivot data transform](#setting-up-pivot-data-transform)
-6. [Setting up latest data transform](#setting-up-latest-data-transform)
+## Quick links to the snippet of the recipes in this chapter
+* [Creating an ingest pipeline](#creating-an-ingest-pipeline)
+* [Enriching data with custom ingest pipeline for an existing Elastic Agent integration](#enriching-data-with-custom-ingest-pipeline-for-an-existing-elastic-agent-integration)
+* [Using processor to enrich your data before ingesting with Elastic Agent](#using-processor-to-enrich-your-data-before-ingesting-with-elastic-agent)
+* [Installing self-managed Logstash](#installing-self-managed-logstash)
+* [Setting up pivot data transform](#setting-up-pivot-data-transform)
+* [Setting up latest data transform](#setting-up-latest-data-transform)
 
 
 ## Creating an ingest pipeline
