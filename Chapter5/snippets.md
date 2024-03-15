@@ -26,73 +26,75 @@ Code here
 ### Input plugin (rennes_traffic-default.conf)
 ```yaml
 input {
-    http_poller {
-        urls => {
-            rennes_data_url => "https://data.rennesmetropole.fr/explore/dataset/etat-du-trafic-en-temps-reel/download?format=csv&timezone=Europe/Paris&use_labels_for_header=false"
-        }
-        request_timeout => 60
-        schedule => { every => "10m" }
-        codec => "line"
+  http_poller {
+    urls => {
+      rennes_data_url => "https://data.rennesmetropole.fr/explore/dataset/etat-du-trafic-en-temps-reel/download?format=csv&timezone=Europe/Paris&use_labels_for_header=false"
     }
+    request_timeout => 60
+    schedule => { every => "10m" }
+    codec => "line"
+  }
 }
 ```
 
 ### Filter plugins (rennes_traffic-default.conf)
 ```yaml
 filter{
-	csv {
-        separator => ";"
-        skip_header => "true"
-        columns => ["datetime","predefinedlocationreference","averagevehiclespeed","traveltime","traveltimereliability","trafficstatus","vehicleprobemeasurement","geo_point_2d","geo_shape","gml_id","id_rva_troncon_fcd_v1_1","hierarchie","hierarchie_dv","denomination","insee","sens_circule","vitesse_maxi"]
-        remove_field => ["geo_shape","gml_id","id_rva_troncon_fcd_v1_1"]
-    }
+  csv {
+    separator => ";"
+    skip_header => "true"
+    columns => ["datetime","predefinedlocationreference","averagevehiclespeed","traveltime","traveltimereliability","trafficstatus","vehicleprobemeasurement","geo_point_2d","geo_shape","gml_id","id_rva_troncon_fcd_v1_1","hierarchie","hierarchie_dv","denomination","insee","sens_circule","vitesse_maxi"]
+    remove_field => ["geo_shape","gml_id","id_rva_troncon_fcd_v1_1"]
+  }
 
-    date {
-        match => ["datetime", "UNIX"]
-        target => "@timestamp"
-    }
+  date {
+    match => ["datetime", "UNIX"]
+    target => "@timestamp"
+  }
 
-    if [sens_circule] == "Sens unique" {
-        mutate {
-            add_field => { "oneway" => "true" }
-        }
-    } 
-    else {
-        mutate {
-            add_field => { "oneway" => "false" }
-        }
-    }
-
+  if [sens_circule] == "Sens unique" {
     mutate {
-        rename => {"traveltime" => "traveltime.duration"}
-        rename => {"predefinedlocationreference" => "location_reference"}
-        rename => {"traveltimereliability" => "traveltime.reliability"}
-        rename => {"vitesse_maxi" => "max_speed"}
-        rename => {"geo_point_2d" => "location"}
-        rename => {"averagevehiclespeed" => "average_vehicle_speed"}
-        rename => {"trafficstatus" => "traffic_status"}
-        rename => {"vehicleprobemeasurement" => "vehicle_probe_measurement"}
+      add_field => { "oneway" => "true" }
     }
+  }
+  else {
     mutate {
-        remove_field => ["datetime","message","path","host","@version","original","event.original","tags","sens_circule"]
+      add_field => { "oneway" => "false" }
     }
+  }
+
+  mutate {
+    rename => {"traveltime" => "traveltime.duration"}
+    rename => {"predefinedlocationreference" => "location_reference"}
+    rename => {"traveltimereliability" => "traveltime.reliability"}
+    rename => {"vitesse_maxi" => "max_speed"}
+    rename => {"geo_point_2d" => "location"}
+    rename => {"averagevehiclespeed" => "average_vehicle_speed"}
+    rename => {"trafficstatus" => "traffic_status"}
+    rename => {"vehicleprobemeasurement" => "vehicle_probe_measurement"}
+  }
+  
+  mutate {
+    remove_field => ["datetime","message","path","host","@version","original","event.original","tags","sens_circule"]
+  }
 }
 ```
 
 ### Output plugins (rennes_traffic-default.conf)
 ```yaml
 output {
-    elasticsearch { 
-        cloud_id => "CLOUD_ID"
-        cloud_auth => "user:password"
-        data_stream => true
-        data_stream_type => "metrics"
-        data_stream_dataset => "rennes_traffic"
-        data_stream_namespace => "default"
-    }
+  elasticsearch {
+    cloud_id => "CLOUD_ID"
+    cloud_auth => "user:password"
+    data_stream => true
+    data_stream_type => "metrics"
+    data_stream_dataset => "rennes_traffic"
+    data_stream_namespace => "default"
+  }
 
-    stdout { codec => rubydebug }
-}```
+  stdout { codec => rubydebug }
+}
+```
 
 ### Start Logstash
 ```console
