@@ -5,8 +5,8 @@
 * [Enriching data with custom ingest pipeline for an existing Elastic Agent integration](#enriching-data-with-custom-ingest-pipeline-for-an-existing-elastic-agent-integration)
 * [Using processor to enrich your data before ingesting with Elastic Agent](#using-processor-to-enrich-your-data-before-ingesting-with-elastic-agent)
 * [Installing self-managed Logstash](#installing-self-managed-logstash)
-* [Setting up pivot data transform](#setting-up-pivot-data-transform)
-* [Setting up latest data transform](#setting-up-latest-data-transform)
+* [Setting up Pivot data transform](#setting-up-pivot-data-transform)
+* [Setting up Latest data transform](#setting-up-latest-data-transform)
 
 
 ## Creating an ingest pipeline
@@ -115,7 +115,7 @@ PUT _transform/rennes-traffic-location-pivot-transform
 }
 ```
 
-## Setting up latest data transform
+## Setting up Latest data transform
 ### Dev tools snippet to create latest data transform
 ```
 PUT _transform/rennes-traffic-location-latest-trafficjam-transform
