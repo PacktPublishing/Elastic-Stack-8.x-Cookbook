@@ -11,7 +11,7 @@
 
 ## Creating an ingest pipeline
 ### Dev tools snippet to create a custom apache log ingest pipeline
-```json
+```
 PUT _ingest/pipeline/apache-logs-custom
 { 
   "processors": [ 
@@ -143,7 +143,7 @@ sudo systemctl start logstash.service
 ```
 
 ### Dev tools snippet to create pivot data transform
-```json
+```
 PUT _transform/rennes-traffic-location-pivot-transform
 {
   "source": {
@@ -225,7 +225,7 @@ PUT _transform/rennes-traffic-location-pivot-transform
 
 ## Setting up Latest data transform
 ### Dev tools snippet to create latest data transform
-```json
+```
 PUT _transform/rennes-traffic-location-latest-trafficjam-transform
 {
   "source": {
