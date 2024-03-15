@@ -19,6 +19,16 @@ POST kbn:/api/data_views/data_view
 } 
 ```
 
+### Message for alert on snapshot policy failure
+```
+Elasticsearch rule '{{rule.name}}' is active:
+- Message: {{context.message}}
+- Value: {{context.value}}
+- Conditions Met: {{context.conditions}} over {{rule.params.timeWindowSize}}{{rule.params.timeWindowUnit}}
+- Timestamp: {{context.date}}
+- Link: {{context.link}}
+```
+
 ## Configuring Elastic Stack components with Terraform
 ### Terraform commands
 ```console
