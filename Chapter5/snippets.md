@@ -149,7 +149,7 @@ sudo systemctl start logstash.service
             "avg_speed": "average_vehicle_speed.avg.value", 
             "maximum_speed": "max_speed.max.value" 
         }, 
-        "script": "(params.avg_speed / params.maximun _speed) * 100" 
+        "script": "(params.avg_speed / params.maximum_speed) * 100" 
     } 
 } 
 ```
