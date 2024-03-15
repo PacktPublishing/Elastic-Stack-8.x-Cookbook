@@ -1,6 +1,8 @@
 # Dev tools snippet for Chapter 3
 
-## Movie Query DSL simple queries
+## Searching with the Query DSL
+
+Here are the Dev tools commands for this recipe
 ### Sample query with OR operator
 ```
 GET movies/_search
@@ -43,7 +45,7 @@ GET movies/_search
 }
 ```
 
-## Movie Query DSL advanced queries
+## Building advanced search query with Query DSL
 
 ### Range query
 ```
@@ -209,3 +211,9 @@ GET movies/_search
   }
 }
 ```
+
+## Using Search template to pre-render search requests 
+
+## Getting started with Search Applications for your Elasticsearch Index 
+
+## Building search experience with Search Application Client 

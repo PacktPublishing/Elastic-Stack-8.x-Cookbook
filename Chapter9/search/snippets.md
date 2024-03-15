@@ -222,7 +222,9 @@ POST movies-dense-vector/_search
   "fields": [ "title" ],
   "_source": false
 }
-
+```
+### Vector search relevance score test
+```
 # Vector search relevance score test
 POST movies-dense-vector/_search
 {
