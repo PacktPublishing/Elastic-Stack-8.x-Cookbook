@@ -13,7 +13,6 @@
 ## Creating an ingest pipeline
 ### Sample snippet
 ```json
-PUT _ingest/pipeline/apache-logs-custom 
 { 
   "processors": [ 
     { 
