@@ -224,7 +224,7 @@ def create_vector_db(dataset, index_name):
         query_field="text_field",
         vector_query_field="vector_query_field.predicted_value",
         strategy=ElasticsearchStore.ApproxRetrievalStrategy(query_model_id=query_model_id),
-        bulk_kwargs={"request_timeout": 300, "chunk_size": 500}
+        bulk_kwargs={"request_timeout": 300, "chunk_size": 100}
     )
 
 
