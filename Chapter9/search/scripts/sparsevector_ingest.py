@@ -119,7 +119,6 @@ def create_ingest_pipeline(client, pipeline_id):
     if client.options(ignore_status=[404, 400]).ingest.get_pipeline(id=pipeline_id):
         client.options(ignore_status=[404, 400]).ingest.delete_pipeline(id=pipeline_id)
     # Create the pipeline
-    print("Creating ingest pipeline...")
     client.options(ignore_status=[400]).ingest.put_pipeline(
         id=pipeline_id,
         description="Ingest pipeline to generate plot_vector",
@@ -171,7 +170,7 @@ def main():
     progress = tqdm.tqdm(unit="docs", total=number_of_docs)
     successes = 0
     for ok, action in streaming_bulk(
-            client=es, index=INDEX_NAME, actions=generate_actions(),
+            client=es, chunk_size=50, index=INDEX_NAME, actions=generate_actions(),
     ):
         progress.update(1)
         successes += ok
