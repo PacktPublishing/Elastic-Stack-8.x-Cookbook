@@ -9,7 +9,16 @@ terraform {
   }
 }
 
+// Here we pass parameters to the provider. In this case we're injecting a variable, api_key into the apikey parameter
 provider "ec" {
+  apikey = var.api_key
+}
+
+// Variables are defined here. They can be passed in from the command line, or from a file
+variable api_key {
+  description = "The API key to connect to Elastic Cloud with"
+  type = string
+  sensitive = true
 }
 
 data "ec_stack" "latest" {
