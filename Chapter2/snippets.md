@@ -36,7 +36,7 @@ es = Elasticsearch(
 
 print(es.info()) 
 ```
-Run the sampledata_index script
+Run the index script
 ```console
 python sampledata_index.py
 ```
@@ -65,13 +65,13 @@ print("Sample movie data in Elasticsearch:")
 for hit in response['hits']['hits']: 
  print(hit['_source']) 
 ```
-Run the sampledata_index script again
+Run the index script again
 ```console
 python sampledata_index.py
 ```
 
 ## Update data in Elasticsearch
-Run the sampledata_update script 
+Run the update script 
 ```console
 python sampledata_update.py
 ```
@@ -81,14 +81,13 @@ python sampledata_update.py
 ```
 GET movies/_search
 ```
-## Delete data in Elasticsearch
-Run the sampledata_delete script
+### Run the delete script
+Run the delete script
 ```console
 python sampledata_delete.py
 ```
 
-## Delete by query Dev Tools command
-Run the sampledata_delete script
+### Delete by query Dev Tools command
 ```
 POST /movies/_delete_by_query 
 { 
@@ -247,7 +246,7 @@ PUT _index_template/template_1
 
 ## Indexing multiple documents using bulk
 
-Run the sampledata_bulk script
+Run the bulk script
 ```console
 python sampledata_bulk.py
 ```
