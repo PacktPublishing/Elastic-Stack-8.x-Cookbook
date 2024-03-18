@@ -17,7 +17,7 @@ kubectl create -f https://download.elastic.co/downloads/eck/2.11.0/crds.yaml
 ```
 Install ECK Operator
 ```console
-kubectl apply -f https://download.elastic.co/downloads/eck/2.11.0/operator.yaml```
+kubectl apply -f https://download.elastic.co/downloads/eck/2.11.0/operator.yaml
 ```
 Monitor the operator logs
 ```console
