@@ -6,6 +6,7 @@
 * [Deleting data in Elasticsearch](#deleting-data-in-elasticsearch)
 * [Configuring Analyzer and tokenizers](#configuring-analyzer-and-tokenizers)
 * [Defining index mapping](#defining-index-mapping)
+* [Using dynamic templates in document mapping](#using-dynamic-templates-in-document-mapping)
 * [Creating an index template](#create-index-template)
 * [Indexing multiple documents using bulk](#indexing-multiple-documents-using-bulk)
 
@@ -67,23 +68,39 @@ for hit in response['hits']['hits']:
 Run the sampledata_index script again
 ```console
 python sampledata_index.py
+```
 
-## Updating data in Elasticsearch
+## Update data in Elasticsearch
+Run the sampledata_update script 
+```console
+python sampledata_update.py
+```
 
 ## Deleting data in Elasticsearch
-
-## Configuring Analyzer and tokenizers
-
-## Defining index mapping
-
-## Creating an index template
-
-## Indexing multiple documents using bulk
-
 ### Movie search query
 ```
 GET movies/_search
 ```
+## Delete data in Elasticsearch
+Run the sampledata_delete script
+```console
+python sampledata_delete.py
+```
+
+## Delete by query Dev Tools command
+Run the sampledata_delete script
+```
+POST /movies/_delete_by_query 
+{ 
+  "query": { 
+    "match": { 
+      "genre": "comedy" 
+    } 
+  } 
+} 
+```
+
+## Configuring Analyzer and tokenizers
 
 ### Analyzer test
 ```
@@ -93,12 +110,11 @@ POST movies/_analyze
   "analyzer": "standard_with_stopwords"
 }
 ```
-
+## Defining index mapping
 ### Inspect movie mapping
 ```
 GET movies/_mapping
 ```
-
 ### Setting movie explicit mapping
 ```
 PUT movies-with-explicit-mapping
@@ -124,7 +140,6 @@ PUT movies-with-explicit-mapping
   }
 }
 ```
-
 ### Reindex to new index explicit mapping
 ```
 POST /_reindex
@@ -138,21 +153,29 @@ POST /_reindex
 }
 ```
 
-### Update with dynamic mapping
+### Check whether the new mapping
 ```
-PUT movies/_mapping
-{
-    "dynamic_templates": [{
-        "years_as_short": {
-            "match_mapping_type": "long",
-            "match": "*year",
-            "mapping": {
-                "type": "short"
-            }
-        }
-    }]
-}
+GET movies-with-explicit-mapping/_mapping 
 ```
+
+## Using dynamic templates in document mapping
+### Update mapping with dynamic templates
+```
+PUT movies/_mapping 
+{ 
+    "dynamic_templates": [{ 
+        "years_as_short": { 
+            "match_mapping_type": "long", 
+            "match": "*year", 
+            "mapping": { 
+                "type": "short" 
+            } 
+        } 
+    }] 
+} 
+```
+
+## Creating an index template
 
 ### Create component template
 ```
@@ -221,3 +244,29 @@ PUT _index_template/template_1
   }
 }
 ```
+
+## Indexing multiple documents using bulk
+
+Run the sampledata_bulk script
+```console
+python sampledata_bulk.py
+```
+
+### Check new movie mapping
+```
+GET /movies/_mapping 
+```
+
+### Check document count
+```
+GET movies/_count 
+```
+
+
+
+
+
+
+
+
+
