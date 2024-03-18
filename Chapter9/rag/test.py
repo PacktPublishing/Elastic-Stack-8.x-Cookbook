@@ -47,10 +47,13 @@ rrf_rank_constant = st.session_state['rrf_rank_constant']
 def custom_query_builder(query_body: dict, query: str):
     new_query_body: Dict = {
         "query": {
-            "match": {
-                "text_field": {
-                    "query": query
-                }
+            "bool": {
+                "must": [{
+                    "multi_match": {
+                        "query": query,
+                        "fields": ["metadata.title", "text_field", "metadata.cast", "metadata.director"]
+                    }
+                }]
             }
         },
         "knn": {
