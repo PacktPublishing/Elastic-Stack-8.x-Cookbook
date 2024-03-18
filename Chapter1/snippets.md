@@ -1,8 +1,7 @@
-# Dev tools snippet for Chapter 1
+# Snippets for Chapter 1
 
 ## <em>Quick links to the recipes</em>
 * [Installing Elastic Stack with Elastic Cloud on Kubernetes](#installing-elastic-stack-with-elastic-cloud-on-kubernetes)
-* [Installing self-managed Elastic Stack](#installing-self-managed-elastic-stack)
 * [Creating and setting up data tiering](#creating-and-setting-up-data-tiering)
 * [Creating and setting up additional Elasticsearch nodes](#creating-and-setting-up-additional-elasticsearch-nodes)
 * [Setting up snapshot repository](#setting-up-snapshot-repository)
@@ -44,9 +43,25 @@ Retrieve default password
 kubectl get secret elasticsearch-sample-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode; echo
 ```
 
-## Installing self-managed Elastic Stack
-
 ## Creating and setting up data tiering
+Generate enrollment token
+```console
+./bin/elasticsearch --enrollment-token -s node 
+```
+Cold node definition
+```yaml
+node.name: node-frozen
+node.roles: ["data_frozen"] 
+```
+Frozen node definition
+```yaml
+node.name: node-cold  
+node.roles: ["data_cold"] 
+```
+Start the node with enrollment token
+```console
+./bin/elasticsearch --enrollment-token <enrollment-token>
+```
 
 ## Creating and setting up additional Elasticsearch nodes
 
