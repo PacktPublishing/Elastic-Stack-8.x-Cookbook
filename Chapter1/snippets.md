@@ -53,17 +53,39 @@ Cold node definition
 node.name: node-frozen
 node.roles: ["data_frozen"] 
 ```
+Start the cold node with enrollment token
+```console
+./bin/elasticsearch --enrollment-token <enrollment-token>
+```
 Frozen node definition
 ```yaml
 node.name: node-cold  
 node.roles: ["data_cold"] 
 ```
-Start the node with enrollment token
+Start the frozen node with enrollment token
 ```console
 ./bin/elasticsearch --enrollment-token <enrollment-token>
 ```
 
 ## Creating and setting up additional Elasticsearch nodes
+Master node definition
+```yaml
+node.name: node-master
+node.roles: ["master"] 
+```
+Start the master node with enrollment token
+```console
+bin/elasticsearch --enrollment-token <enrollment-token> 
+```
+Machine learning node definition
+```yaml
+node.name: node-ml
+node.roles: ["ml"]
+```
+Start the ml node with enrollment token
+```console
+./bin/elasticsearch --enrollment-token <enrollment-token>
+```
 
 ## Setting up snapshot repository
 
