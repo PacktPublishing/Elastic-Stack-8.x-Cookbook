@@ -1,5 +1,6 @@
 from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
 from langchain_community.chat_models.ollama import ChatOllama
+from langchain_core.prompts import PromptTemplate
 from langchain_elasticsearch import ElasticsearchStore
 from langchain.globals import set_debug
 from typing import Dict
@@ -102,13 +103,27 @@ ollama = ChatOllama(base_url='http://localhost:11434', model='mistral',temperatu
 
 
 def get_conversation_chain(query, chat_history):
+    custom_template = """Given the following conversation and a follow-up message, \
+    rephrase the follow-up message to a stand-alone question or instruction that \
+    represents the user's intent, add all context needed if necessary to generate a complete and \
+    unambiguous question or instruction, only based on the history, don't make up messages. \
+    Maintain the same language as the follow up input message.
+    Use only the provided context to answer the question, if you don't know, simply answer that you don't know.
+
+    Chat History:
+    {chat_history}
+
+    Follow Up Input: {question}
+    Standalone question or instruction:"""
+
     # ConversationalRetrievalChain
     qa = ConversationalRetrievalChain.from_llm(
         llm=ollama,
-        retriever=init_retriever_chatbot(10, db,50)
+        retriever=init_retriever_chatbot(10, db,50),
+        condense_question_prompt=PromptTemplate.from_template(custom_template),
     )
 
-    return qa({"question": query, "chat_history": chat_history})
+    return qa.invoke({"question": query, "chat_history": chat_history})
 
 
 if __name__ == '__main__':
