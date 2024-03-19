@@ -1,5 +1,5 @@
-elasticsearch
-elasticsearch-async
-load_dotenv
-tqdm
-urllib3
+elasticsearch >= 8.12.1
+elasticsearch-async >= 6.2.0
+load_dotenv >= 0.1.0
+tqdm >= 4.66.2
+urllib3 >= 2.2.1

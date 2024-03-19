@@ -1,8 +1,13 @@
-elasticsearch
-load_dotenv
-streamlit
-python-dotenv
-sentence-transformers
-langchain_community
-NLTK
-lark
+elasticsearch >= 8.12.1
+elasticsearch-async >= 6.2.0
+load_dotenv >= 0.1.0
+tqdm >= 4.66.2
+urllib3 >= 2.2.1
+streamlit >= 1.32.2
+python-dotenv >= 1.0.1
+sentence-transformers >= 2.5.1
+langchain_community >= 0.0.28
+NLTK >= 3.8.1
+lark >= 1.1.9
+langchain >= 0.1.12
+langchain-elasticsearch >= 0.1.1
