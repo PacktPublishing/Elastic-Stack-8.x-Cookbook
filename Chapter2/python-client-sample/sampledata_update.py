@@ -35,4 +35,4 @@ with open('tmp.txt', 'w') as file:
 # Verify the update in Elasticsearch
 updated_document = es.get(index=index_name, id=document_id)
 print("Updated document:")
-print(updated_document['_source'])
+print(updated_document)
