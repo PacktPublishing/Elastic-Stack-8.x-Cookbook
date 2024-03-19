@@ -27,19 +27,6 @@ mymovie = {
   'plot': 'A young couple decides to elope after being caught in the midst of a romantic moment by the woman .'
 }
 
-response = es.index(
-    index='movies',
-    document={
-        'release_year': '1908',
-        'title': 'It is not this day.',
-        'origin': 'American',
-        'director': 'D.W. Griffith',
-        'cast': 'Harry Solter, Linda Arvidson',
-        'genre': 'comedy',
-        'wiki_page': 'https://en.wikipedia.org/wiki/A_Calamitous_Elopement',
-        'plot': 'A young couple decides to elope after being caught in the midst of a romantic moment by the woman .'
-    })
-
 response = es.index(index='movies', document=mymovie)
 print(response)
 
