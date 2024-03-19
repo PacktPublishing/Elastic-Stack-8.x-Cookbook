@@ -22,7 +22,7 @@ Monitor the operator logs
 ```console
 kubectl -n elastic-system logs -f statefulset.apps/elastic-operator
 ```
-Deploy an  3 Elasticsearch nodes cluster
+Deploy a 3-nodes Elasticsearch cluster
 ```console
 kubectl apply -f elasticsearch.yaml
 ```
@@ -48,6 +48,7 @@ Generate enrollment token
 ```console
 ./bin/elasticsearch --enrollment-token -s node 
 ```
+### Adding cold node
 Cold node definition
 ```yaml
 node.name: node-frozen
@@ -57,6 +58,7 @@ Start the cold node with enrollment token
 ```console
 ./bin/elasticsearch --enrollment-token <enrollment-token>
 ```
+### Adding frozen node
 Frozen node definition
 ```yaml
 node.name: node-cold  
@@ -68,6 +70,7 @@ Start the frozen node with enrollment token
 ```
 
 ## Creating and setting up additional Elasticsearch nodes
+### Adding master node
 Master node definition
 ```yaml
 node.name: node-master
@@ -77,6 +80,7 @@ Start the master node with enrollment token
 ```console
 bin/elasticsearch --enrollment-token <enrollment-token> 
 ```
+### Adding Machine learning node
 Machine learning node definition
 ```yaml
 node.name: node-ml
