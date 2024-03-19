@@ -78,7 +78,7 @@ Run the index script again
 python sampledata_index.py
 ```
 
-## Update data in Elasticsearch
+## Updating data in Elasticsearch
 Run the update script 
 ```console
 python sampledata_update.py
