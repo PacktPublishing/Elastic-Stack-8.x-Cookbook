@@ -53,10 +53,18 @@ mymovie = {
   'plot': 'A young couple decides to elope after being caught in the midst of a romantic moment by the woman .'  
 } 
 ```
-Index sample movie
+Index sample movie and store the document id to a tmp file
 ```python
-response = es.index(index='movies',document=mymovie) 
-print(response) 
+response = es.index(index='movies', document=mymovie)
+print(response)
+
+# Write the '_id' to a file named tmp.txt
+with open('tmp.txt', 'w') as file:
+    file.write(response['_id'])
+
+# Print the contents of the file to confirm it's written correctly
+with open('tmp.txt', 'r') as file:
+    print(f"document id saved to tmp.txt: {file.read()}")
 ```
 Check results
 ```python

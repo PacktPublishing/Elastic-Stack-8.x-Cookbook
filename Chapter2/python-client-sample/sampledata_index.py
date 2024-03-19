@@ -2,7 +2,6 @@ import os
 import time
 from elasticsearch import Elasticsearch
 from dotenv import load_dotenv
-import tempfile
 
 load_dotenv()
 
@@ -17,6 +16,17 @@ es = Elasticsearch(
 
 print(es.info())
 
+mymovie = {
+  'release_year': '1908',
+  'title': 'It is not this day.',
+  'origin': 'American',
+  'director': 'D.W. Griffith',
+  'cast': 'Harry Solter, Linda Arvidson',
+  'genre': 'comedy',
+  'wiki_page':'https://en.wikipedia.org/wiki/A_Calamitous_Elopement',
+  'plot': 'A young couple decides to elope after being caught in the midst of a romantic moment by the woman .'
+}
+
 response = es.index(
     index='movies',
     document={
@@ -30,8 +40,8 @@ response = es.index(
         'plot': 'A young couple decides to elope after being caught in the midst of a romantic moment by the woman .'
     })
 
+response = es.index(index='movies', document=mymovie)
 print(response)
-print("id:")
 
 # Write the '_id' to a file named tmp.txt
 with open('tmp.txt', 'w') as file:
@@ -40,7 +50,6 @@ with open('tmp.txt', 'w') as file:
 # Print the contents of the file to confirm it's written correctly
 with open('tmp.txt', 'r') as file:
     print(f"document id saved to tmp.txt: {file.read()}")
-
 
 time.sleep(2)
 
