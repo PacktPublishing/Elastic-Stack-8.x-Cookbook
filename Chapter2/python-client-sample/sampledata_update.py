@@ -1,8 +1,6 @@
 import os
-import time
 from elasticsearch import Elasticsearch
 from dotenv import load_dotenv
-import tempfile
 
 load_dotenv()
 
@@ -15,36 +13,26 @@ es = Elasticsearch(
     basic_auth=(ES_USER, ES_PWD)
 )
 
-print(es.info())
+es.info()
 
-response = es.index(
-    index='movies',
-    document={
-        'release_year': '1908',
-        'title': 'It is not this day.',
-        'origin': 'American',
-        'director': 'D.W. Griffith',
-        'cast': 'Harry Solter, Linda Arvidson',
-        'genre': 'comedy',
-        'wiki_page': 'https://en.wikipedia.org/wiki/A_Calamitous_Elopement',
-        'plot': 'A young couple decides to elope after being caught in the midst of a romantic moment by the woman .'
-    })
+index_name = 'movies'
+document_id = '<ID_OF_THE_INGESTED_DOCUMENT>'
+# read the document_id the ingested document of the previous recipe
+with open('tmp.txt', 'r') as file:
+    document_id = file.read()
 
-print(response)
-print("id:")
+document = {
+    'director': 'Clint Eastwood'
+}
 
+# Update the document in Elasticsearch
+response = es.update(index=index_name, id=document_id, doc=document)
+print(f"Update status: {response['result']}")
 # Write the '_id' to a file named tmp.txt
 with open('tmp.txt', 'w') as file:
     file.write(response['_id'])
 
-# Print the contents of the file to confirm it's written correctly
-with open('tmp.txt', 'r') as file:
-    print(f"document id saved to tmp.txt: {file.read()}")
-
-
-time.sleep(2)
-
-response = es.search(index='movies', query={"match_all": {}})
-print("Sample movie data in Elasticsearch:")
-for hit in response['hits']['hits']:
-    print(hit['_source'])
+# Verify the update in Elasticsearch
+updated_document = es.get(index=index_name, id=document_id)
+print("Updated document:")
+print(updated_document['_source'])
