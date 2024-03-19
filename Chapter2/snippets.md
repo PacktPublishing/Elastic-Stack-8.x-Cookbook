@@ -266,7 +266,7 @@ GET /movies/_mapping
 
 ### Check document count
 ```
-GET movies/_count 
+GET /movies/_count 
 ```
 
 
