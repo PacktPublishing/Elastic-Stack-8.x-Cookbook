@@ -4,7 +4,7 @@
 * [Adding data from the Elasticsearch client](#adding-data-from-the-elasticsearch-client)
 * [Updating data in Elasticsearch](#updating-data-in-elasticsearch)
 * [Deleting data in Elasticsearch](#deleting-data-in-elasticsearch)
-* [Configuring Analyzer and tokenizers](#configuring-analyzer-and-tokenizers)
+* [Using analyzer](#configuring-analyzer)
 * [Defining index mapping](#defining-index-mapping)
 * [Using dynamic templates in document mapping](#using-dynamic-templates-in-document-mapping)
 * [Creating an index template](#creating-an-index-template)
@@ -114,9 +114,19 @@ POST /movies/_delete_by_query
 } 
 ```
 
-## Configuring Analyzer and tokenizers
+## Using analyzer
 
-### Analyzer test
+Run the script that create the index with an custom analyzer
+```
+python sampledata_analyzer.py
+```
+
+Verify the movies index settings
+```
+GET /movies/_settings  
+```
+
+Test the analyzer
 ```
 POST movies/_analyze
 {
@@ -124,6 +134,7 @@ POST movies/_analyze
   "analyzer": "standard_with_stopwords"
 }
 ```
+
 ## Defining index mapping
 ### Inspect movie mapping
 ```
