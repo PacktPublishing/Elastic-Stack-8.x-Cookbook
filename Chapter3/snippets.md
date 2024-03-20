@@ -1,4 +1,4 @@
-# Snippets for Chapter 2
+# Snippets for Chapter 3
 
 ## <em>Quick links to the recipes</em>
 * [Searching with the Query DSL ](#searching-with-the-query-dsl)
