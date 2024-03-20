@@ -7,7 +7,7 @@
 * [Configuring Analyzer and tokenizers](#configuring-analyzer-and-tokenizers)
 * [Defining index mapping](#defining-index-mapping)
 * [Using dynamic templates in document mapping](#using-dynamic-templates-in-document-mapping)
-* [Creating an index template](#create-index-template)
+* [Creating an index template](#creating-an-index-template)
 * [Indexing multiple documents using bulk](#indexing-multiple-documents-using-bulk)
 
 ## Adding data from the Elasticsearch client
