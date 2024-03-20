@@ -84,12 +84,19 @@ Run the update script
 python sampledata_update.py
 ```
 
-## Deleting data in Elasticsearch
 ### Movie search query
 ```
 GET movies/_search
 ```
+
+## Deleting data in Elasticsearch
+
 ### Run the delete script
+
+### Movie search query
+```
+GET movies/_search
+```
 Run the delete script
 ```console
 python sampledata_delete.py
@@ -184,9 +191,9 @@ PUT movies/_mapping
 
 ## Creating an index template
 
-### Create component template
+### Create component template for static mapping
 ```
-PUT _component_template/component_template1
+PUT _component_template/movie-static-mapping
 {
   "template": {
     "mappings": {
@@ -200,9 +207,9 @@ PUT _component_template/component_template1
 }
 ```
 
-### Create dynamic component template
+### Create component template for dynamic mapping
 ```
-PUT _component_template/dynamic_component_template
+PUT _component_template/movie-dynamic-mapping
 {
   "template": {
     "mappings": {
@@ -222,7 +229,7 @@ PUT _component_template/dynamic_component_template
 
 ### Create index template
 ```
-PUT _index_template/template_1
+PUT _index_template/movie-template
 {
   "index_patterns": ["movie*"],
   "template": {
@@ -244,12 +251,32 @@ PUT _index_template/template_1
     }
   },
   "priority": 500,
-  "composed_of": ["component_template1", "dynamic_component_template"],
+  "composed_of": ["movie-static-mapping", "movie-dynamic-mapping"],
   "version": 1,
   "_meta": {
-    "description": "my custom template"
+    "description": "movie template"
   }
 }
+```
+
+### Index sample document
+```
+POST movies/_doc/
+{
+  "award_year": 1998,
+  "release_year": 1997,
+  "title": "Titatic",
+  "origin": "American",
+  "director": "James Cameron",
+  "cast": "Leonardo DiCaprio, Kate Winslet, Billy Zane, Frances Fisher, Victor Garber, Kathy Bates, Bill Paxton, Gloria Stuart, David Warner, Suzy Amis",
+  "genre": "historical epic",
+  "wiki_page": "https://en.wikipedia.org/wiki/Titanic_(1997_film)",
+  "plot": "The ill-fated maiden voyage of the RMS Titanic, centering on a love story between a wealthy young woman and a poor artist aboard the luxurious, ill-fated R.M.S. Titanic"
+}
+```
+### Check new movies index mapping
+```
+GET /movies/_mapping 
 ```
 
 ## Indexing multiple documents using bulk
@@ -259,12 +286,12 @@ Run the bulk script
 python sampledata_bulk.py
 ```
 
-### Check new movie mapping
+Check new movies index mapping
 ```
 GET /movies/_mapping 
 ```
 
-### Check document count
+Check document count
 ```
 GET /movies/_count 
 ```
