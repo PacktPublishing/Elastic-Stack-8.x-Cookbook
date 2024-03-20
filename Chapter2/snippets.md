@@ -265,7 +265,7 @@ POST movies/_doc/
 {
   "award_year": 1998,
   "release_year": 1997,
-  "title": "Titatic",
+  "title": "Titanic",
   "origin": "American",
   "director": "James Cameron",
   "cast": "Leonardo DiCaprio, Kate Winslet, Billy Zane, Frances Fisher, Victor Garber, Kathy Bates, Bill Paxton, Gloria Stuart, David Warner, Suzy Amis",
