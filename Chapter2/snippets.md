@@ -4,7 +4,7 @@
 * [Adding data from the Elasticsearch client](#adding-data-from-the-elasticsearch-client)
 * [Updating data in Elasticsearch](#updating-data-in-elasticsearch)
 * [Deleting data in Elasticsearch](#deleting-data-in-elasticsearch)
-* [Using analyzer](#configuring-analyzer)
+* [Using analyzer](#using-analyzer)
 * [Defining index mapping](#defining-index-mapping)
 * [Using dynamic templates in document mapping](#using-dynamic-templates-in-document-mapping)
 * [Creating an index template](#creating-an-index-template)
