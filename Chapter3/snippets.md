@@ -1,4 +1,13 @@
-# Dev tools snippet for Chapter 3
+# Snippets for Chapter 2
+
+## <em>Quick links to the recipes</em>
+* [Searching with the Query DSL ](#searching-with-the-query-dsl)
+* [Building advanced search query with Query DSL](#building-advanced-search-query-with-query-dsl)
+* [Using Search template to pre-render search requests](#using-search-template-to-pre-render-search-requests)
+* [Getting started with Search Applications for your Elasticsearch Index](#getting-started-with-search-applications-for-your-elasticsearch-index)
+* [Building search experience with Search Application Client](#building-search-experience-with-search-application-client)
+* [Measuring the performance of your search applications with Behaviour analytics](#measuring-the-performance-of-your-search-applications-with-behaviour-analytics)
+
 
 ## Searching with the Query DSL
 
@@ -212,8 +221,153 @@ GET movies/_search
 }
 ```
 
-## Using Search template to pre-render search requests 
+## Using Search template to pre-render search requests
+### Add search template
+```
+PUT _scripts/movies-search-template
+{
+  "script": {
+      "lang": "mustache",
+      "source":
+        {
+          "query": {
+            "bool": {
+              "must": [
+             
+              {
+                "multi_match" : {
+                  "query":    "{{query}}",
+                  "fields": [ "title^4", "plot", "cast", "director" ]
+                }
+              },
+              {
+                "multi_match" : {
+                  "query":    "{{query}}",
+                  "type": "phrase_prefix",
+                  "fields": [ "title^4", "plot", "director"]
+                }
+              }
+            
+            ]
+            }
+          },
+          "aggs": {
+            "genre_facet": {
+              "terms": {
+                "field": "genre",
+                "size": "{{agg_size}}"
+              }
+            },
+            "director_facet": {
+              "terms": {
+                "field": "director.keyword",
+                "size": "{{agg_size}}"
+              }
+            }
+          },
+          "sort": [
+            {
+              "release_year": "desc"
+            }
+          ],
+          "fields": [
+            "title",
+            "release_year",
+            "director",
+            "origin"
+            ],
+          "_source": "false"
+        }
+    }
+}
+```
+### Test render template
+```
+POST _render/template  
+{ 
+  "id": "movies-search-template", 
+  "params": { 
+    "query": "space" 
+  } 
+} 
+```
 
-## Getting started with Search Applications for your Elasticsearch Index 
+### Query with search template 
+```
+GET movies/_search/template 
+{ 
+  "id": "movies-search-template", 
+  "params": { 
+    "query": "space", 
+    "agg_size": 10 
+  } 
+} 
+```
 
-## Building search experience with Search Application Client 
+## Getting started with Search Applications for your Elasticsearch Index
+Create search application with search template
+```
+PUT _application/search_application/movies-search-application
+{
+  "indices": ["movies"],
+  "template": {
+    "script": {
+      "lang": "mustache",
+      "source":
+        {
+          "query": {
+            "bool": {
+              "must": [
+             
+              {
+                "multi_match" : {
+                  "query":    "{{query}}",
+                  "fields": [ "title^4", "plot", "cast", "director" ]
+                }
+              },
+              {
+                "multi_match" : {
+                  "query":    "{{query}}",
+                  "type": "phrase_prefix",
+                  "fields": [ "title^4", "plot", "director"]
+                }
+              }
+            
+            ]
+            }
+          },
+          "aggs": {
+            "genre_facet": {
+              "terms": {
+                "field": "genre",
+                "size": "{{agg_size}}"
+              }
+            },
+            "director_facet": {
+              "terms": {
+                "field": "director.keyword",
+                "size": "{{agg_size}}"
+              }
+            }
+          },
+          "sort": [
+            {
+              "release_year": "desc"
+            }
+          ],
+          "fields": [
+            "title",
+            "release_year",
+            "director",
+            "origin"
+            ],
+          "_source": "false"
+        }
+    }
+  }
+}
+```
+
+## Building search experience with Search Application Client
+
+## Measuring the performance of your search applications with Behaviour analytics
