@@ -305,7 +305,8 @@ GET movies/_search/template
 ```
 
 ## Getting started with Search Applications for your Elasticsearch Index
-Create search application with search template
+
+### Create search application with search template
 ```
 PUT _application/search_application/movies-search-application
 {
@@ -368,6 +369,86 @@ PUT _application/search_application/movies-search-application
 }
 ```
 
+### Test the search application in Dev Tools
+```
+POST _application/search_application/movies-search-application/_search 
+{ 
+  "params": { 
+    "query": "space", 
+    "agg_size": "3" 
+  } 
+} 
+```
+
 ## Building search experience with Search Application Client
 
+### Install the react application dependencies
+```console
+yarn install
+```
+
+### Settings for Elasticsearch
+```yaml
+http.cors.allow-origin: "*" 
+http.cors.enabled: true 
+http.cors.allow-credentials: true 
+http.cors.allow-methods: OPTIONS, HEAD, GET, POST, PUT, DELETE 
+http.cors.allow-headers: X-Requested-With, X-Auth-Token, Content-Type, Content-Length, Authorization, Access-Control-Allow-Headers, Accept  
+```
+
+### Locate and update the following in App.tsx
+```Javascript
+const request = SearchApplicationClient(     
+    'movies-search-application' 
+    /*elasticsearch_endpoint*/, 
+    /*your_api_key*/ 
+) 
+```
+
+### Start the application
+```console
+yarn start
+```
+
 ## Measuring the performance of your search applications with Behaviour analytics
+Locate the uncomment the following code blocks in App.tsx
+```Javascript
+createTracker({  
+  	endpoint: "https://xxx.cloud.es.io:443",  
+  	collectionName: "movie-stats",  
+  	apiKey: "xxx",  
+}); 
+```
+
+```Javascript
+trackPageView() 
+```
+
+```Javascript
+trackSearch({  
+  search: {  
+  query: query,  
+  results: {  
+    ...  
+  },  
+},
+})
+```
+
+```Javascript
+trackSearchClick({  
+  document: { ... },  
+  search: {  
+    ...  
+  },  
+  page: {  
+    url: url,  
+    ...  
+  },  
+}); 
+```
+
+Start the application
+```console
+yarn start
+```
