@@ -84,16 +84,16 @@ Run the update script
 python sampledata_update.py
 ```
 
-### Movie search query
+Find the document in the movies index
 ```
 GET movies/_search
 ```
 
 ## Deleting data in Elasticsearch
 
-### Run the delete script
+Run the delete script
 
-### Movie search query
+Find the document in the movies index
 ```
 GET movies/_search
 ```
@@ -102,7 +102,7 @@ Run the delete script
 python sampledata_delete.py
 ```
 
-### Delete by query Dev Tools command
+Delete by query Dev Tools command
 ```
 POST /movies/_delete_by_query 
 { 
@@ -136,9 +136,9 @@ POST movies/_analyze
 ```
 
 ## Defining index mapping
-### Inspect movie mapping
+Inspect movie mapping
 ```
-GET movies/_mapping
+GET /movies/_mapping
 ```
 ### Setting movie explicit mapping
 ```
@@ -165,7 +165,7 @@ PUT movies-with-explicit-mapping
   }
 }
 ```
-### Reindex to new index explicit mapping
+Reindex to new index explicit mapping
 ```
 POST /_reindex
 {
@@ -178,13 +178,13 @@ POST /_reindex
 }
 ```
 
-### Check whether the new mapping
+Check the explicit mapping
 ```
 GET movies-with-explicit-mapping/_mapping 
 ```
 
 ## Using dynamic templates in document mapping
-### Update mapping with dynamic templates
+Update mapping with dynamic templates
 ```
 PUT movies/_mapping 
 { 
@@ -200,9 +200,30 @@ PUT movies/_mapping
 } 
 ```
 
+Add a new movie to test the dynamic_template
+```
+POST movies/_doc/
+{
+  "review_year": 1993,
+  "release_year": 1992,
+  "title": "Reservoir Dogs",
+  "origin": "American",
+  "director": "Quentin Tarantino",
+  "cast": "Harvey Keitel, Tim Roth, Steve Buscemi, Chris Penn, Michael Madsen, Lawrence Tierney",
+  "genre": "crime drama",
+  "wiki_page": "https://en.wikipedia.org/wiki/Reservoir_Dogs",
+  "plot": "a group of criminals whose planned diamond robbery goes disastrously wrong, leading to intense suspicion and betrayal within their ranks."
+}
+```
+
+Check the mapping result
+```
+GET /movies/_mapping 
+```
+
 ## Creating an index template
 
-### Create component template for static mapping
+Create component template for static mapping
 ```
 PUT _component_template/movie-static-mapping
 {
@@ -218,7 +239,7 @@ PUT _component_template/movie-static-mapping
 }
 ```
 
-### Create component template for dynamic mapping
+Create component template for dynamic mapping
 ```
 PUT _component_template/movie-dynamic-mapping
 {
@@ -238,7 +259,7 @@ PUT _component_template/movie-dynamic-mapping
 }
 ```
 
-### Create index template
+Create index template
 ```
 PUT _index_template/movie-template
 {
@@ -270,7 +291,7 @@ PUT _index_template/movie-template
 }
 ```
 
-### Index sample document
+Index sample document
 ```
 POST movies/_doc/
 {
@@ -285,7 +306,7 @@ POST movies/_doc/
   "plot": "The ill-fated maiden voyage of the RMS Titanic, centering on a love story between a wealthy young woman and a poor artist aboard the luxurious, ill-fated R.M.S. Titanic"
 }
 ```
-### Check new movies index mapping
+Check new movies index mapping
 ```
 GET /movies/_mapping 
 ```
