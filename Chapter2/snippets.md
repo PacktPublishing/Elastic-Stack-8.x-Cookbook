@@ -91,8 +91,6 @@ GET movies/_search
 
 ## Deleting data in Elasticsearch
 
-Run the delete script
-
 Find the document in the movies index
 ```
 GET movies/_search
@@ -140,7 +138,7 @@ Inspect movie mapping
 ```
 GET /movies/_mapping
 ```
-### Setting movie explicit mapping
+Set movie explicit mapping
 ```
 PUT movies-with-explicit-mapping
 {
