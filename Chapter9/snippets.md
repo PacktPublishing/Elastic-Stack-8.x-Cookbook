@@ -539,6 +539,10 @@ Which movie revolve around a superhero team battling to protect the city of Renn
 
 ## Using advanced technique for Retrieval Augmented Generation (RAG) Applications
 
+Index documents with chunking strategies
+```console
+python indexer.py
+```
 Run chatbot application
 ```console
 streamlit run chatbot_app.py --server.port 8502 
