@@ -1,6 +1,41 @@
-# Dev tools snippet for Chapter 9 Search application
+# Snippets for Chapter 9
 
-## BM25 search
+## <em>Quick links to the recipes</em>
+* [Implementing semantic search with dense vectors](#implementing-semantic-search-with-dense-vectors)
+* [Implementing semantic search with sparse vectors](#implementing-semantic-search-with-sparse-vectors)
+* [Using hybrid search to build advanced search applications](#using-hybrid-search-to-build-advanced-search-applications)
+* [Developing question-answering applications with Generative AI](#developing-question-answering-applications-with-generative-ai)
+* [Using advanced technique for Retrieval Augmented Generation (RAG) Applications](#using-advanced-technique-for-retrieval-augmented-generation-rag-applications)
+
+## Implementing semantic search with dense vectors
+
+Ingest dense vectors
+```console
+pip install -r requirements.txt 
+```
+```
+python densevector_ingest.py
+```
+
+### Dense vector query
+```
+POST movies-dense-vector/_search
+{
+  "knn": {
+    "field": "plot_vector",
+    "k": 5,
+    "num_candidates": 50,
+    "query_vector_builder": {
+      "text_embedding": {
+        "model_id": ".multilingual-e5-small_linux-x86_64",
+        "model_text": "romantic moment"
+      }
+    }
+  },
+  "fields": [ "title", "plot" ]
+}
+```
+
 ### Search template with lexical search
 ```
 PUT _application/search_application/movie_vector_search_application
@@ -59,24 +94,9 @@ PUT _application/search_application/movie_vector_search_application
 }
 ```
 
-## Dense vector search
-### dense vector query
-```
-POST movies-dense-vector/_search
-{
-  "knn": {
-    "field": "plot_vector",
-    "k": 5,
-    "num_candidates": 50,
-    "query_vector_builder": {
-      "text_embedding": {
-        "model_id": ".multilingual-e5-small_linux-x86_64",
-        "model_text": "romantic moment"
-      }
-    }
-  },
-  "fields": [ "title", "plot" ]
-}
+Start the react search application
+```console
+yarn start
 ```
 
 ### Search template with dense vector search
@@ -138,7 +158,21 @@ PUT _application/search_application/movie_vector_search_application
 }
 ```
 
-## Sparse vector search
+Sample query in English
+```
+love story and a jewel onboard a ship while travelling across the Atlantic
+```
+
+Sample query in French
+```
+histoire d’amour sur un bateau de luxe en océan impliquant un bijou
+```
+
+## Implementing semantic search with sparse vectors
+Ingest sparse vectors 
+```console
+python sparse-vector-ingest.py
+```
 
 ### Semantic search by using the text_expansion query
 ```
@@ -208,7 +242,7 @@ PUT _application/search_application/movie_vector_search_application
 }
 ```
 
-## Hybrid search
+## Using hybrid search to build advanced search applications
 ### BM25 search relevance score test
 ```
 POST movies-dense-vector/_search
@@ -468,4 +502,59 @@ PUT _application/search_application/movie_vector_search_application
       }
     }
 }
+```
+
+## Developing question-answering applications with Generative AI
+
+Ollama check
+```console
+ollama --help
+```
+Ollama install model
+```console
+ollama run mistral
+```
+
+Sample question Ollama
+```
+Which film talks about a love story and a precious jewel on board a large ocean liner while traveling across the Atlantic?
+```
+
+Run question-answering application
+```
+pip install -r requirements.txt 
+```
+```console
+streamlit run qa_appy.py --server.port 8501 
+```
+
+Sample question Q&A app
+```
+Which film talks about a love story and a precious jewel on board a large ocean liner while traveling across the Atlantic?
+```
+Private movie question
+```
+Which movie revolve around a superhero team battling to protect the city of Rennes from the Invader?
+```
+
+## Using advanced technique for Retrieval Augmented Generation (RAG) Applications
+
+Run chatbot application
+```console
+streamlit run chatbot_app.py --server.port 8502 
+```
+Sample question chunking test (Q&A app and chatbot app)
+```
+Which film features a love story on a ship that breaks in half and only one of the lovers is alive after?
+```
+
+Sample questions chat history
+```
+Against who a team of super heroes is fighting to protect the city of Rennes?
+```
+```
+Who are the heroes?
+```
+```
+what are the invader’s plans?
 ```
