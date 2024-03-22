@@ -13,7 +13,7 @@ Ingest dense vectors
 ```console
 pip install -r requirements.txt 
 ```
-```
+```console
 python densevector_ingest.py
 ```
 
@@ -521,7 +521,7 @@ Which film talks about a love story and a precious jewel on board a large ocean 
 ```
 
 Run question-answering application
-```
+```console
 pip install -r requirements.txt 
 ```
 ```console
