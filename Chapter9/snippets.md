@@ -171,7 +171,7 @@ histoire d’amour sur un bateau de luxe en océan impliquant un bijou
 ## Implementing semantic search with sparse vectors
 Ingest sparse vectors 
 ```console
-python sparse-vector-ingest.py
+python sparsevector-ingest.py
 ```
 
 ### Semantic search by using the text_expansion query
