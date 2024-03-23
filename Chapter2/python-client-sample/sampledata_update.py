@@ -31,9 +31,6 @@ if document_id != '':
     if es.exists(index=index_name, id=document_id):
         response = es.update(index=index_name, id=document_id, doc=document)
         print(f"Update status: {response['result']}")
-        # Write the '_id' to a file named tmp.txt
-        with open('tmp.txt', 'w') as file:
-            file.write(str(response['_id']))
 
         # Verify the update in Elasticsearch
         updated_document = es.get(index=index_name, id=document_id)
