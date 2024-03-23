@@ -17,13 +17,18 @@ es = Elasticsearch(
 es.info()
 
 index_name = 'movies'
-document_id = 'vlM9C4kBU-BJO8sdwiK7'
+document_id = ''
 
 # replace the document_id by the id of the ingested document of the previous recipe
 with open('tmp.txt', 'r') as file:
     document_id = file.read()
 
-# delete the document in Elasticsearch
-response = es.delete(index=index_name, id=document_id)
-print(f"delete status: {response['result']}")
-
+if document_id != '':
+    if es.exists(index=index_name, id=document_id):
+        # delete the document in Elasticsearch
+        response = es.delete(index=index_name, id=document_id)
+        print(f"delete status: {response['result']}")
+    else:
+        print(f"No delete performed: {document_id} does not exist in the index.")
+else:
+    print("No delet performed, document_id is invalid.")

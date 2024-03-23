@@ -16,23 +16,30 @@ es = Elasticsearch(
 es.info()
 
 index_name = 'movies'
-document_id = '<ID_OF_THE_INGESTED_DOCUMENT>'
-# read the document_id the ingested document of the previous recipe
+document_id = ''  # Initialize to an invalid ID
+
+# Read the document_id from the ingested document of the previous recipe
 with open('tmp.txt', 'r') as file:
-    document_id = file.read()
+    document_id = file.read().strip()  # Use .strip() to remove any newline character
 
 document = {
     'director': 'Clint Eastwood'
 }
 
-# Update the document in Elasticsearch
-response = es.update(index=index_name, id=document_id, doc=document)
-print(f"Update status: {response['result']}")
-# Write the '_id' to a file named tmp.txt
-with open('tmp.txt', 'w') as file:
-    file.write(response['_id'])
+# Update the document in Elasticsearch if document_id is valid
+if document_id != '':
+    if es.exists(index=index_name, id=document_id):
+        response = es.update(index=index_name, id=document_id, doc=document)
+        print(f"Update status: {response['result']}")
+        # Write the '_id' to a file named tmp.txt
+        with open('tmp.txt', 'w') as file:
+            file.write(str(response['_id']))
 
-# Verify the update in Elasticsearch
-updated_document = es.get(index=index_name, id=document_id)
-print("Updated document:")
-print(updated_document)
+        # Verify the update in Elasticsearch
+        updated_document = es.get(index=index_name, id=document_id)
+        print("Updated document:")
+        print(updated_document)
+    else:
+        print(f"No update performed: {document_id} does not exist in the index.")
+else:
+    print("No update performed, document_id is invalid.")
