@@ -10,7 +10,7 @@
 ## Implementing semantic search with dense vectors
 
 Ingest dense vectors
-```commandline
+```console
 pip install -r requirements.txt 
 ```
 ```console
