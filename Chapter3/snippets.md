@@ -315,6 +315,18 @@ GET movies/_search/template
 } 
 ```
 
+### Search template with conditions
+```
+POST _render/template 
+{ 
+  "source": "{ \"query\": { \"bool\": { \"filter\": [ {{#last_10y}} { \"range\": { \"release_year\": { \"gte\": \"now-10y/d\", \"lt\": \"now/d\" } } }, {{/last_10y}} { \"term\": { \"origin\": \"{{origin}}\" }}]}}}", 
+  "params": { 
+    "last_10y": true, 
+    "origin": "American" 
+  } 
+} 
+```
+
 ## Getting started with Search Applications for your Elasticsearch Index
 
 ### Create search application with search template
