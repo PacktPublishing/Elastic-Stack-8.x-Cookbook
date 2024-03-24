@@ -66,7 +66,7 @@ GET movies/_search
 }
 ```
 ## Building advanced search query with Query DSL
-
+Here are the Dev tools commands for this recipe
 ### Range query
 ```
 GET movies/_search
@@ -180,7 +180,7 @@ GET movies/_search
 }
 ```
 
-### Boolean query with range filter
+### Boolean query with should
 ```
 GET movies/_search
 {
@@ -205,7 +205,7 @@ GET movies/_search
 }
 ```
 
-### Boolean query with should
+### Boolean query with range filter
 ```
 GET movies/_search
 {
