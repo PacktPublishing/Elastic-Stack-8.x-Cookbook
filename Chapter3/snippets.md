@@ -54,8 +54,8 @@ GET movies/_search
 }
 ```
 
-### 
-``` Match phrase query
+### Match phrase query
+```
 GET movies/_search 
 { 
   "query": { 
