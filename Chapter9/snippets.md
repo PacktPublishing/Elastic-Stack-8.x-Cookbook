@@ -19,7 +19,7 @@ python densevector_ingest.py
 
 ### Dense vector query
 ```
-POST movies-dense-vector/_search
+GET movies-dense-vector/_search
 {
   "knn": {
     "field": "plot_vector",
@@ -176,7 +176,7 @@ python sparsevector-ingest.py
 
 ### Semantic search by using the text_expansion query
 ```
-POST movies-sparse-vector/_search
+GET movies-sparse-vector/_search
 {
    "query":{
       "text_expansion":{
@@ -245,7 +245,7 @@ PUT _application/search_application/movie_vector_search_application
 ## Using hybrid search to build advanced search applications
 ### BM25 search relevance score test
 ```
-POST movies-dense-vector/_search
+GET movies-dense-vector/_search
 {
   "query": {
     "multi_match" : {
@@ -260,7 +260,7 @@ POST movies-dense-vector/_search
 ### Vector search relevance score test
 ```
 # Vector search relevance score test
-POST movies-dense-vector/_search
+GET movies-dense-vector/_search
 {
   "knn": {
     "field": "plot_vector",
