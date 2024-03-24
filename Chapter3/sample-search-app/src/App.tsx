@@ -12,8 +12,8 @@ import './App.css'
 
 const request = SearchApplicationClient(
   'movies-search-application',
-  'https://xxx.cloud.es.io:443',
-  'xxx',
+  'https://changeme.cloud.es.io:443',
+  'your_api_key',
   {
     facets: {
       director: {
