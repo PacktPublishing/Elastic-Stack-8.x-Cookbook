@@ -499,7 +499,7 @@ yarn start
 ```
 
 ## Measuring the performance of your search applications with Behaviour analytics
-Locate the uncomment the following code blocks in App.tsx
+Locate and uncomment the following code blocks in App.tsx
 ```Javascript
 createTracker({  
   	endpoint: "https://xxx.cloud.es.io:443",  
