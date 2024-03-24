@@ -191,7 +191,7 @@ POST generic-rennes_traffic-default/_doc
 ## Setting up Time Series Data Stream (TSDS) manually
 
 ### Creates a component template for TSDS mappings
-```console
+```
 PUT _component_template/metrics-rennes_traffic-mappings@default
 {
   "template": {
@@ -323,7 +323,7 @@ POST metrics-rennes_traffic-default/_doc
 }
 ```
 ### Test TSDS
-```console
+```
 GET metrics-rennes_traffic-default/_search
 {
   "size": 0,
