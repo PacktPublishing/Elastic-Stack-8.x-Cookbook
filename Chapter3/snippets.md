@@ -54,6 +54,17 @@ GET movies/_search
 }
 ```
 
+### 
+``` Match phrase query
+GET movies/_search 
+{ 
+  "query": { 
+    "match_phrase": { 
+      "title": "sweet home" 
+    } 
+  } 
+}
+```
 ## Building advanced search query with Query DSL
 
 ### Range query
