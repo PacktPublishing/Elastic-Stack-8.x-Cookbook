@@ -166,7 +166,7 @@ PUT _index_template/rennes_traffic-index-template
 ```
 POST generic-rennes_traffic-default/_doc
 {
-  "@timestamp": "2024-01-17T23:07:00+02:00",
+  "@timestamp": "2024-04-17T11:07:00",
     "traffic_status": "heavy",
     "location_reference": "10273_D",
     "denomination": "Route départementale 34",
@@ -298,10 +298,11 @@ PUT _index_template/metrics-rennes_traffic-default-index-template
 ```
 
 ### Ingest sample document into TSDS
+Change @timestamp with you current time following this format 2024-04-17T11:07:00
 ```
 POST metrics-rennes_traffic-default/_doc
 {
-  "@timestamp": "2024-01-17T23:07:00+02:00",
+  "@timestamp": "change_with_your_current_time",
     "traffic_status": "heavy",
     "location_reference": "10273_D",
     "denomination": "Route départementale 34",
