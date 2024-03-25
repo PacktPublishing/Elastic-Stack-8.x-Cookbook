@@ -69,7 +69,7 @@ GET movies/_search
 Here are the Dev tools commands for this recipe
 ### Range query
 ```
-GET movies/_search
+GET /movies/_search
 {
   "query": {
     "range": {
@@ -84,15 +84,12 @@ GET movies/_search
 
 ### Multi match query
 ```
-GET movies/_search
+GET /movies/_search
 {
   "query": {
     "multi_match": {
       "query": "come home",
-      "fields": [
-        "title",
-        "plot"
-      ]
+      "fields": ["title", "plot"]
     }
   }
 }
@@ -100,16 +97,13 @@ GET movies/_search
 
 ### Multi match most queries
 ```
-GET movies/_search
+GET /movies/_search
 {
   "query": {
     "multi_match": {
       "type": "most_fields",
       "query": "come home",
-      "fields": [
-        "title",
-        "plot"
-      ]
+      "fields": ["title", "plot"]
     }
   }
 }
@@ -117,16 +111,13 @@ GET movies/_search
 
 ### Multi match phrase
 ```
-GET movies/_search
+GET /movies/_search
 {
   "query": {
     "multi_match": {
       "type": "phrase",
       "query": "come home",
-      "fields": [
-        "title",
-        "plot"
-      ]
+      "fields": ["title", "plot"]
     }
   }
 }
@@ -134,21 +125,13 @@ GET movies/_search
 
 ### Boolean query
 ```
-GET movies/_search
+GET /movies/_search
 {
   "query": {
     "bool": {
       "must": [
-        {
-          "match": {
-            "title": "home"
-          }
-        },
-        {
-          "match": {
-            "genre": "comedy"
-          }
-        }
+        { "match": { "title": "home" } },
+        { "match": { "genre": "comedy" } }
       ]
     }
   }
@@ -157,24 +140,12 @@ GET movies/_search
 
 ### Boolean query with filter
 ```
-GET movies/_search
+GET /movies/_search
 {
   "query": {
     "bool": {
-      "must": [
-        {
-          "match": {
-            "title": "home"
-          }
-        }
-      ],
-      "filter": [
-        {
-          "match": {
-            "genre": "comedy"
-          }
-        }
-      ]
+      "must": [ { "match": { "title": "home" } } ],
+      "filter": [ { "match": { "genre": "comedy" } } ]
     }
   }
 }
@@ -182,24 +153,12 @@ GET movies/_search
 
 ### Boolean query with should
 ```
-GET movies/_search
+GET /movies/_search
 {
   "query": {
     "bool": {
-      "must": [
-        {
-          "match": {
-            "title": "home"
-          }
-        }
-      ],
-      "should": [
-        {
-          "match": {
-            "genre": "comedy"
-          }
-        }
-      ]
+      "must": [ { "match": { "title": "home" } } ],
+      "should": [ { "match": { "genre": "comedy" } } ]
     }
   }
 }
@@ -244,7 +203,6 @@ PUT _scripts/movies-search-template
           "query": {
             "bool": {
               "must": [
-             
               {
                 "multi_match" : {
                   "query":    "{{query}}",
