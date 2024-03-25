@@ -297,6 +297,11 @@ PUT _index_template/metrics-rennes_traffic-default-index-template
 }
 ```
 
+Verify the data stream
+```
+GET generic-rennes_traffic-default/_search 
+```
+
 ### Ingest sample document into TSDS
 Change @timestamp with you current time following this format 2024-04-17T11:07:00
 ```
@@ -322,6 +327,11 @@ POST metrics-rennes_traffic-default/_doc
     "data_stream.dataset": "rennes_traffic",
     "data_stream.namespace": "default"
 }
+```
+
+Run the Python script
+```console
+python tsds.py
 ```
 
 Run the Python script
@@ -367,4 +377,9 @@ GET metrics-rennes_traffic-default/_search
     }
   }
 }
+```
+
+Verify the TSDS
+```
+GET metrics-rennes_traffic-default/_search 
 ```
