@@ -28,6 +28,11 @@
   color: #61dafb;
 }
 
+.fixed-height {
+  height: 200px;
+  overflow: auto;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
