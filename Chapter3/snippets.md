@@ -250,13 +250,14 @@ PUT _scripts/movies-search-template
     }
 }
 ```
-### Test render template
+### Render search template with sample parameters
 ```
-POST _render/template  
+GET _render/template  
 { 
   "id": "movies-search-template", 
   "params": { 
-    "query": "space" 
+    "query": "space", 
+    "agg_size": 10 
   } 
 } 
 ```
@@ -275,7 +276,7 @@ GET movies/_search/template
 
 ### Search template with conditions
 ```
-POST _render/template 
+GET _render/template 
 { 
   "source": "{ \"query\": { \"bool\": { \"filter\": [ {{#last_10y}} { \"range\": { \"release_year\": { \"gte\": \"now-10y/d\", \"lt\": \"now/d\" } } }, {{/last_10y}} { \"term\": { \"origin\": \"{{origin}}\" }}]}}}", 
   "params": { 
@@ -352,7 +353,7 @@ PUT _application/search_application/movies-search-application
 
 ### Test the search application in Dev Tools
 ```
-POST _application/search_application/movies-search-application/_search 
+GET _application/search_application/movies-search-application/_search 
 { 
   "params": { 
     "query": "space", 
@@ -368,7 +369,7 @@ POST _application/search_application/movies-search-application/_search
 yarn install
 ```
 
-### Settings for Elasticsearch
+### Cross-Origin Resource Sharing (CORS) Settings for Elasticsearch
 ```yaml
 http.cors.allow-origin: "*" 
 http.cors.enabled: true 
