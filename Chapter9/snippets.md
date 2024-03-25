@@ -259,7 +259,6 @@ GET movies-dense-vector/_search
 ```
 ### Vector search relevance score test
 ```
-# Vector search relevance score test
 GET movies-dense-vector/_search
 {
   "knn": {
