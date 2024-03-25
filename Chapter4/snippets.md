@@ -341,7 +341,7 @@ python tsds.py
 
 ### Test TSDS
 ```
-GET metrics-rennes_traffic-default/_search
+GET /metrics-rennes_traffic-default/_search
 {
   "size": 0,
   "aggs": {
@@ -349,29 +349,29 @@ GET metrics-rennes_traffic-default/_search
       "terms": {
         "field": "_tsid"
       },
-     "aggs": {
+      "aggs": {
         "over_time": {
-            "date_histogram": {
-                "field": "@timestamp",
-                "fixed_interval": "1d"
+          "date_histogram": {
+            "field": "@timestamp",
+            "fixed_interval": "1d"
+          },
+          "aggs": {
+            "min": {
+              "min": {
+                "field": "average_vehicle_speed"
+              }
             },
-            "aggs": {
-                "min": {
-                    "min": {
-                        "field": "average_vehicle_speed"
-                    }
-                },
-                "max": {
-                    "max": {
-                        "field": "average_vehicle_speed"
-                    }
-                },
-                "avg": {
-                    "avg": {
-                        "field": "average_vehicle_speed"
-                    }
-                }
+            "max": {
+              "max": {
+                "field": "average_vehicle_speed"
+              }
+            },
+            "avg": {
+              "avg": {
+                "field": "average_vehicle_speed"
+              }
             }
+          }
         }
       }
     }
