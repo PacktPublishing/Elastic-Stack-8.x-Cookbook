@@ -303,7 +303,12 @@ GET generic-rennes_traffic-default/_search
 ```
 
 ### Ingest sample document into TSDS
-Change @timestamp with you current time following this format 2024-04-17T11:07:00
+
+Get the current time from terminal in the right format
+```console
+date -u +"%Y-%m-%dT%H:%M:%SZ"
+```
+Change @timestamp with you current time that you got from the terminal
 ```
 POST metrics-rennes_traffic-default/_doc
 {
