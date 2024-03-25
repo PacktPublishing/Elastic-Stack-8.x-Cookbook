@@ -323,6 +323,12 @@ POST metrics-rennes_traffic-default/_doc
     "data_stream.namespace": "default"
 }
 ```
+
+Run the Python script
+```console
+python tsds.py
+```
+
 ### Test TSDS
 ```
 GET metrics-rennes_traffic-default/_search
