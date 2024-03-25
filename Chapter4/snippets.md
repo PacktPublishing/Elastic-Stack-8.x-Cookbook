@@ -310,27 +310,27 @@ date -u +"%Y-%m-%dT%H:%M:%SZ"
 ```
 Change @timestamp with you current time that you got from the terminal
 ```
-POST metrics-rennes_traffic-default/_doc
+POST /metrics-rennes_traffic-default/_doc
 {
-  "@timestamp": "change_with_your_current_time",
-    "traffic_status": "heavy",
-    "location_reference": "10273_D",
-    "denomination": "Route départementale 34",
-    "hierarchie": "Réseau d'armature",
-    "hierarchie_dv": "Réseau de transit",
-    "insee": "35206",
-    "vehicles": "1",
-    "traveltime.reliability": "60",
-    "traveltime.duration": "16",
-    "max_speed": "70",
-    "average_vehicle_speed": "46",
-    "location": {
-      "lat": 48.04479275590756,
-      "lon": -1.6502152435538264
-    },
-    "data_stream.type": "metrics",
-    "data_stream.dataset": "rennes_traffic",
-    "data_stream.namespace": "default"
+  "@timestamp": "<your_current_time_here>",
+  "traffic_status": "heavy",
+  "location_reference": "10273_D",
+  "denomination": "Route départementale 34",
+  "hierarchie": "Réseau d'armature",
+  "hierarchie_dv": "Réseau de transit",
+  "insee": "35206",
+  "vehicles": "1",
+  "traveltime.reliability": "60",
+  "traveltime.duration": "16",
+  "max_speed": "70",
+  "average_vehicle_speed": "46",
+  "location": {
+    "lat": 48.04479275590756,
+    "lon": -1.6502152435538264
+  },
+  "data_stream.type": "metrics",
+  "data_stream.dataset": "rennes_traffic",
+  "data_stream.namespace": "default"
 }
 ```
 
