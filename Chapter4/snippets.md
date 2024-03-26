@@ -297,6 +297,14 @@ PUT _index_template/metrics-rennes_traffic-default-index-template
 }
 ```
 
+Run the Python script to ingest into Data stream
+```console
+pip install -r requirements.txt
+```
+```console
+python tsds.py
+```
+
 Verify the data stream
 ```
 GET generic-rennes_traffic-default/_search 
@@ -334,12 +342,7 @@ POST /metrics-rennes_traffic-default/_doc
 }
 ```
 
-Run the Python script
-```console
-python tsds.py
-```
-
-Run the Python script
+Run the Python script to ingest into TSDS
 ```console
 python tsds.py
 ```
