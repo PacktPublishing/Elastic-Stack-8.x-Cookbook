@@ -152,21 +152,43 @@ from metrics-rennes_traffic-raw*
 | keep denomination, avg_traveltime_min 
 | limit 50 
 ```
+### index mapping for *insee-codes*
+```
+{
+  "properties": {
+    "code_postal": {
+      "type": "keyword"
+    },
+    "insee": {
+      "type": "keyword"
+    },
+    "libelle_acheminement": {
+      "type": "keyword"
+    },
+    "ligne_5_adresse_postale": {
+      "type": "keyword"
+    },
+    "nom_de_la_commune": {
+      "type": "keyword"
+    }
+  }
+}
+```
 
 ### Enrich policy
 ```
-PUT _enrich/policy/rennes-data-enrich
+PUT /_enrich/policy/rennes-data-enrich
 {
-"match": {
-    "indices": [ 
-      "insee-codes" 
-    ], 
-    "match_field": "insee", 
-    "enrich_fields": [ 
-      "code_postal", 
-      "nom_de_la_commune" 
-    ] 
-}
+  "match": {
+    "indices": [
+      "insee-codes"
+    ],
+    "match_field": "insee",
+    "enrich_fields": [
+      "code_postal",
+      "nom_de_la_commune"
+    ]
+  }
 }
 ```
 
