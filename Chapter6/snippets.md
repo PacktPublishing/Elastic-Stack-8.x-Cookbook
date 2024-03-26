@@ -127,14 +127,14 @@ PUT _index_template/metrics-rennes_traffic-raw-index-template
 ## Exploring your data with ES|QL
 
 ### ES|QL congested traffic
-```
+```sql
 from metrics-rennes_traffic-raw* 
 | where traffic_status == "congested" 
 | limit 50 
 ```
 
 ### ES|QL congested traffic with aggregation
-```
+```sql
 from metrics-rennes_traffic-raw* 
 | where traffic_status == "congested" 
 | stats avg_traveltime = avg(traveltime.duration) by denomination 
@@ -143,7 +143,7 @@ from metrics-rennes_traffic-raw*
 ```
 
 ### ES|QL congested traffic with eval
-```
+```sql
 from metrics-rennes_traffic-raw* 
 | where traffic_status == "congested" 
 | stats avg_traveltime = avg(traveltime.duration) by denomination  
@@ -153,7 +153,7 @@ from metrics-rennes_traffic-raw*
 | limit 50 
 ```
 ### index mapping for *insee-codes*
-```
+```json
 {
   "properties": {
     "code_postal": {
@@ -197,7 +197,7 @@ PUT _enrich/policy/rennes-data-enrich/_execute
 ```
 
 ### ES|QL congested traffic with enrich
-```
+```sql
 from metrics-rennes_traffic-raw*
 | where traffic_status == "congested"
 | enrich rennes-data-enrich on insee with code_postal, nom_de_la_commune
@@ -207,7 +207,7 @@ from metrics-rennes_traffic-raw*
 ```
 
 ### ES|QL congested traffic with enrich and average aggregation
-```
+```sql
 from metrics-rennes_traffic-raw*
 | where traffic_status == "congested"
 | enrich rennes-data-enrich on insee with code_postal, nom_de_la_commune
@@ -219,7 +219,7 @@ from metrics-rennes_traffic-raw*
 ## Creating visualization from Runtime fields
 
 ### Hour of the day painless script
-```
+```java
 ZonedDateTime date =  doc['@timestamp'].value;
 ZonedDateTime cet = date.withZoneSameInstant(ZoneId.of('Europe/Paris'));
 int hour = cet.getHour();
@@ -231,14 +231,14 @@ if (hour < 10) {
 ```
 
 ### Day of the week painless script
-```
+```java
 emit(doc['@timestamp'].value.dayOfWeekEnum.getDisplayName(TextStyle.FULL, Locale.ROOT))
 ```
 
 ## Creating Canvas workpad
 
 ### SQL Traffic congestion over time
-```
+```sql
 SELECT HOUR_OF_DAY("@timestamp") hour, COUNT(*) locations 
 FROM "metrics-rennes_traffic-raw" 
 WHERE traffic_status = 'congested' or traffic_status = 'heavy' 
@@ -247,14 +247,14 @@ ORDER BY hour
 ```
 
 ### SQL total traffic jam 
-```
+```sql
 SELECT COUNT(*)/10000 as locations 
 FROM "metrics-rennes_traffic-raw" 
 WHERE traffic_status = 'congested' or traffic_status = 'heavy' 
 ```
 
 ### SQL average traffic speed by hour
-```
+```sql
 SELECT HOUR_OF_DAY("@timestamp") hour, AVG("average_vehicle_speed") speed 
 FROM "metrics-rennes_traffic-raw" 
 GROUP BY hour 
@@ -262,26 +262,26 @@ ORDER BY hour
 ```
 
 ### SQL average traffic speed
-```
+```sql
 SELECT AVG(average_vehicle_speed) metric 
 FROM "metrics-rennes_traffic-raw" 
 ```
 
 ### SQL speeding locations
-```
+```sql
 SELECT COUNT(DISTINCT location_reference) metric 
 FROM "metrics-rennes_traffic-raw" 
 WHERE average_vehicle_speed/max_speed > 1 
 ```
 
 ### SQL congested locations
-```
+```sql
 SELECT COUNT(DISTINCT location_reference) as metric 
 FROM "metrics-rennes_traffic-raw" 
 WHERE traffic_status = 'congested' 
 ```
 ### SQL total locations
-```
+```sql
 SELECT COUNT(DISTINCT location_reference) as metric 
 FROM "metrics-rennes_traffic-raw" 
 ```
