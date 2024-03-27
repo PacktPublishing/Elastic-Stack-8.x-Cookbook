@@ -21,19 +21,7 @@ ELASTICSEARCH_URL="https://foobar.es.us-central1.gcp.cloud.es.io"
 ```
 
 ## start the app:
-
-You can start the app in 3 different ways and also with different scenarios. See below for the scenarios.
-
-
+``` console
+docker-compose -f docker-compose.yml up -d 
 ```
-Elastic instrumented:
-```
-cd Elastiflix
-docker-compose -f docker-compose.yml up -d --build
-```
-
-
-then visit the app at `localhost:9000` 
-
-the add favourites button is the main functionality right now. It calls the node service which then calls the python service
-
+then visit the app at `localhost:9000` and go to Kibana | Observability | APM to check the instrumented Java service
