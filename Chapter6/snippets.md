@@ -128,23 +128,23 @@ PUT _index_template/metrics-rennes_traffic-raw-index-template
 
 ### ES|QL congested traffic
 ```sql
-from metrics-rennes_traffic-raw* 
+from metrics-rennes_traffic-raw
 | where traffic_status == "congested" 
 | limit 50 
 ```
 
 ### ES|QL congested traffic with aggregation
 ```sql
-from metrics-rennes_traffic-raw* 
-| where traffic_status == "congested" 
-| stats avg_traveltime = avg(traveltime.duration) by denomination 
+from metrics-rennes_traffic-raw
+| where traffic_status == "congested"
+| stats avg_traveltime = avg(traveltime.duration) by denomination
 | sort avg_traveltime desc 
 | limit 50 
 ```
 
 ### ES|QL congested traffic with eval
 ```sql
-from metrics-rennes_traffic-raw* 
+from metrics-rennes_traffic-raw
 | where traffic_status == "congested" 
 | stats avg_traveltime = avg(traveltime.duration) by denomination  
 | eval avg_traveltime_min = round(avg_traveltime/60) 
@@ -198,7 +198,7 @@ PUT _enrich/policy/rennes-data-enrich/_execute
 
 ### ES|QL congested traffic with enrich
 ```sql
-from metrics-rennes_traffic-raw*
+from metrics-rennes_traffic-raw
 | where traffic_status == "congested"
 | enrich rennes-data-enrich on insee with code_postal, nom_de_la_commune
 | keep average_vehicle_speed, code_postal, nom_de_la_commune, denomination
@@ -208,7 +208,7 @@ from metrics-rennes_traffic-raw*
 
 ### ES|QL congested traffic with enrich and average aggregation
 ```sql
-from metrics-rennes_traffic-raw*
+from metrics-rennes_traffic-raw
 | where traffic_status == "congested"
 | enrich rennes-data-enrich on insee with code_postal, nom_de_la_commune
 | stats avg_traveltime = avg(traveltime.duration) by nom_de_la_commune
