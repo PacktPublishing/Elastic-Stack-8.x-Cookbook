@@ -37,14 +37,14 @@ xpack.security.audit.enabled: true
 xpack.security.audit.logfile.events.emit_request_body: false 
 ```
 ### ES|QL snippet for user login attempts
-```sql
+```
 from elastic-cloud-logs-8*  
     | where event.type == "access" 
     | stats attempts = count(event.type) by user.name, kibana.space_id, event.outcome 
 ```
 
 ### ES|QL snippet for user login denied attempts
-```sql
+```
 from elastic-cloud-logs-8* 
     | where event.action == "access_denied"  
     | stats attempts = count(event.action) by user.name, elasticsearch.audit.request.name, elasticsearch.audit.user.roles, elasticsearch.audit.indices 
