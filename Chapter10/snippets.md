@@ -9,6 +9,7 @@
 ## Instrumenting your application with Elastic APM Agent
 ### Elastiflix with no-instrumentation
 **In [Chapter10/Elastiflix/no-instrumentation](https://github.com/PacktPublishing/Elastic-Stack-8.x-Cookbook/tree/main/Chapter10/Elastiflix/no-instrumentation)**
+
 Start the application
 ```console
 docker-compose -f docker-compose.yml up --build -d 
@@ -19,6 +20,7 @@ docker-compose -f docker-compose.yml down
 ```
 ### Elastiflix with java-instrumentation
 **In [Chapter10/Elastiflix/java-instrumentation](https://github.com/PacktPublishing/Elastic-Stack-8.x-Cookbook/tree/main/Chapter10/Elastiflix/java-instrumentation)**
+
 After .env configuration, start the application
 ```console
 docker-compose -f docker-compose.yml up --build -d 
@@ -30,7 +32,8 @@ docker-compose -f docker-compose.yml down
 ```
 
 ### Elastiflix with full-instrumentation
-**In [Chapter10/Elastiflix/full-intrumentation](https://github.com/PacktPublishing/Elastic-Stack-8.x-Cookbook/tree/main/Chapter10/Elastiflix/full-intrumentation))**
+**In [Chapter10/Elastiflix/full-intrumentation](https://github.com/PacktPublishing/Elastic-Stack-8.x-Cookbook/tree/main/Chapter10/Elastiflix/full-intrumentation)**
+
 After .env configuration, start the application
 ```console
 docker-compose -f docker-compose.yml up --build -d 
@@ -43,7 +46,7 @@ docker-compose -f docker-compose.yml down
 
 ## Setting up Real User Monitoring
 ### Elastiflix full-instrumentation with RUM
-**In [Chapter10/Elastiflix/full-intrumentation-with-rum](https://github.com/PacktPublishing/Elastic-Stack-8.x-Cookbook/tree/main/Chapter10/Elastiflix/full-intrumentation-with-rum))**
+**In [Chapter10/Elastiflix/full-intrumentation-with-rum](https://github.com/PacktPublishing/Elastic-Stack-8.x-Cookbook/tree/main/Chapter10/Elastiflix/full-intrumentation-with-rum)**
 
 After .env configuration, start the application
 ```console
