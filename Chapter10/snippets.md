@@ -26,6 +26,7 @@ After .env configuration, start the application
 docker-compose -f docker-compose.yml up --build -d 
 ```
 Visit http://localhost:9000 and verify Java instrumentation in APM
+
 Then, stop the application
 ```console
 docker-compose -f docker-compose.yml down 
@@ -39,6 +40,7 @@ After .env configuration, start the application
 docker-compose -f docker-compose.yml up --build -d 
 ```
 Visit http://localhost:9000 and verify full instrumentation in APM
+
 Then, stop the application
 ```console
 docker-compose -f docker-compose.yml down 
@@ -53,6 +55,7 @@ After .env configuration, start the application
 docker-compose -f docker-compose.yml up --build -d 
 ```
 Visit http://localhost:9000 and verify full instrumentation in APM and User experience UI
+
 Then, stop the application
 ```console
 docker-compose -f docker-compose.yml down 
