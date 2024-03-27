@@ -29,7 +29,7 @@ Then, stop the application
 docker-compose -f docker-compose.yml down 
 ```
 
-### Elastiflix with full-instrumentation 
+### Elastiflix with full-instrumentation
 **In [Chapter10/Elastiflix/full-intrumentation](https://github.com/PacktPublishing/Elastic-Stack-8.x-Cookbook/tree/main/Chapter10/Elastiflix/full-intrumentation))**
 After .env configuration, start the application
 ```console
@@ -109,5 +109,3 @@ helm install --set namespaceOverride=kube-system kube-state-metrics prometheus-c
 ```console
 kubectl get pods -n kube-system
 ```
-
-
