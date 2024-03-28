@@ -151,10 +151,7 @@ def get_conversational_rag_chain(llm, retriever, prompt_template):
                                       return_messages=True,
                                       max_history=5,
                                       output_key="answer")
-
-    # prompt template
-    qa_chain_prompt = PromptTemplate(input_variables=["chat_history", "question"], template=prompt_template)
-
+    # Init the chain
     chain = ConversationalRetrievalChain.from_llm(
         llm=chat,
         memory=memory,
