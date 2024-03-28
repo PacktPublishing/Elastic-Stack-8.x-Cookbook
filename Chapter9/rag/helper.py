@@ -1,18 +1,15 @@
-from typing import Optional
 
 # langchain imports
-from langchain.schema.runnable import RunnableMap
 from langchain.prompts.prompt import PromptTemplate
-from langchain.prompts import ChatPromptTemplate
-from operator import itemgetter
 from langchain.schema.messages import HumanMessage, SystemMessage, AIMessage
-from langchain.callbacks.streamlit.streamlit_callback_handler import StreamlitCallbackHandler
 from langchain_community.chat_models import ChatOllama
-from langchain.schema import format_document
 from langchain_core.runnables import RunnableParallel, RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 from langchain.docstore.document import Document
 from typing import Dict
+from langchain.memory.chat_message_histories import StreamlitChatMessageHistory
+from langchain.memory import ConversationBufferMemory
+from langchain.chains import ConversationalRetrievalChain
 
 # global for Elasticsearch RRF
 rrf_window_size = 100
@@ -43,27 +40,6 @@ def convert_message(m):
         raise ValueError(f"Unknown role {m['role']}")
 
 
-_condense_template = """Given the following conversation and a follow up question, 
-                        rephrase the follow up question to be a standalone question, in its original language.
-
-Chat History:
-{chat_history}
-Follow Up Input: {input}
-Standalone question:"""
-CONDENSE_QUESTION_PROMPT = PromptTemplate.from_template(_condense_template)
-
-_rag_template = """Answer the question based only on the following context, 
-                    If the answer is not in the provided context, just say that you don't know..
-                    Ignore irrelevant information in the context:
-{context}
-
-Question: {question}
-"""
-ANSWER_PROMPT = ChatPromptTemplate.from_template(_rag_template)
-
-DEFAULT_DOCUMENT_PROMPT = PromptTemplate.from_template(template="{page_content}")
-
-
 # Setup the rag chain
 def setup_rag_chain(prompt_template, llm, retriever):
     rag_chain_from_docs = (
@@ -88,62 +64,6 @@ def ask(query: str, rag_chain_with_source):
     }
 
 
-def _combine_documents(docs, document_prompt=DEFAULT_DOCUMENT_PROMPT, document_separator="\n\n"):
-    doc_strings = [format_document(doc, document_prompt) for doc in docs]
-    return document_separator.join(doc_strings)
-
-
-def _format_chat_history(chat_history):
-    def format_single_chat_message(m):
-        if type(m) is HumanMessage:
-            return "Human: " + m.content
-        elif type(m) is AIMessage:
-            return "Assistant: " + m.content
-        elif type(m) is SystemMessage:
-            return "System: " + m.content
-        else:
-            raise ValueError(f"Unknown role {m['role']}")
-
-    return "\n".join([format_single_chat_message(m) for m in chat_history])
-
-
-def get_standalone_question_from_chat_history_chain(llm):
-    _inputs = RunnableMap(
-        standalone_question=RunnablePassthrough.assign(
-            chat_history=lambda x: _format_chat_history(x["chat_history"])
-        )
-                            | CONDENSE_QUESTION_PROMPT
-                            | llm
-                            | StrOutputParser(),
-    )
-    return _inputs
-
-
-def get_conversational_rag_chain(retriever, retrieval_cb=None, llm=None):
-    if retrieval_cb is None:
-        retrieval_cb = lambda x: x
-
-    def context_update_fn(q):
-        retrieval_cb([q])
-        return q
-
-    _inputs = RunnableMap(
-        standalone_question=RunnablePassthrough.assign(
-            chat_history=lambda x: _format_chat_history(x["chat_history"])
-        )
-                            | CONDENSE_QUESTION_PROMPT
-                            | llm
-                            | StrOutputParser(),
-    )
-    _context = {
-        "context": itemgetter("standalone_question") | RunnablePassthrough(
-            context_update_fn) | retriever | qa_format_docs,
-        "question": lambda x: x["standalone_question"],
-    }
-    conversational_qa_chain = _inputs | _context | ANSWER_PROMPT | llm
-    return conversational_qa_chain
-
-
 # init chat model
 def setup_chat_model(base_url, selected_model, llm_temperature):
     chat = None
@@ -152,44 +72,6 @@ def setup_chat_model(base_url, selected_model, llm_temperature):
                           model="mistral",
                           temperature=llm_temperature)
     return chat
-
-
-def get_rag_chain_with_sources(retriever, retrieval_cb=None, llm=None):
-    if retrieval_cb is None:
-        retrieval_cb = lambda x: x
-
-    def context_update_fn(q):
-        retrieval_cb([q])
-        return q
-
-    standalone_question = {
-        "standalone_question": {
-                                   "question": lambda x: x["question"],
-                                   "chat_history": lambda x: _format_chat_history(x["chat_history"]),
-                               }
-                               | CONDENSE_QUESTION_PROMPT
-                               | llm
-                               | StrOutputParser(),
-    }
-
-    retrieved_documents = {
-        "docs": itemgetter("standalone_question") | retriever,
-        "question": lambda x: x["standalone_question"],
-    }
-
-    final_inputs = {
-        "context": lambda x: _combine_documents(x["docs"]),
-        "question": itemgetter("question"),
-    }
-
-    answer = {
-        "answer": final_inputs | ANSWER_PROMPT | llm,
-        "docs": itemgetter("docs"),
-    }
-
-    # Create the final chain by combining the steps
-    final_chain = standalone_question | retrieved_documents | answer
-    return final_chain
 
 
 # custom doc_builder
@@ -257,3 +139,28 @@ def init_retriever(k, db, fetch_k):
 # format docs for chatbot
 def qa_format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
+
+
+# Conversation chain for chatbot application
+def get_conversational_rag_chain(llm, retriever, prompt_template):
+    chat = llm
+    # memory for chat history
+    msgs = StreamlitChatMessageHistory()
+    memory = ConversationBufferMemory(memory_key="chat_history",
+                                      chat_memory=msgs,
+                                      return_messages=True,
+                                      max_history=5,
+                                      output_key="answer")
+
+    # prompt template
+    qa_chain_prompt = PromptTemplate(input_variables=["chat_history", "question"], template=prompt_template)
+
+    chain = ConversationalRetrievalChain.from_llm(
+        llm=chat,
+        memory=memory,
+        verbose=True,
+        retriever=retriever,
+        condense_question_prompt=PromptTemplate.from_template(prompt_template),
+        return_source_documents=True,
+    )
+    return chain
