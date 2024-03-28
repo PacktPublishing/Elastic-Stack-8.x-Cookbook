@@ -556,8 +556,8 @@ Sample questions chat history
 Against who a team of super heroes is fighting to protect the city of Rennes?
 ```
 ```
-Who are the heroes?
+Who are the members?
 ```
 ```
-what are the invader’s plans?
+How do they stop the Invader?
 ```
