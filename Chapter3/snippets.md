@@ -257,7 +257,7 @@ GET _render/template
   "id": "movies-search-template", 
   "params": { 
     "query": "space", 
-    "agg_size": 10 
+    "agg_size": 3 
   } 
 } 
 ```
@@ -269,7 +269,7 @@ GET movies/_search/template
   "id": "movies-search-template", 
   "params": { 
     "query": "space", 
-    "agg_size": 10 
+    "agg_size": 3 
   } 
 } 
 ```
@@ -357,7 +357,7 @@ GET _application/search_application/movies-search-application/_search
 { 
   "params": { 
     "query": "space", 
-    "agg_size": "3" 
+    "agg_size": "5" 
   } 
 } 
 ```
