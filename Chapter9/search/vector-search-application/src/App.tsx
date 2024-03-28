@@ -7,8 +7,8 @@ import './App.css'
 
 const request = SearchApplicationClient(
     'movie_vector_search_application',
-    'https://xxx.cloud.es.io:443',
-    'xxx',
+    'https://changeme.cloud.es.io:443',
+    'your_api_key',
   {
     facets: {
       director: {

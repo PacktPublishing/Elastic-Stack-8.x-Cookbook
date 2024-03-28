@@ -54,11 +54,22 @@ GET movies/_search
 }
 ```
 
+### Match phrase query
+```
+GET movies/_search 
+{ 
+  "query": { 
+    "match_phrase": { 
+      "title": "sweet home" 
+    } 
+  } 
+}
+```
 ## Building advanced search query with Query DSL
-
+Here are the Dev tools commands for this recipe
 ### Range query
 ```
-GET movies/_search
+GET /movies/_search
 {
   "query": {
     "range": {
@@ -73,15 +84,12 @@ GET movies/_search
 
 ### Multi match query
 ```
-GET movies/_search
+GET /movies/_search
 {
   "query": {
     "multi_match": {
       "query": "come home",
-      "fields": [
-        "title",
-        "plot"
-      ]
+      "fields": ["title", "plot"]
     }
   }
 }
@@ -89,16 +97,13 @@ GET movies/_search
 
 ### Multi match most queries
 ```
-GET movies/_search
+GET /movies/_search
 {
   "query": {
     "multi_match": {
       "type": "most_fields",
       "query": "come home",
-      "fields": [
-        "title",
-        "plot"
-      ]
+      "fields": ["title", "plot"]
     }
   }
 }
@@ -106,16 +111,13 @@ GET movies/_search
 
 ### Multi match phrase
 ```
-GET movies/_search
+GET /movies/_search
 {
   "query": {
     "multi_match": {
       "type": "phrase",
       "query": "come home",
-      "fields": [
-        "title",
-        "plot"
-      ]
+      "fields": ["title", "plot"]
     }
   }
 }
@@ -123,21 +125,13 @@ GET movies/_search
 
 ### Boolean query
 ```
-GET movies/_search
+GET /movies/_search
 {
   "query": {
     "bool": {
       "must": [
-        {
-          "match": {
-            "title": "home"
-          }
-        },
-        {
-          "match": {
-            "genre": "comedy"
-          }
-        }
+        { "match": { "title": "home" } },
+        { "match": { "genre": "comedy" } }
       ]
     }
   }
@@ -146,55 +140,31 @@ GET movies/_search
 
 ### Boolean query with filter
 ```
-GET movies/_search
+GET /movies/_search
 {
   "query": {
     "bool": {
-      "must": [
-        {
-          "match": {
-            "title": "home"
-          }
-        }
-      ],
-      "filter": [
-        {
-          "match": {
-            "genre": "comedy"
-          }
-        }
-      ]
-    }
-  }
-}
-```
-
-### Boolean query with range filter
-```
-GET movies/_search
-{
-  "query": {
-    "bool": {
-      "must": [
-        {
-          "match": {
-            "title": "home"
-          }
-        }
-      ],
-      "should": [
-        {
-          "match": {
-            "genre": "comedy"
-          }
-        }
-      ]
+      "must": [ { "match": { "title": "home" } } ],
+      "filter": [ { "match": { "genre": "comedy" } } ]
     }
   }
 }
 ```
 
 ### Boolean query with should
+```
+GET /movies/_search
+{
+  "query": {
+    "bool": {
+      "must": [ { "match": { "title": "home" } } ],
+      "should": [ { "match": { "genre": "comedy" } } ]
+    }
+  }
+}
+```
+
+### Boolean query with range filter
 ```
 GET movies/_search
 {
@@ -227,67 +197,74 @@ GET movies/_search
 PUT _scripts/movies-search-template
 {
   "script": {
-      "lang": "mustache",
-      "source":
-        {
-          "query": {
-            "bool": {
-              "must": [
-             
-              {
-                "multi_match" : {
-                  "query":    "{{query}}",
-                  "fields": [ "title^4", "plot", "cast", "director" ]
-                }
-              },
-              {
-                "multi_match" : {
-                  "query":    "{{query}}",
-                  "type": "phrase_prefix",
-                  "fields": [ "title^4", "plot", "director"]
-                }
-              }
-            
-            ]
-            }
-          },
-          "aggs": {
-            "genre_facet": {
-              "terms": {
-                "field": "genre",
-                "size": "{{agg_size}}"
+    "lang": "mustache",
+    "source": {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "multi_match": {
+                "query": "{{query}}",
+                "fields": [
+                  "title^4",
+                  "plot",
+                  "cast",
+                  "director"
+                ]
               }
             },
-            "director_facet": {
-              "terms": {
-                "field": "director.keyword",
-                "size": "{{agg_size}}"
+            {
+              "multi_match": {
+                "query": "{{query}}",
+                "type": "phrase_prefix",
+                "fields": [
+                  "title^4",
+                  "plot",
+                  "director"
+                ]
               }
             }
-          },
-          "sort": [
-            {
-              "release_year": "desc"
-            }
-          ],
-          "fields": [
-            "title",
-            "release_year",
-            "director",
-            "origin"
-            ],
-          "_source": "false"
+          ]
         }
+      },
+      "aggs": {
+        "genre_facet": {
+          "terms": {
+            "field": "genre",
+            "size": "{{agg_size}}"
+          }
+        },
+        "director_facet": {
+          "terms": {
+            "field": "director.keyword",
+            "size": "{{agg_size}}"
+          }
+        }
+      },
+      "sort": [
+        {
+          "release_year": "desc"
+        }
+      ],
+      "fields": [
+        "title",
+        "release_year",
+        "director",
+        "origin"
+      ],
+      "_source": "false"
     }
+  }
 }
 ```
-### Test render template
+### Render search template with sample parameters
 ```
-POST _render/template  
+GET _render/template  
 { 
   "id": "movies-search-template", 
   "params": { 
-    "query": "space" 
+    "query": "space", 
+    "agg_size": 3 
   } 
 } 
 ```
@@ -299,7 +276,19 @@ GET movies/_search/template
   "id": "movies-search-template", 
   "params": { 
     "query": "space", 
-    "agg_size": 10 
+    "agg_size": 3 
+  } 
+} 
+```
+
+### Search template with conditions
+```
+GET _render/template 
+{ 
+  "source": "{ \"query\": { \"bool\": { \"filter\": [ {{#last_10y}} { \"range\": { \"release_year\": { \"gte\": \"now-10y/d\", \"lt\": \"now/d\" } } }, {{/last_10y}} { \"term\": { \"origin\": \"{{origin}}\" }}]}}}", 
+  "params": { 
+    "last_10y": true, 
+    "origin": "American" 
   } 
 } 
 ```
@@ -310,16 +299,114 @@ GET movies/_search/template
 ```
 PUT _application/search_application/movies-search-application
 {
+  "indices": [
+    "movies"
+  ],
+  "template": {
+    "script": {
+      "lang": "mustache",
+      "source": {
+        "query": {
+          "bool": {
+            "must": [
+              {
+                "multi_match": {
+                  "query": "{{query}}",
+                  "fields": [
+                    "title^4",
+                    "plot",
+                    "cast",
+                    "director"
+                  ]
+                }
+              },
+              {
+                "multi_match": {
+                  "query": "{{query}}",
+                  "type": "phrase_prefix",
+                  "fields": [
+                    "title^4",
+                    "plot",
+                    "director"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "aggs": {
+          "genre_facet": {
+            "terms": {
+              "field": "genre",
+              "size": "{{agg_size}}"
+            }
+          },
+          "director_facet": {
+            "terms": {
+              "field": "director.keyword",
+              "size": "{{agg_size}}"
+            }
+          }
+        },
+        "sort": [
+          {
+            "release_year": "desc"
+          }
+        ],
+        "fields": [
+          "title",
+          "release_year",
+          "director",
+          "origin"
+        ],
+        "_source": "false"
+      }
+    }
+  }
+}
+```
+
+### Test the search application in Dev Tools
+```
+GET _application/search_application/movies-search-application/_search 
+{ 
+  "params": { 
+    "query": "space", 
+    "agg_size": "5" 
+  } 
+} 
+```
+
+## Building search experience with Search Application Client
+
+### Install the react application dependencies
+```console
+yarn install
+```
+
+### Cross-Origin Resource Sharing (CORS) Settings for Elasticsearch
+```yaml
+http.cors.allow-origin: "*" 
+http.cors.enabled: true 
+http.cors.allow-credentials: true 
+http.cors.allow-methods: OPTIONS, HEAD, GET, POST, PUT, DELETE 
+http.cors.allow-headers: X-Requested-With, X-Auth-Token, Content-Type, Content-Length, Authorization, Access-Control-Allow-Headers, Accept  
+```
+
+### Update search application with search template
+```
+PUT _application/search_application/movies-search-application
+{
   "indices": ["movies"],
   "template": {
     "script": {
       "lang": "mustache",
-      "source":
+      "source": """
         {
           "query": {
             "bool": {
               "must": [
-             
+              {{#query}}
               {
                 "multi_match" : {
                   "query":    "{{query}}",
@@ -330,11 +417,12 @@ PUT _application/search_application/movies-search-application
                 "multi_match" : {
                   "query":    "{{query}}",
                   "type": "phrase_prefix",
-                  "fields": [ "title^4", "plot", "director"]
+                  "fields": [ "title^4", "plot"]
                 }
               }
-            
-            ]
+              {{/query}}
+            ],
+            "filter": {{#toJson}}_es_filters{{/toJson}}
             }
           },
           "aggs": {
@@ -351,49 +439,23 @@ PUT _application/search_application/movies-search-application
               }
             }
           },
-          "sort": [
-            {
-              "release_year": "desc"
-            }
-          ],
-          "fields": [
-            "title",
-            "release_year",
-            "director",
-            "origin"
-            ],
-          "_source": "false"
+          "from": {{from}},
+          "size": {{size}},
+          "sort": {{#toJson}}_es_sort_fields{{/toJson}}
         }
+      """,
+      "params": {
+        "query": "",
+        "_es_sort_fields": {},
+        "_es_filters": {},
+        "_es_aggs": {},
+        "size": 10,
+        "agg_size": 5,
+        "from": 0
+      }
     }
   }
 }
-```
-
-### Test the search application in Dev Tools
-```
-POST _application/search_application/movies-search-application/_search 
-{ 
-  "params": { 
-    "query": "space", 
-    "agg_size": "3" 
-  } 
-} 
-```
-
-## Building search experience with Search Application Client
-
-### Install the react application dependencies
-```console
-yarn install
-```
-
-### Settings for Elasticsearch
-```yaml
-http.cors.allow-origin: "*" 
-http.cors.enabled: true 
-http.cors.allow-credentials: true 
-http.cors.allow-methods: OPTIONS, HEAD, GET, POST, PUT, DELETE 
-http.cors.allow-headers: X-Requested-With, X-Auth-Token, Content-Type, Content-Length, Authorization, Access-Control-Allow-Headers, Accept  
 ```
 
 ### Locate and update the following in App.tsx
@@ -411,7 +473,7 @@ yarn start
 ```
 
 ## Measuring the performance of your search applications with Behaviour analytics
-Locate the uncomment the following code blocks in App.tsx
+Locate and uncomment the following code blocks in App.tsx
 ```Javascript
 createTracker({  
   	endpoint: "https://xxx.cloud.es.io:443",  

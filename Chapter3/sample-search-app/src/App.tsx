@@ -12,8 +12,8 @@ import './App.css'
 
 const request = SearchApplicationClient(
   'movies-search-application',
-  'https://xxx.cloud.es.io:443',
-  'xxx',
+  'https://changeme.cloud.es.io:443',
+  'your_api_key',
   {
     facets: {
       director: {
@@ -208,29 +208,31 @@ function App() {
             results.hits.hits.map((hit: any) => {
               return (
                 <div
-                  key={hit._id}
-                  className="bg-white rounded-lg shadow-md p-4"
+                    key={hit._id}
+                    className="bg-white rounded-lg shadow-md p-4"
                 >
-                  <h3 className="text-lg font-semibold"><a href={hit._source.wiki_page} onClick={handleClickTracking(hit)}>{hit._source.title}</a>
+                  <h3 className="text-lg font-semibold"><a href={hit._source.wiki_page}
+                                                           onClick={handleClickTracking(hit)}>{hit._source.title}</a>
                   </h3>
+                  <p>{hit._source.release_year}</p>
                   <p>{hit._source.director}</p>
-                  <p>{hit._source.cast}</p>
+                  <p className="fixed-height">{hit._source.plot}</p>
                 </div>
               )
             })}
         </div>
         <div className="mt-4 flex justify-center gap-4">
           {page > 1 && (
-            <button
-              className="bg-blue-500 text-white px-4 py-2 rounded-md"
-              onClick={() => setPage(page - 1)}
-            >
-              Prev Page
-            </button>
+              <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                  onClick={() => setPage(page - 1)}
+              >
+                Prev Page
+              </button>
           )}
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
-            onClick={() => setPage(page + 1)}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md"
+              onClick={() => setPage(page + 1)}
           >
             Next Page
           </button>

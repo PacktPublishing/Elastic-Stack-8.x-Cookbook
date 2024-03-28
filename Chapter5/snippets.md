@@ -52,6 +52,9 @@ PUT _ingest/pipeline/apache-logs-custom
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elastic-keyring.gpg
 ```
 ```console
+sudo apt-get install apt-transport-https
+```
+```console
 echo "deb [signed-by=/usr/share/keyrings/elastic-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list 
 ```
 ```console
@@ -243,7 +246,55 @@ PUT _transform/rennes-traffic-location-latest-trafficjam-transform
   "source": {
     "index": [
       "metrics-rennes_traffic-default"
-    ]
+    ],
+    "query": {
+      "bool": {
+        "filter": [
+          {
+            "bool": {
+              "filter": [
+                {
+                  "bool": {
+                    "must_not": {
+                      "bool": {
+                        "should": [
+                          {
+                            "term": {
+                              "traffic_status": {
+                                "value": "freeFlow"
+                              }
+                            }
+                          }
+                        ],
+                        "minimum_should_match": 1
+                      }
+                    }
+                  }
+                },
+                {
+                  "bool": {
+                    "must_not": {
+                      "bool": {
+                        "should": [
+                          {
+                            "term": {
+                              "traffic_status": {
+                                "value": "unknown"
+                              }
+                            }
+                          }
+                        ],
+                        "minimum_should_match": 1
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
   },
   "latest": {
     "unique_key": [
@@ -253,7 +304,7 @@ PUT _transform/rennes-traffic-location-latest-trafficjam-transform
   },
   "description": "rennes-traffic-location-latest-trafficjam-transform",
   "dest": {
-    "index": "rennes-traffic-latest-trafficjam-location"
+    "index": "rennes-traffic-location-latest-trafficjam-transform"
   },
   "sync": {
     "time": {
