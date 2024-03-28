@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from langchain.globals import set_debug
 from langchain_community.chat_message_histories import StreamlitChatMessageHistory
 from langchain_community.chat_models.ollama import ChatOllama
-from langchain_community.vectorstores import ElasticsearchStore
+from langchain_elasticsearch import ElasticsearchStore
 
 from helper import get_conversational_rag_chain
 
