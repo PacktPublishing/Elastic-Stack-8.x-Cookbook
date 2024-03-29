@@ -17,6 +17,10 @@ Extract Elastic Agent
 ```console
 tar xzvf elastic-agent-8.12.2-linux-x86_64.tar.gz
 ```
+Replace elastic-agent.yml file with the one downloaded from Kibana
+```console
+cp /tmp/elastic-agent.yml /home/admin/elastic-agent-8.12.2-linux-x86_64
+```
 Install Elastic Agent
 ```console
 sudo ./elastic-agent install
