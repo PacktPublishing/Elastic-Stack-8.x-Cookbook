@@ -131,7 +131,7 @@ PUT _component_template/rennes_traffic-mappings
     }
   },
   "_meta": {
-    "description": "Mappings for rennes traffic data fields"
+    "description": "Mappings for Rennes traffic data fields"
   }
 }
 ```
@@ -160,7 +160,7 @@ PUT _index_template/rennes_traffic-index-template
   "composed_of": [ "rennes_traffic-mappings", "rennes_traffic-settings" ],
   "priority": 500,
   "_meta": {
-    "description": "Template for rennes traffic data"
+    "description": "Template for Rennes traffic data"
   }
 }
 ```
@@ -271,7 +271,7 @@ PUT _component_template/metrics-rennes_traffic-mappings@default
     }
   },
   "_meta": {
-    "description": "Mappings for rennes traffic metrics fields",
+    "description": "Mappings for Rennes traffic metrics fields",
     "data_stream": {
       "dataset": "rennes_traffic",
       "namespace": "default",
@@ -295,7 +295,7 @@ PUT _index_template/metrics-rennes_traffic-default-index-template
   "composed_of": [ "metrics-rennes_traffic-mappings@default", "rennes_traffic-settings" ],
   "priority": 500,
   "_meta": {
-    "description": "Template for rennes traffice metrics data"
+    "description": "Template for Rennes traffic metrics data"
   }
 }
 ```
