@@ -12,7 +12,7 @@ import './App.css'
 
 const request = SearchApplicationClient(
   'movies-search-application',
-  'https://changeme.cloud.es.io:443',
+  'your_elasticsearch_endpoint',
   'your_api_key',
   {
     facets: {
@@ -33,9 +33,9 @@ const request = SearchApplicationClient(
 /* Behaviour analytics */
 /*
 createTracker({
-  endpoint: "https://xxx.cloud.es.io:443",
+  endpoint: "your_elasticsearch_endpoint",
   collectionName: "movie-stats",
-  apiKey: "your_api_key",
+  apiKey: "your_analytics_collection_api_key",
 });*/
 
 function Facets({ facets, addFilter, removeFilter, filters }: any) {

@@ -259,7 +259,7 @@ GET _render/template
     "query": "space", 
     "agg_size": 3 
   } 
-} 
+}
 ```
 
 ### Query with search template 
@@ -271,7 +271,7 @@ GET movies/_search/template
     "query": "space", 
     "agg_size": 3 
   } 
-} 
+}
 ```
 
 ### Search template with conditions
@@ -283,7 +283,7 @@ GET _render/template
     "last_10y": true, 
     "origin": "American" 
   } 
-} 
+}
 ```
 
 ## Getting started with Search Applications for your Elasticsearch Index
