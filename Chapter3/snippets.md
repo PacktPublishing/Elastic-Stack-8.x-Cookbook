@@ -197,57 +197,64 @@ GET movies/_search
 PUT _scripts/movies-search-template
 {
   "script": {
-      "lang": "mustache",
-      "source":
-        {
-          "query": {
-            "bool": {
-              "must": [
-              {
-                "multi_match" : {
-                  "query":    "{{query}}",
-                  "fields": [ "title^4", "plot", "cast", "director" ]
-                }
-              },
-              {
-                "multi_match" : {
-                  "query":    "{{query}}",
-                  "type": "phrase_prefix",
-                  "fields": [ "title^4", "plot", "director"]
-                }
-              }
-            
-            ]
-            }
-          },
-          "aggs": {
-            "genre_facet": {
-              "terms": {
-                "field": "genre",
-                "size": "{{agg_size}}"
+    "lang": "mustache",
+    "source": {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "multi_match": {
+                "query": "{{query}}",
+                "fields": [
+                  "title^4",
+                  "plot",
+                  "cast",
+                  "director"
+                ]
               }
             },
-            "director_facet": {
-              "terms": {
-                "field": "director.keyword",
-                "size": "{{agg_size}}"
+            {
+              "multi_match": {
+                "query": "{{query}}",
+                "type": "phrase_prefix",
+                "fields": [
+                  "title^4",
+                  "plot",
+                  "director"
+                ]
               }
             }
-          },
-          "sort": [
-            {
-              "release_year": "desc"
-            }
-          ],
-          "fields": [
-            "title",
-            "release_year",
-            "director",
-            "origin"
-            ],
-          "_source": "false"
+          ]
         }
+      },
+      "aggs": {
+        "genre_facet": {
+          "terms": {
+            "field": "genre",
+            "size": "{{agg_size}}"
+          }
+        },
+        "director_facet": {
+          "terms": {
+            "field": "director.keyword",
+            "size": "{{agg_size}}"
+          }
+        }
+      },
+      "sort": [
+        {
+          "release_year": "desc"
+        }
+      ],
+      "fields": [
+        "title",
+        "release_year",
+        "director",
+        "origin"
+      ],
+      "_source": "false"
     }
+  }
 }
 ```
 ### Render search template with sample parameters
@@ -292,60 +299,68 @@ GET _render/template
 ```
 PUT _application/search_application/movies-search-application
 {
-  "indices": ["movies"],
+  "indices": [
+    "movies"
+  ],
   "template": {
     "script": {
       "lang": "mustache",
-      "source":
-        {
-          "query": {
-            "bool": {
-              "must": [
-             
+      "source": {
+        "query": {
+          "bool": {
+            "must": [
               {
-                "multi_match" : {
-                  "query":    "{{query}}",
-                  "fields": [ "title^4", "plot", "cast", "director" ]
+                "multi_match": {
+                  "query": "{{query}}",
+                  "fields": [
+                    "title^4",
+                    "plot",
+                    "cast",
+                    "director"
+                  ]
                 }
               },
               {
-                "multi_match" : {
-                  "query":    "{{query}}",
+                "multi_match": {
+                  "query": "{{query}}",
                   "type": "phrase_prefix",
-                  "fields": [ "title^4", "plot", "director"]
+                  "fields": [
+                    "title^4",
+                    "plot",
+                    "director"
+                  ]
                 }
               }
-            
             ]
+          }
+        },
+        "aggs": {
+          "genre_facet": {
+            "terms": {
+              "field": "genre",
+              "size": "{{agg_size}}"
             }
           },
-          "aggs": {
-            "genre_facet": {
-              "terms": {
-                "field": "genre",
-                "size": "{{agg_size}}"
-              }
-            },
-            "director_facet": {
-              "terms": {
-                "field": "director.keyword",
-                "size": "{{agg_size}}"
-              }
+          "director_facet": {
+            "terms": {
+              "field": "director.keyword",
+              "size": "{{agg_size}}"
             }
-          },
-          "sort": [
-            {
-              "release_year": "desc"
-            }
-          ],
-          "fields": [
-            "title",
-            "release_year",
-            "director",
-            "origin"
-            ],
-          "_source": "false"
-        }
+          }
+        },
+        "sort": [
+          {
+            "release_year": "desc"
+          }
+        ],
+        "fields": [
+          "title",
+          "release_year",
+          "director",
+          "origin"
+        ],
+        "_source": "false"
+      }
     }
   }
 }

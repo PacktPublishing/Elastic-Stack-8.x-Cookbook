@@ -1,15 +1,12 @@
-import os
-import time
+from langchain_community.vectorstores import ElasticsearchStore
+
+from helper import convert_message, get_lcel_conversational_rag_chain, setup_chat_model
+from langchain.globals import set_debug
 from typing import Dict
 
+import os
 import streamlit as st
 from dotenv import load_dotenv
-from langchain.globals import set_debug
-from langchain_community.chat_message_histories import StreamlitChatMessageHistory
-from langchain_community.chat_models.ollama import ChatOllama
-from langchain_elasticsearch import ElasticsearchStore
-
-from helper import get_conversational_rag_chain
 
 set_debug(False)
 
@@ -24,20 +21,6 @@ OLLAMA_ENDPOINT = os.getenv('OLLAMA_ENDPOINT')
 
 # load environment variables
 load_dotenv()
-
-# chat prompt
-custom_template = """Given the following conversation and a follow-up message, \
-    rephrase the follow-up message to a stand-alone question or instruction that \
-    represents the user's intent, add all context needed if necessary to generate a complete and \
-    unambiguous question or instruction, only based on the history, don't make up messages. \
-    Maintain the same language as the follow up input message.
-    Use only the provided context to answer the question, if you don't know, simply answer that you don't know.
-
-    Chat History:
-    {chat_history}
-
-    Follow Up Input: {question}
-    Standalone question or instruction:"""
 
 # streamlit UI Config
 st.set_page_config(page_title="Chatbot 90's movies", page_icon=":cinema:", initial_sidebar_state="collapsed")
@@ -102,7 +85,7 @@ def init_retriever_chatbot(k, db, fetch_k):
     return retriever
 
 
-class AdvancedMovieChatbot:
+class MovieChatbot:
     def __init__(self):
         self.db = ElasticsearchStore(
             es_cloud_id=ES_CID,
@@ -131,7 +114,7 @@ class AdvancedMovieChatbot:
                                                                  step=0.1, key='llm_temp',
                                                                  help='Control the creativity of the model')
             st.subheader('Configure Retrieval parameters')
-            st.session_state.k = st.sidebar.slider('Number of documents to retrieve', min_value=1, max_value=20,
+            st.session_state.k = st.sidebar.slider('Number of documents to retrieve', min_value=1, max_value=10,
                                                    value=10,
                                                    step=1, key='k_results',
                                                    help='Number of documents to retrieve')
@@ -147,57 +130,83 @@ class AdvancedMovieChatbot:
                                                                    value=10,
                                                                    step=10,
                                                                    help='RRF rank constant')
-            st.session_state.display_sources = st.sidebar.checkbox('Display sources', value=False)
 
-        # set up the retriever
-        ollama = ChatOllama(base_url=st.session_state.llm_base_url,
-                            model='mistral',
-                            temperature=st.session_state.llm_temperature)
+        # default query
+        default_query = (
+            'Which movie mentions "The ship breaks in half, lifting the stern into the air" and how the '
+            'movies ends?')
+        # create the message history state or clear it
+        if "messages" not in st.session_state or st.sidebar.button("Clear chat history"):
+            st.session_state.messages = []
 
-        chain = get_conversational_rag_chain(llm=ollama,
-                                             retriever=init_retriever_chatbot(st.session_state.k,
-                                                                              self.db,
-                                                                              st.session_state.num_candidates),
-                                             prompt_template=custom_template)
+        # render older messages
+        for message in st.session_state.messages:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
 
-        msgs = StreamlitChatMessageHistory()
+        prompt = st.chat_input("Ask me anything about favorite 90s movies...")
+        if prompt:
+            st.session_state.messages.append({"role": "user", "content": prompt})
 
-        if len(msgs.messages) == 0 or st.sidebar.button("Clear message history"):
-            msgs.clear()
-            msgs.add_ai_message("Hello! How can I help you ?")
+            # Render the user question
+            with st.chat_message("user"):
+                st.markdown(prompt)
 
-        avatars = {"human": "user", "ai": "assistant"}
-        for msg in msgs.messages:
-            st.chat_message(avatars[msg.type]).write(msg.content)
-
-        if user_query := st.chat_input(placeholder="Ask me anything about favorite 90s movies..."):
-            st.chat_message("user").write(user_query)
+            # render the assistant's response
             with st.chat_message("assistant"):
+                retrival_container = st.container()
                 message_placeholder = st.empty()
+
+                retrieval_status = retrival_container.status("**Context Retrieval**")
+                queried_questions = []
+                rendered_questions = set()
+
+                def update_retrieval_status():
+                    for q in queried_questions:
+                        if q in rendered_questions:
+                            continue
+                        rendered_questions.add(q)
+                        retrieval_status.markdown(f"\n\n`- {q}`")
+
+                def retrieval_cb(qs):
+                    for q in qs:
+                        if q not in queried_questions:
+                            queried_questions.append(q)
+                    return qs
+
+                # get the chain with the retrieval callback
+                custom_chain = get_lcel_conversational_rag_chain(init_retriever_chatbot(st.session_state.k, self.db,
+                                                                                        st.session_state.num_candidates),
+                                                                 retrieval_cb,
+                                                                 setup_chat_model(st.session_state.llm_base_url,
+                                                              st.session_state.llm_model,
+                                                              st.session_state.llm_temperature)
+                                                                 )
+
+                if "messages" in st.session_state:
+                    chat_history = [convert_message(m) for m in st.session_state.messages[:-1]]
+                else:
+                    chat_history = []
+
                 full_response = ""
-                try:
-                    response = chain({"question": user_query, "chat_history": msgs})
-                    for chunk in response['answer'].split():
-                        full_response += chunk + " "
-                        time.sleep(0.05)
-                        message_placeholder.write(full_response)
-                        message_placeholder.markdown(full_response + "▌")
-                    message_placeholder.markdown(full_response)
-                    print(response['answer'])
+                for response in custom_chain.stream(
+                        {"input": prompt, "chat_history": chat_history}
+                ):
+                    if "output" in response:
+                        full_response += response["output"]
+                    else:
+                        full_response += response.content
 
-                    # print sources
-                    if st.session_state.display_sources and response['source_documents']:
-                        st.markdown(""" ##### Sources documents from the context: """)
-                        for docs_source in response['source_documents']:
-                            link = f'<a href="{docs_source.metadata["wiki"]}" target="_blank">{docs_source.metadata["title"]}</a>'
-                            st.markdown(link, unsafe_allow_html=True)
+                    message_placeholder.markdown(full_response + "▌")
+                    update_retrieval_status()
 
-                except Exception as e:
-                    st.write("Oops! Error occurred while processing your request. Please try again later.")
-                    print(e)
-                    return
+                retrieval_status.update(state="complete")
+                message_placeholder.markdown(full_response)
+
+                # add the full response to the message history
+            st.session_state.messages.append({"role": "assistant", "content": full_response})
 
 
 if __name__ == "__main__":
-    chatbot = AdvancedMovieChatbot()
-    chatbot.main()
+    app = MovieChatbot()
+    app.main()
