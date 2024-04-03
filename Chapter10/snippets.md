@@ -76,7 +76,7 @@ kubectl create secret generic elastic-secret --from-literal=elastic_apm_endpoint
 ```
 Add the OpenTelemetry chart repository
 ```console
-helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry -helm-charts
+helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
 ```
 Deploy the OpenTelemetry Demo
 ```console
