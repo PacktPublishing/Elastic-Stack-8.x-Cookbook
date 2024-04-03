@@ -147,7 +147,7 @@ from metrics-rennes_traffic-raw
 from metrics-rennes_traffic-raw
 | where traffic_status == "congested" 
 | stats avg_traveltime = avg(traveltime.duration) by denomination  
-| eval avg_traveltime_min = round(avg_traveltime/60) 
+| eval avg_traveltime_min = (avg_traveltime/60) 
 | sort avg_traveltime_min desc 
 | keep denomination, avg_traveltime_min 
 | limit 50 
