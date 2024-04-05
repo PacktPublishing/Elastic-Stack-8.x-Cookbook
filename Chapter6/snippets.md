@@ -125,6 +125,10 @@ PUT _index_template/metrics-rennes_traffic-raw-index-template
 }
 ```
 
+Once the *[rennes_traffic-raw-conf](#https://github.com/PacktPublishing/Elastic-Stack-8.x-Cookbook/blob/main/Chapter6/logstash-conf/rennes_traffic-raw.conf)* is configured and deployed to the Logstash conf folder, execute the following command
+```console
+sudo systemctl restart logstash.service
+```
 ## Exploring your data with ES|QL
 
 ### ES|QL congested traffic
