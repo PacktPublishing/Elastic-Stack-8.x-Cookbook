@@ -10,6 +10,31 @@
 ## Exploring your data in Discover
 
 ### Preparing regular data stream *metrics-rennes_traffic-raw*
+
+Creates a component template for *metrics-rennes_traffic-raw* Index Lifecyle Policy
+```
+PUT _ilm/policy/metrics-rennes_traffic-raw-lifecycle-policy
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover": {
+            "max_primary_shard_size": "50gb"
+          }
+        }
+      },
+      "delete": {
+        "min_age": "30d",
+        "actions": {
+          "delete": {}
+        }
+      }
+    }
+  }
+}
+```
+
 Creates a component template for *metrics-rennes_traffic-raw* mappings
 ```
 PUT _component_template/metrics-rennes_traffic-mappings@raw
@@ -66,30 +91,6 @@ PUT _component_template/metrics-rennes_traffic-mappings@raw
           "dataset": "rennes_traffic",
           "namespace": "default",
           "type": "metrics"
-    }
-  }
-}
-```
-
-Creates a component template for *metrics-rennes_traffic-raw* Index Lifecyle Policy
-```
-PUT _ilm/policy/metrics-rennes_traffic-raw-lifecycle-policy
-{
-  "policy": {
-    "phases": {
-      "hot": {
-        "actions": {
-          "rollover": {
-            "max_primary_shard_size": "50gb"
-          }
-        }
-      },
-      "delete": {
-        "min_age": "30d",
-        "actions": {
-          "delete": {}
-        }
-      }
     }
   }
 }
