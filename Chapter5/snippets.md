@@ -48,18 +48,23 @@ PUT _ingest/pipeline/apache-logs-custom
 ```
 ## Installing self-managed Logstash
 ### Console commands
+Download & install the Public Signing Key
 ```console
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elastic-keyring.gpg
 ```
+Install *apt-transport-https* package
 ```console
 sudo apt-get install apt-transport-https
 ```
+Save the repository definition
 ```console
 echo "deb [signed-by=/usr/share/keyrings/elastic-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list 
 ```
+Install Logstash
 ```console
 sudo apt-get update && sudo apt-get install logstash 
 ```
+Check installed Logstash version
 ```console
 /usr/share/logstash/bin/logstash --version 
 ```
