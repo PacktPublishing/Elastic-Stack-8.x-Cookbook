@@ -186,7 +186,7 @@ PUT /_enrich/policy/rennes-data-enrich
 {
   "match": {
     "indices": [
-      "insee-codes"
+      "enrich-insee-codes"
     ],
     "match_field": "insee",
     "enrich_fields": [
