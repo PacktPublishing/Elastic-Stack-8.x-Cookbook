@@ -2,11 +2,12 @@
 
 ## <em>Quick links to the recipes</em>
 * [Finding deviation in your data with outlier detection](#finding-deviation-in-your-data-with-outlier-detection)
+* [Building a model to perform regression analysis ](#building-a-model-to-perform-regression-analysis)
+* [Building a model for classification ](#building-a-model-for-classification)
 * [Using trained model for inference](#using-trained-model-for-inference)
 * [Deploying third-party NLP models and testing via UI](#deploying-third-party-nlp-models-and-testing-via-ui)
 * [Running advanced data processing with trained models](#running-advanced-data-processing-with-trained-models)
-* [Building a model to perform regression analysis ](#building-a-model-to-perform-regression-analysis)
-* [Building a model for classification ](#building-a-model-for-classification)
+
 
 ## Finding deviation in your data with outlier detection
 ### Data transform
