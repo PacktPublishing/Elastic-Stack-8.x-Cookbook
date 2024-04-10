@@ -298,6 +298,40 @@ Back in the present, Lovett decides to abandon his search after hearing Rose's s
 ```
 ## Running advanced data processing with trained models
 
+
+
+### *movie-anonymized* mapping
+```json
+{
+  "properties": {
+    "cast": {
+      "type": "text"
+    },
+    "director": {
+      "type": "text"
+    },
+    "genre": {
+      "type": "keyword"
+    },
+    "origin": {
+      "type": "keyword"
+    },
+    "release_year": {
+      "type": "long"
+    },
+    "title": {
+      "type": "text"
+    },
+    "wiki": {
+      "type": "keyword"
+    },
+    "anonymized_plot": {
+      "type": "text"
+    }
+  }
+}
+```
+
 ### *movie-anonymized* ingest pipeline
 ```json
 {
@@ -362,37 +396,5 @@ Back in the present, Lovett decides to abandon his search after hearing Rose's s
       }
     }
   ]
-}
-```
-
-### *movie-anonymized* mapping
-```json
-{
-  "properties": {
-    "cast": {
-      "type": "text"
-    },
-    "director": {
-      "type": "text"
-    },
-    "genre": {
-      "type": "keyword"
-    },
-    "origin": {
-      "type": "keyword"
-    },
-    "release_year": {
-      "type": "long"
-    },
-    "title": {
-      "type": "text"
-    },
-    "wiki": {
-      "type": "keyword"
-    },
-    "anonymized_plot": {
-      "type": "text"
-    }
-  }
 }
 ```
