@@ -8,7 +8,7 @@ load_dotenv()
 ES_CID = os.getenv('ES_CID')
 ES_USER = os.getenv('ES_USER')
 ES_PWD = os.getenv('ES_PWD')
-INFERENCE_PIPELINE_ID = os.getenv('INFERENCE_PIPELINE_ID')
+INFERENCE_MODEL_ID = os.getenv('INFERENCE_MODEL_ID')
 
 es = Elasticsearch(
     cloud_id=ES_CID,
@@ -50,7 +50,7 @@ if st.button("Predict"):
     ]
 
     # Call simulate inference pipeline API with document
-    response = es.ingest.simulate(docs=docs, id=INFERENCE_PIPELINE_ID)
+    response = es.ingest.simulate(docs=docs, id=INFERENCE_MODEL_ID)
 
     # get prediction
     prediction = response['docs'][0]['doc']['_source']['ml']['inference']['top_metrics']['traffic_status_prediction']['top_metrics.traffic_status_prediction']
