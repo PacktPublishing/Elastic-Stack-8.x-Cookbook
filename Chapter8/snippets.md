@@ -270,19 +270,19 @@ pip install 'eland[pytorch]'
 eland_import_hub_model –help
 ```
 ```console
-eland_import_hub_model  
---cloud-id <ES_CID> \   
--u <ES_USER> -p <ES_PWD> \ 
---hub-model-id dslim/bert-base-NER  \ 
---task-type ner  --start 
+eland_import_hub_model \
+--cloud-id <ES_CID> \
+-u <ES_USER> -p <ES_PWD> \
+--hub-model-id dslim/bert-base-NER \
+--task-type ner  --start
 ```
 
 ```console
-eland_import_hub_model  
---cloud-id <ES_CID> \   
--u <ES_USER> -p <ES_PWD> \ 
---hub-model-id nickmuchi/distilroberta-base-movie-genre-prediction  \ 
---task-type text_classification  --start 
+eland_import_hub_model \
+--cloud-id <ES_CID> \
+-u <ES_USER> -p <ES_PWD> \
+--hub-model-id nickmuchi/distilroberta-base-movie-genre-prediction \
+--task-type text_classification  --start
 ```
 
 ## Running advanced data processing with trained models
