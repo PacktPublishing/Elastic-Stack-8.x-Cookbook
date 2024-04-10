@@ -33,7 +33,7 @@ http.cors.allow-headers: X-Requested-With, X-Auth-Token, Content-Type, Content-L
 
 Save changes and this would restart the deployment.
 
-4. Update the SearchApplicationClient params in ```App.tsx``` with the ```applicationName```, ```endpoint```, ```apiKey``` and ```params``` for your search experience if needed.
+4. Update the SearchApplicationClient params in ```App.tsx``` with the ```Application name```, ```Elasticsearch endpoint```, ```API key``` for your search application.
 ```javascript
 const request = SearchApplicationClient(
   /*Application name*/,
