@@ -267,7 +267,7 @@ streamlit run rennes_traffic_predict.py
 pip install 'eland[pytorch]'
 ```
 ```console
-eland_import_hub_model –help
+eland_import_hub_model --help
 ```
 ```console
 eland_import_hub_model \

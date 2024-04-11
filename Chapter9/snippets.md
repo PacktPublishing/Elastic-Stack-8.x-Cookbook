@@ -181,7 +181,7 @@ GET movies-sparse-vector/_search
    "query":{
       "text_expansion":{
          "plot_sparse_vector":{
-            "model_id":".elser_model_2",
+            "model_id":".elser_model_2_linux-x86_64",
             "model_text":" romantic moment"
          }
       }
