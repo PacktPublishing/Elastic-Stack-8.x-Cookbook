@@ -1,4 +1,13 @@
 opentelemetry-collector:
+  mode: "deployment"
+  presets:
+    kubernetesAttributes:
+      enabled: true
+    kubernetesEvents:
+      enabled: true
+    clusterMetrics:
+      enabled: true
+
   extraEnvs:
     - name: ELASTIC_APM_ENDPOINT
       valueFrom:
