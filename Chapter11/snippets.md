@@ -70,22 +70,22 @@ sudo systemctl start logstash.service
 ### Elasticsearch user setting for oidc
 ```yaml
 xpack.security.authc.realms.oidc:  
-oidc-okta:  
-order: 3  
-rp.client_id: <CLIENT_ID>  
-rp.response_type: code  
-rp.redirect_uri: "<KIBANA_URL>/api/security/oidc/callback" 
-op.issuer: "https://dev-<ACCOUNT_ID>.okta.com" 
-op.authorization_endpoint: "https://dev-<ACCOUNT_ID>.okta.com/oauth2/v1/authorize" 
-op.token_endpoint: "https://dev-<ACCOUNT_ID>.okta.com/oauth2/v1/token" 
-op.jwkset_path: "https://dev-<ACCOUNT_ID>.okta.com/oauth2/v1/keys" 
-op.userinfo_endpoint: "https://dev-<ACCOUNT_ID>.okta.com/oauth2/v1/userinfo" 
-rp.post_logout_redirect_uri: "<KIBANA_URL>/security/logged_out" 
-rp.requested_scopes: ["openid", "groups", "profile", "email"]  
-claims.principal: email  
-claims.name: name  
-claims.mail: email  
-claims.groups: groups 
+    oidc-okta:  
+        order: 3  
+        rp.client_id: <CLIENT_ID>  
+        rp.response_type: code  
+        rp.redirect_uri: "<KIBANA_URL>/api/security/oidc/callback"
+        op.issuer: "https://dev-<ACCOUNT_ID>.okta.com"
+        op.authorization_endpoint: "https://dev-<ACCOUNT_ID>.okta.com/oauth2/v1/authorize"
+        op.token_endpoint: "https://dev-<ACCOUNT_ID>.okta.com/oauth2/v1/token"
+        op.jwkset_path: "https://dev-<ACCOUNT_ID>.okta.com/oauth2/v1/keys"
+        op.userinfo_endpoint: "https://dev-<ACCOUNT_ID>.okta.com/oauth2/v1/userinfo"
+        rp.post_logout_redirect_uri: "<KIBANA_URL>/security/logged_out"
+        rp.requested_scopes: ["openid", "groups", "profile", "email"]
+        claims.principal: email
+        claims.name: name 
+        claims.mail: email
+        claims.groups: groups
 ```
 
 ### Kibana user settings for oidc provider
