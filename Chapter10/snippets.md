@@ -80,7 +80,7 @@ helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm
 ```
 Deploy the OpenTelemetry Demo
 ```console
-helm install -f values.yaml cookbook-otel-demo open-telemetry/opentelemetry-demo
+helm install -f values.yaml cookbook-otel-demo open-telemetry/opentelemetry-demo --version 0.29.2
 ```
 Verify the deployment
 ```console
