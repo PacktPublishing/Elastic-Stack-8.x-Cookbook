@@ -5,6 +5,7 @@
 * [Setting up Real User Monitoring](#setting-up-real-user-monitoring)
 * [Instrumenting and monitoring with OpenTelemetry](#instrumenting-and-monitoring-with-opentelemetry)
 * [Monitoring Kubernetes environments with Elastic Agent](#monitoring-kubernetes-environments-with-elastic-agent)
+* [Managing synthetics monitors](#managing-synthetics-monitors)
 
 ## Instrumenting your application with Elastic APM Agent
 ### Elastiflix with no-instrumentation
