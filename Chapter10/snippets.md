@@ -105,6 +105,7 @@ Check Elastic Agent status
 ```console
 kubectl get pods -n kube-system 
 ```
+### Install kube-state-metrics
 Check to see if kube-state-metrics is running
 ```console
 kubectl get pods --namespace=kube-system | grep kube-state
