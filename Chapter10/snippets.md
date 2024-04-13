@@ -105,19 +105,20 @@ Check Elastic Agent status
 ```console
 kubectl get pods -n kube-system 
 ```
-Add the kube-state-metrics helm repo and update the repo
+Check to see if kube-state-metrics is running
 ```console
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+kubectl get pods --namespace=kube-system | grep kube-state
+```
+Install kube-state-metrics
+```console
+git clone https://github.com/kubernetes/kube-state-metrics.git kube-state-metrics
 ```
 ```console
-helm repo update
+kubectl apply -f kube-state-metrics/examples/standard
 ```
-Install and verify kube-state-metrics
+Verify kube-state-metrics
 ```console
-helm install --set namespaceOverride=kube-system kube-state-metrics prometheus-community/kube-state-metrics 
-```
-```console
-kubectl get pods -n kube-system
+kubectl get pods --namespace=kube-system | grep kube-state 
 ```
 
 ## Managing synthetics monitors
