@@ -103,7 +103,7 @@ kubectl apply -f elastic-agent-managed-kubernetes.yml
 ```
 Check Elastic Agent status
 ```console
-kubectl get pods -n kube-system 
+kubectl get pods -n kube-system | grep elastic-agent
 ```
 ### Install kube-state-metrics
 Check to see if kube-state-metrics is running
