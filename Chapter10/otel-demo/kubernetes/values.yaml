@@ -66,27 +66,26 @@ jaeger:
 prometheus:
   enabled: false
 
+opensearch:
+  enabled: false
+
 components:
   frontendProxy:
     service:
       type: LoadBalancer
     resources:
       limits:
-        memory: 300Mi
+        memory: 200Mi
   loadgenerator:
     resources:
       limits:
-        memory: 200Mi
-  featureflagService:
-    resources:
-      limits:
-        memory: 250Mi
+        memory: 1Gi
   checkoutService:
     resources:
       limits:
         memory: 250Mi
   frontend:
-    replicas: 2
+    replicas: 1
     resources:
       limits:
         memory: 300Mi
@@ -113,14 +112,10 @@ components:
     resources:
       limits:
         memory: 300Mi
-  ffsPostgres:
-    resources:
-      limits:
-        memory: 250Mi
   frauddetectionService:
     resources:
       limits:
-        memory: 300Mi
+        memory: 200Mi
   currencyService:
     resources:
       limits:
