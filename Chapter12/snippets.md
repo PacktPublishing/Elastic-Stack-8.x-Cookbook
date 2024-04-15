@@ -68,7 +68,7 @@ apm-*,new-team-deployment:apm-*
 
 Span Indices: 
 ```
-traces-apm*,apm-*,new-team-deployment:traces-apm*, new-team-deployment:apm-*
+traces-apm*,apm-*,new-team-deployment:traces-apm*,new-team-deployment:apm-*
 ```
 Transaction Indices: 
 ```
