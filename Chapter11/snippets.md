@@ -45,7 +45,7 @@ POST /_security/api_key
   "name": "rennes_traffic_writer_key",  
   "role_descriptors": { 
     "rennes_traffic_writer": {  
-      "cluster": ["monitor", "read_ilm"], 
+      "cluster": ["monitor", "manage_ilm", "read_ilm"], 
       "index": [ 
         { 
           "names": ["metric-rennes_traffic-*"], 
