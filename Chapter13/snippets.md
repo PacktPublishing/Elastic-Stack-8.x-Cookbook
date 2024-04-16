@@ -60,4 +60,5 @@ from elastic-cloud-logs-8
     | where event.action == "access_granted"  
     | stats attempts = count(event.action) by user.name,elasticsearch.audit.user.roles, elasticsearch.audit.indices 
     | sort attempts desc
+    | limit 20
 ```
