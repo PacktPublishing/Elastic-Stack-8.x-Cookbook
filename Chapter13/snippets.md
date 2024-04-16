@@ -50,22 +50,14 @@ xpack.security.audit.enabled: true
 ```sql
 from elastic-cloud-logs-8  
     | where event.type == "access" 
-    | stats attempts = count(event.type) by user.name, kibana.space_id, event.outcome 
+    | stats attempts = count(event.type) by user.name, kibana.space_id, event.outcome
+    | limit 20
 ```
 
-### ES|QL snippet for user login denied attempts
-```sql
-from elastic-cloud-logs-8 
-    | where event.action == "access_denied"  
-    | stats attempts = count(event.action) by user.name, elasticsearch.audit.request.name, elasticsearch.audit.user.roles, elasticsearch.audit.indices 
-    | sort attempts desc 
-```
-
-
-Alternative?
+### ES|QL snippet for user login granted attempts
 ```sql
 from elastic-cloud-logs-8 
     | where event.action == "access_granted"  
-    | stats attempts = count(event.action) by user.name,elasticsearch.audit.user.roles
+    | stats attempts = count(event.action) by user.name,elasticsearch.audit.user.roles, elasticsearch.audit.indices 
     | sort attempts desc
 ```
