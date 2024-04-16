@@ -28,6 +28,11 @@ GET _health_report/shards_availability
 ```
 ```
 GET _cluster/allocation/explain
+{
+  "index": "<index-name>",
+  "shard": 0,
+  "primary": false
+}
 ```
 
 ## Enabling audit logging
@@ -56,3 +61,11 @@ from elastic-cloud-logs-8
     | sort attempts desc 
 ```
 
+
+Alternative?
+```sql
+from elastic-cloud-logs-8 
+    | where event.action == "access_granted"  
+    | stats attempts = count(event.action) by user.name,elasticsearch.audit.user.roles
+    | sort attempts desc
+```
