@@ -67,23 +67,41 @@ sudo systemctl start logstash.service
 
 ## Configuring Single Sign-On
 
-### Elasticsearch user setting for oidc
+### Okta application settings
+App integration name: Kibana Cookbook
+Sign-in redirect URIs: 
+```
+<KIBANA_URL>/api/security/oidc/callback
+```
+Sign-out redirect URIs: 
+```
+<KIBANA_URL>/security/logged_out
+```
+Controlled access:  "Skip group assignment for now"
+
+### Elasticsearch keystore settings
+Settings name:
+```
+xpack.security.authc.realms.oidc.oidc-okta.rp.client_secret
+```
+
+### Elasticsearch user settings for oidc realms
 ```yaml
 xpack.security.authc.realms.oidc:  
     oidc-okta:  
         order: 3  
-        rp.client_id: <CLIENT_ID>  
+        rp.client_id: <CLIENT_ID>
         rp.response_type: code  
         rp.redirect_uri: "<KIBANA_URL>/api/security/oidc/callback"
-        op.issuer: "https://dev-<ACCOUNT_ID>.okta.com"
-        op.authorization_endpoint: "https://dev-<ACCOUNT_ID>.okta.com/oauth2/v1/authorize"
-        op.token_endpoint: "https://dev-<ACCOUNT_ID>.okta.com/oauth2/v1/token"
-        op.jwkset_path: "https://dev-<ACCOUNT_ID>.okta.com/oauth2/v1/keys"
-        op.userinfo_endpoint: "https://dev-<ACCOUNT_ID>.okta.com/oauth2/v1/userinfo"
+        op.issuer: "https://<YOUR-OKTA-DOMAIN>"
+        op.authorization_endpoint: "https://<YOUR-OKTA-DOMAIN>/oauth2/v1/authorize"
+        op.token_endpoint: "https://<YOUR-OKTA-DOMAIN>/oauth2/v1/token"
+        op.jwkset_path: "https://<YOUR-OKTA-DOMAIN>/oauth2/v1/keys"
+        op.userinfo_endpoint: "https://<YOUR-OKTA-DOMAIN>/oauth2/v1/userinfo"
         rp.post_logout_redirect_uri: "<KIBANA_URL>/security/logged_out"
         rp.requested_scopes: ["openid", "groups", "profile", "email"]
         claims.principal: email
-        claims.name: name 
+        claims.name: name
         claims.mail: email
         claims.groups: groups
 ```
