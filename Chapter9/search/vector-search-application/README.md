@@ -12,8 +12,8 @@ yarn install
 2. Head to Kibana | Search | Search Applications | movie_vector_search_application | Connect  
 
 Generate an API Key and save it locally
-Copy the Search endpoint (just the https://<host>:<port>) part
-![connect search application](connect_search_application.png "Connect Seaarch application")
+Copy the Search endpoint (just the https://<host>:<port>) part, DO NOT COPY the "/_application/search_application/movie_vector_search_application/_search" part.
+![connect search application](connect_search_application.png "Connect Search application")
 
 3. Cross-Origin Resource Sharing (CORS) settings
 To make a search API call from the application, the browser needs to make requests to the Elasticsearch API directly. Elasticsearch supports Cross-Origin Resource Sharing (CORS), but this feature is disabled by default. So, we need to activate it. 
