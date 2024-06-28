@@ -14,9 +14,8 @@ This repository contains working versions of the snippets provided in the book t
    Anomaly Detection](Chapter7)
 8. [Advanced Data
    Analysisand Processing](Chapter8)
-9. [Advanced Data
-   Analysisand Processing](Chapter9)
-10. [Vector Search and Generative AI Integration](Chapter10)
+9. [Vector Search and Generative AI Integration](Chapter9)
+10. [Elastic Observability Solution](Chapter10)
 11. [Managing Access Control](Chapter11)
 12. [Elastic Stack Operation](Chapter12)
 13. [Elastic Stack Monitoring](Chapter1)
