@@ -18,7 +18,7 @@ This repository contains working versions of the snippets provided in the book t
 10. [Elastic Observability Solution](Chapter10)
 11. [Managing Access Control](Chapter11)
 12. [Elastic Stack Operation](Chapter12)
-13. [Elastic Stack Monitoring](Chapter1)
+13. [Elastic Stack Monitoring](Chapter13)
 
 
 For any feedback or suggestions please reach out to us at huage.chen_at_elastic.co and yazid.akadiri_at_elastic.co
