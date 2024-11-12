@@ -75,6 +75,10 @@ With the following software and hardware list you can run all code files present
 | Ollama |  |
 | OpenAI/Azure OpenAI |  |
 
+## Errata
+* Page 201 (Point 11, Code block 1): **traffic_status: " congested"** _should be_ **traffic_status: "congested"**
+* Page 204 ( Last paragraph, Line 3): **above 100** _should be_ **above 1000**
+
 ## Related products
 * Vector Search for Practitioners with Elastic [[Packt]](https://www.packtpub.com/en-in/product/vector-search-for-practitioners-with-elastic-9781805121022?type=print) [[Amazon]](https://www.amazon.com/Vector-Search-Practitioners-Elastic-observability/dp/1805121022/ref=sr_1_1?crid=3RY8YNF38X9KG&dib=eyJ2IjoiMSJ9.r8q88QE9fkss7e7-tsb9dw.vPChMCrBClSvQc2mx61Pq0NdULcbga9K4Rvvs3CECPo&dib_tag=se&keywords=Vector+Search+for+Practitioners+with+Elastic&qid=1720416090&sprefix=vector+search+for+practitioners+with+elastic%2Caps%2C660&sr=8-1)
 
